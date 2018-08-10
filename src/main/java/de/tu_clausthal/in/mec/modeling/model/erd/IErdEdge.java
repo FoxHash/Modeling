@@ -21,8 +21,22 @@
  * @endcond
  */
 
-grammar test;
+package de.tu_clausthal.in.mec.modeling.model.erd;
 
-main :
-    'a'
-    ;
+import de.tu_clausthal.in.mec.modeling.model.graph.IEdge;
+
+
+/**
+ * An edge for the graphical ERD model.
+ */
+public interface IErdEdge extends IEdge
+{
+
+    /**
+     * return the cardinality of the edge
+     *
+     * @return cardinality
+     */
+    String getCardinality();
+
+}
