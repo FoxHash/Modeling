@@ -40,16 +40,16 @@ public interface IErd extends IModel<IErd>
     /**
      * add new entity
      *
-     * @param p_id name
+     * @param p_name name
      * @param p_weakentity flag for weak entity
      * @return self-reference
      */
-    IErd addEntity( @NonNull final String p_id, final boolean p_weakentity );
+    IErd addEntity( @NonNull final String p_name, final boolean p_weakentity );
 
     /**
      * add new attribute to an entity
      *
-     * @param p_id name
+     * @param p_name name
      * @param p_keyattribute key flag
      * @param p_weakkeyattribute weak key flag
      * @param p_multivalue multi value flag
@@ -57,23 +57,23 @@ public interface IErd extends IModel<IErd>
      * @param p_entityid name of the entity
      * @return self-reference
      */
-    IErd addAttributeToEntity( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+    IErd addAttributeToEntity( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
                                final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
     );
 
     /**
      * add new relationship
      *
-     * @param p_id name
+     * @param p_name name
      * @param p_description description of the relationship
      * @return self-reference
      */
-    IErd addRelationship( @NonNull final String p_id, @NonNull final String p_description );
+    IErd addRelationship( @NonNull final String p_name, @NonNull final String p_description );
 
     /**
      * add new attribute to a relationship
      *
-     * @param p_id name
+     * @param p_name name
      * @param p_keyattribute key flag
      * @param p_weakkeyattribute weak key flag
      * @param p_multivalue multi value flag
@@ -81,20 +81,20 @@ public interface IErd extends IModel<IErd>
      * @param p_relationshipid name of the relationship
      * @return self-referenced
      */
-    IErd addAttributeToRelationship( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+    IErd addAttributeToRelationship( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
                                      final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_relationshipid
     );
 
     /**
      * connect relationship with entity
      *
-     * @param p_id relationship name
+     * @param p_name relationship name
      * @param p_entity id of the entity
      * @param p_relationship id of the relationship
      * @param p_cardinality cardinality between the relationship and the cardinality
      * @return self-reference
      */
-    IErd connectEntityWithRelationship( @NonNull final String p_id, @NonNull final String p_entity, @NonNull final String p_relationship,
+    IErd connectEntityWithRelationship( @NonNull final String p_name, @NonNull final String p_entity, @NonNull final String p_relationship,
                                         @NonNull String p_cardinality
     );
 

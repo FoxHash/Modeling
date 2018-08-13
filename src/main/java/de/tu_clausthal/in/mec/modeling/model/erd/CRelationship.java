@@ -63,7 +63,7 @@ public class CRelationship extends IBaseNode implements IRelationship<IAttribute
     @Override
     public boolean isRecursive()
     {
-        return m_entityone.get().getKey().equals( m_entitytwo.get().getKey() ) && ( m_entityone.get() != null );
+        return ( m_entityone.get() != null ) && ( m_entitytwo.get() != null ) && m_entityone.get().equals( m_entitytwo.get() );
     }
 
     @Override
@@ -112,14 +112,18 @@ public class CRelationship extends IBaseNode implements IRelationship<IAttribute
     }
 
     @Override
-    public Map<IEntity<IAttribute>, EErdCardinality> getConnectedEntities()
+    public Map<String, String> getConnectedEntities()
     {
-        final Map<IEntity<IAttribute>, EErdCardinality> l_entities = new HashMap<>();
+        final Map<String, String> l_entities = new HashMap<>();
 
         if ( m_entityone.get() != null )
         {
-            l_entities.put( m_entityone.get().getKey(), m_entityone.get().getValue() );
-            l_entities.put( m_entitytwo.get().getKey(), m_entitytwo.get().getValue() );
+            l_entities.put( m_entityone.get().getKey().id(), m_entityone.get().getValue().getCardinality() );
+        }
+
+        if ( m_entitytwo.get() != null )
+        {
+            l_entities.put( m_entitytwo.get().getKey().id(), m_entitytwo.get().getValue().getCardinality() );
         }
 
         return Collections.unmodifiableMap( l_entities );

@@ -86,6 +86,6 @@ public interface IRelationship<A extends IAttribute> extends IErdNode
      *
      * @return connected entities
      */
-    Map<IEntity<IAttribute>, EErdCardinality> getConnectedEntities();
+    Map<String, String> getConnectedEntities();
 
 }
