@@ -27,8 +27,15 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
  * A simple attribute that can be assigned in an ERD to an entity or relationship.
  * An attribute can take on certain properties that can be queried by the methods described below.
  */
-public interface IAttribute extends IErdNode
+public interface IAttribute
 {
+
+    /**
+     * return the name of the attribute
+     *
+     * @return name
+     */
+    String attributeName();
 
     /**
      * is key attribute

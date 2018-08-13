@@ -23,11 +23,16 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+
+import java.util.Arrays;
+
+
 /**
  * This enum class describes the cardinality between a relationship and an entity.
  * This class allows to store the cardinality.
  */
-public enum EErdCardinality
+public enum EErdCardinality implements IErdCardinality
 {
 
     /**
@@ -46,20 +51,31 @@ public enum EErdCardinality
     /**
      * constructor to create a new cardinality for a relationship
      *
-     * @param p_cardinality
+     * @param p_cardinality cardinality
      */
     EErdCardinality( final String p_cardinality )
     {
-        this.m_cardinality = p_cardinality;
+        m_cardinality = p_cardinality;
     }
 
-    /**
-     * method to return the cardinality as string
-     *
-     * @return cardinality as string description
-     */
+
+    @Override
     public String getCardinality()
     {
         return m_cardinality;
+    }
+
+    /**
+     * static method to return enum to given string value
+     *
+     * @param p_value string represented value of the cardinality
+     * @return enum cardinality
+     */
+    public static EErdCardinality of( @NonNull final String p_value )
+    {
+        return Arrays.stream( EErdCardinality.values() )
+                     .filter( e -> e.getCardinality().equalsIgnoreCase( p_value ) )
+                     .findFirst()
+                     .orElseThrow( () -> new EnumConstantNotPresentException( EErdCardinality.class, p_value ) );
     }
 }

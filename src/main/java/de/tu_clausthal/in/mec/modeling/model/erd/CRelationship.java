@@ -26,8 +26,11 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import java.util.AbstractMap;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -41,36 +44,26 @@ public class CRelationship extends IBaseNode implements IRelationship<IAttribute
 {
 
     private final String m_description;
-    private final boolean m_recursive;
-    private final boolean m_identifying;
-    private final Map<Integer, IAttribute> m_attributes;
+    private final Map<String, IAttribute> m_attributes = new HashMap<>();
+    private final AtomicReference<AbstractMap.SimpleEntry<IEntity<IAttribute>, EErdCardinality>> m_entityone = new AtomicReference<>( null );
+    private final AtomicReference<AbstractMap.SimpleEntry<IEntity<IAttribute>, EErdCardinality>> m_entitytwo = new AtomicReference<>( null );
 
     /**
      * constructor to create new relationship
      *
-     * @param p_id name
-     * @param p_recursive recursive relationship flag
-     * @param p_identifying identifying relationship flag
+     * @param p_id id
+     * @param p_description name/description of the relationship
      */
-    protected CRelationship( @NonNull final String p_id, @NonNull final String p_description, @NonNull final boolean p_recursive, @NonNull final boolean p_identifying )
+    CRelationship( @NonNull final String p_id, @NonNull final String p_description )
     {
         super( p_id );
         m_description = p_description;
-        m_recursive = p_recursive;
-        m_identifying = p_identifying;
-        m_attributes = new HashMap<>();
     }
 
     @Override
     public boolean isRecursive()
     {
-        return m_recursive;
-    }
-
-    @Override
-    public boolean isIdentifying()
-    {
-        return m_identifying;
+        return m_entityone.get().getKey().equals( m_entitytwo.get().getKey() ) && ( m_entityone.get() != null );
     }
 
     @Override
@@ -80,19 +73,55 @@ public class CRelationship extends IBaseNode implements IRelationship<IAttribute
     }
 
     @Override
-    public IAttribute createAttribute( @NonNull final String p_id, @NonNull final boolean p_keyattribute, @NonNull final boolean p_weakkeyattribute,
-                                       @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue
+    public IAttribute createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                                       final boolean p_multivalue, final boolean p_derivedvalue
     )
     {
         final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
-        m_attributes.put( l_attr.hashCode(), l_attr );
+        m_attributes.put( l_attr.attributeName(), l_attr );
 
         return l_attr;
     }
 
     @Override
-    public Map<Integer, IAttribute> getConnectedAttributes()
+    public Map<String, IAttribute> getConnectedAttributes()
     {
-        return m_attributes;
+        return Collections.unmodifiableMap( m_attributes );
+    }
+
+    @Override
+    public IEntity<IAttribute> connectEntity( @NonNull final IEntity<IAttribute> p_entity, @NonNull final String p_cardinality )
+    {
+        final IEntity<IAttribute> l_entity = p_entity;
+        if ( m_entityone.get() == null )
+        {
+            m_entityone.compareAndSet( null, new AbstractMap.SimpleEntry<>( l_entity, EErdCardinality.of( p_cardinality ) ) );
+            return l_entity;
+        }
+
+        if ( m_entitytwo.get() == null )
+        {
+            m_entitytwo.compareAndSet( null, new AbstractMap.SimpleEntry<>( l_entity, EErdCardinality.of( p_cardinality ) ) );
+            return l_entity;
+        }
+        else
+        {
+            throw new RuntimeException( "The number of maximum elements has been exceeded. No more entity can connect to this relationship: " + m_id );
+        }
+
+    }
+
+    @Override
+    public Map<IEntity<IAttribute>, EErdCardinality> getConnectedEntities()
+    {
+        final Map<IEntity<IAttribute>, EErdCardinality> l_entities = new HashMap<>();
+
+        if ( m_entityone.get() != null )
+        {
+            l_entities.put( m_entityone.get().getKey(), m_entityone.get().getValue() );
+            l_entities.put( m_entitytwo.get().getKey(), m_entitytwo.get().getValue() );
+        }
+
+        return Collections.unmodifiableMap( l_entities );
     }
 }

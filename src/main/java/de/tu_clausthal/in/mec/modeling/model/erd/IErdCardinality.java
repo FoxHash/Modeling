@@ -23,63 +23,18 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-
 /**
- * An attribute forms a description in detail about an entity. Entities are objects that come
- * from the real world and model a fact. This fact can be specified more precisely
- * by attributes, which happens here.
- *
- * Attributes can assume various properties.
+ * EMPTY
+ * //TODO
  */
-public class CAttribute implements IAttribute
+public interface IErdCardinality
 {
 
-    private final String m_name;
-    private final boolean m_keyattribute;
-    private final boolean m_weakkeyattribute;
-    private final boolean m_multivalue;
-    private final boolean m_derivedvalue;
+    /**
+     * return the value of the cardinality
+     *
+     * @return cardinality
+     */
+    String getCardinality();
 
-    CAttribute( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                          final boolean p_multivalue, final boolean p_derivedvalue
-    )
-    {
-        m_name = p_name;
-        m_keyattribute = p_keyattribute;
-        m_weakkeyattribute = p_weakkeyattribute;
-        m_multivalue = p_multivalue;
-        m_derivedvalue = p_derivedvalue;
-    }
-
-    @Override
-    public String attributeName()
-    {
-        return m_name;
-    }
-
-    @Override
-    public boolean isKeyAttribute()
-    {
-        return m_keyattribute;
-    }
-
-    @Override
-    public boolean isWeakKeyAttribute()
-    {
-        return m_weakkeyattribute;
-    }
-
-    @Override
-    public boolean isMultiValue()
-    {
-        return m_multivalue;
-    }
-
-    @Override
-    public boolean isDerivedValue()
-    {
-        return m_derivedvalue;
-    }
 }

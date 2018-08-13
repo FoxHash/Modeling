@@ -38,17 +38,11 @@ public interface IRelationship<A extends IAttribute> extends IErdNode
 {
 
     /**
-     * is relationship recursive
-     * @return recursive flag
+     * check the relationship, if the two connected entities are the same
+     *
+     * @return recursive
      */
     boolean isRecursive();
-
-    /**
-     * is relationship identifying
-     *
-     * @return identifying flag
-     */
-    boolean isIdentifying();
 
     /**
      * return the description of the relationship
@@ -67,8 +61,8 @@ public interface IRelationship<A extends IAttribute> extends IErdNode
      * @param p_derivedvalue derived value flag
      * @return self-reference
      */
-    A createAttribute( @NonNull final String p_id, @NonNull final boolean p_keyattribute, @NonNull final boolean p_weakkeyattribute,
-                       @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue
+    A createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                       final boolean p_multivalue, final boolean p_derivedvalue
     );
 
     /**
@@ -76,6 +70,22 @@ public interface IRelationship<A extends IAttribute> extends IErdNode
      *
      * @return map with all attributes
      */
-    Map<Integer, IAttribute> getConnectedAttributes();
+    Map<String, IAttribute> getConnectedAttributes();
+
+    /**
+     * connect entity incl. cardinality to the relationship
+     *
+     * @param p_entity name of the entity
+     * @param p_cardinality cardinality
+     * @return self-reference
+     */
+    IEntity<A> connectEntity( @NonNull final IEntity<IAttribute> p_entity, @NonNull final String p_cardinality );
+
+    /**
+     * return the connected entities in a map
+     *
+     * @return connected entities
+     */
+    Map<IEntity<IAttribute>, EErdCardinality> getConnectedEntities();
 
 }

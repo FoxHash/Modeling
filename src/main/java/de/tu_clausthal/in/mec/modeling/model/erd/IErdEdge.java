@@ -32,11 +32,4 @@ import de.tu_clausthal.in.mec.modeling.model.graph.IEdge;
 public interface IErdEdge extends IEdge
 {
 
-    /**
-     * return the cardinality of the edge
-     *
-     * @return cardinality
-     */
-    String getCardinality();
-
 }

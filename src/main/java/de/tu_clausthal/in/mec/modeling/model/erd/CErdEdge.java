@@ -34,39 +34,14 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 public class CErdEdge extends IBaseEdge implements IErdEdge
 {
 
-    private final EErdCardinality m_cardinality;
-
     /**
      * constructor to create a new element
      *
      * @param p_id
-     * @param p_cardinality
      */
-    protected CErdEdge( @NonNull final String p_id, @NonNull final String p_cardinality )
+    CErdEdge( @NonNull final String p_id )
     {
         super( p_id );
-        switch ( p_cardinality )
-        {
-            case "1:1":
-                m_cardinality = EErdCardinality.ONEONE;
-                break;
-            case "1:n":
-                m_cardinality = EErdCardinality.ONEN;
-                break;
-            case "n:m":
-                m_cardinality = EErdCardinality.NM;
-                break;
-            case "inherit":
-                m_cardinality = EErdCardinality.INHERIT;
-                break;
-            default:
-                throw new RuntimeException( "the given cardinality is not valid!" );
-        }
     }
 
-    @Override
-    public String getCardinality()
-    {
-        return m_cardinality.getCardinality();
-    }
 }

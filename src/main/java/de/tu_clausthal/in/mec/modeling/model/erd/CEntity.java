@@ -26,8 +26,10 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 
 /**
@@ -39,7 +41,7 @@ public class CEntity extends IBaseNode implements IEntity<IAttribute>
 {
 
     private final boolean m_weakentity;
-    private Map<Integer, IAttribute> m_attributes;
+    private Map<String, IAttribute> m_attributes = new HashMap<>();
 
     /**
      * constructor to create new entity
@@ -47,21 +49,20 @@ public class CEntity extends IBaseNode implements IEntity<IAttribute>
      * @param p_id name
      * @param p_weakentity weak entity flag
      */
-    protected CEntity( @NonNull final String p_id, @NonNull final boolean p_weakentity )
+    CEntity( @NonNull final String p_id, final boolean p_weakentity )
     {
         super( p_id );
         m_weakentity = p_weakentity;
-        m_attributes = new HashMap<>();
     }
 
     @Override
-    public IAttribute createAttribute( @NonNull final String p_id, @NonNull final boolean p_keyattribute, @NonNull final boolean p_weakkeyattribute,
-                                       @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue
+    public IAttribute createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                                       final boolean p_multivalue, final boolean p_derivedvalue
     )
     {
 
         final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
-        m_attributes.put( l_attr.hashCode(), l_attr );
+        m_attributes.put( l_attr.attributeName(), l_attr );
 
         return l_attr;
     }
@@ -73,8 +74,14 @@ public class CEntity extends IBaseNode implements IEntity<IAttribute>
     }
 
     @Override
-    public Map<Integer, IAttribute> getConnectedAttributes()
+    public Map<String, IAttribute> getConnectedAttributes()
     {
-        return m_attributes;
+        return Collections.unmodifiableMap( m_attributes );
+    }
+
+    @Override
+    public Stream<IAttribute> getConnectedAttributesStream()
+    {
+        return m_attributes.values().stream();
     }
 }

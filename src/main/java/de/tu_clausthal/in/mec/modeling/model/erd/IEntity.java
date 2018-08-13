@@ -26,6 +26,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 
 /**
@@ -48,8 +49,8 @@ public interface IEntity<A extends IAttribute> extends IErdNode
      * @param p_derivedvalue derived value flag
      * @return self-reference
      */
-    A createAttribute( @NonNull final String p_id, @NonNull final boolean p_keyattribute, @NonNull final boolean p_weakkeyattribute,
-                       @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue
+    A createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                       final boolean p_multivalue, final boolean p_derivedvalue
     );
 
     /**
@@ -64,6 +65,13 @@ public interface IEntity<A extends IAttribute> extends IErdNode
      *
      * @return map with all attributes
      */
-    Map<Integer, IAttribute> getConnectedAttributes();
+    Map<String, A> getConnectedAttributes();
+
+    /**
+     * get all connected attributes from the entity in a stream
+     *
+     * @return stream with all attributes
+     */
+    Stream<A> getConnectedAttributesStream();
 
 }
