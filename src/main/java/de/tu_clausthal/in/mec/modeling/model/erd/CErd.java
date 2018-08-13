@@ -23,12 +23,16 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.tu_clausthal.in.mec.modeling.model.IModel;
 import de.tu_clausthal.in.mec.modeling.model.graph.IGraph;
+import de.tu_clausthal.in.mec.modeling.model.graph.INode;
 import de.tu_clausthal.in.mec.modeling.model.graph.jung.CUndirectedGraph;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.text.MessageFormat;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -85,8 +89,7 @@ public class CErd implements IErd
     // TODO
     public Object serialize()
     {
-        return null;
-        //return new CSerializer( m_network ).toString();
+        return new CSerializer( m_network );
     }
 
     @Override
@@ -96,14 +99,14 @@ public class CErd implements IErd
     }
 
     @Override
-    public IErd addEntity( @NonNull final String p_id, final boolean p_weakentity )
+    public IErd addEntity( @NonNull final String p_name, final boolean p_weakentity )
     {
-        m_network.addnode( new CEntity( p_id, p_weakentity ) );
+        m_network.addnode( new CEntity( p_name, p_weakentity ) );
         return this;
     }
 
     @Override
-    public IErd addAttributeToEntity( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+    public IErd addAttributeToEntity( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
                                       final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
     )
     {
@@ -114,27 +117,27 @@ public class CErd implements IErd
             throw new RuntimeException( MessageFormat.format( "entity[{0}] must be an entity", l_entity ) );
         }
 
-        ( (IEntity) l_entity ).createAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        ( (IEntity) l_entity ).createAttribute( p_name, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
         return this;
     }
 
 
     @Override
-    public IErd addRelationship( @NonNull final String p_id, @NonNull final String p_description )
+    public IErd addRelationship( @NonNull final String p_name, @NonNull final String p_description )
     {
-        if ( m_network.node( p_id ) != null )
+        if ( m_network.node( p_name ) != null )
         {
             throw new RuntimeException(
-                MessageFormat.format( "There also exists an relationship with this id[{0}]", p_id )
+                MessageFormat.format( "There also exists an relationship with this id[{0}]", p_name )
             );
         }
 
-        m_network.addnode( new CRelationship( p_id, p_description ) );
+        m_network.addnode( new CRelationship( p_name, p_description ) );
         return this;
     }
 
     @Override
-    public IErd addAttributeToRelationship( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+    public IErd addAttributeToRelationship( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
                                             final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_relationshipid
     )
     {
@@ -147,13 +150,13 @@ public class CErd implements IErd
             );
         }
 
-        ( (IRelationship) l_relationship ).createAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        ( (IRelationship) l_relationship ).createAttribute( p_name, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
         return this;
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public IErd connectEntityWithRelationship( @NonNull final String p_id, @NonNull final String p_entity, @NonNull final String p_relationship,
+    public IErd connectEntityWithRelationship( @NonNull final String p_name, @NonNull final String p_entity, @NonNull final String p_relationship,
                                                @NonNull final String p_cardinality
     )
     {
@@ -170,7 +173,7 @@ public class CErd implements IErd
 
         ( (IRelationship) l_relationship ).connectEntity( (IEntity<IAttribute>) l_entity, p_cardinality );
 
-        m_network.addedge( l_entity, l_relationship, new CErdEdge( p_id ) );
+        m_network.addedge( l_entity, l_relationship, new CErdEdge( p_name ) );
         return this;
     }
 
@@ -203,119 +206,29 @@ public class CErd implements IErd
     }
 
 
-
-    /*private static final class CSerializer
+    @SuppressWarnings( "unchecked" )
+    private static final class CSerializer
     {
 
-        private final JsonObject m_jsonobj = new JsonObject();
+        @JsonProperty( "entities" )
+        private final Map<String, IEntity<IAttribute>> m_entities;
 
-        @SuppressWarnings( "unchecked" )
-        private CSerializer( @NonNull final IGraph<IErdNode, IErdEdge> p_model )
+        @JsonProperty( "relationships" )
+        private final Map<String, IRelationship<IAttribute>> m_relationships;
+
+        CSerializer( @NonNull final IGraph<IErdNode, IErdEdge> p_model )
         {
-            m_jsonobj.addProperty( "model", p_model.id() );
+            m_entities = p_model.nodes()
+                                .filter( i -> i instanceof IEntity )
+                                .map( INode::<IEntity>raw )
+                                .collect( Collectors.toMap( INode::id, i -> i ) );
 
-            // array for all erd components
-            final JsonArray l_entities = new JsonArray();
-            final JsonArray l_relations = new JsonArray();
-            final JsonArray l_connections = new JsonArray();
-
-            p_model.nodes()
-                   .filter( node -> node instanceof IEntity )
-                   .forEach( node ->
-                   {
-                       // json object for entity and array for attributes
-                       final JsonObject l_details = new JsonObject();
-                       final JsonArray l_array = new JsonArray();
-
-                       // fetch connected attributes and add to json array
-                       ( (IEntity<IAttribute>) node ).getConnectedAttributes()
-                                                     .entrySet()
-                                                     .stream()
-                                                     .forEach( elm ->
-                                                     {
-                                                         final JsonObject l_jsonobject = new JsonObject();
-                                                         l_jsonobject.addProperty( "id", elm.getValue().id() );
-                                                         l_jsonobject.addProperty( "key", elm.getValue().isKeyAttribute() );
-                                                         l_jsonobject.addProperty( "weakKey", elm.getValue().isWeakKeyAttribute() );
-                                                         l_jsonobject.addProperty( "multiVal", elm.getValue().isMultiValue() );
-                                                         l_jsonobject.addProperty( "derivedVal", elm.getValue().isDerivedValue() );
-
-                                                         l_array.add( l_jsonobject );
-                                                     } );
-
-                       // entity details for whole object description
-                       l_details.addProperty( "id", node.id() );
-                       l_details.addProperty( "weakEntity", ( (IEntity<IAttribute>) node ).isWeakEntity() );
-                       l_details.add( "attributes", l_array );
-
-                       // add entity to list of all entities
-                       l_entities.add( l_details );
-
-                   } );
-
-            p_model.nodes()
-                   .filter( node -> node instanceof IRelationship )
-                   .forEach( node ->
-                   {
-                       // json object for relationships
-                       final JsonObject l_details = new JsonObject();
-                       final JsonArray l_array = new JsonArray();
-
-                       ( (IRelationship<IAttribute>) node ).getConnectedAttributes()
-                                                           .entrySet()
-                                                           .stream()
-                                                           .forEach( elm ->
-                                                           {
-                                                               final JsonObject l_jsonobject = new JsonObject();
-                                                               l_jsonobject.addProperty( "id", elm.getValue().id() );
-                                                               l_jsonobject.addProperty( "key", elm.getValue().isKeyAttribute() );
-                                                               l_jsonobject.addProperty( "weakKey", elm.getValue().isWeakKeyAttribute() );
-                                                               l_jsonobject.addProperty( "multiVal", elm.getValue().isMultiValue() );
-                                                               l_jsonobject.addProperty( "derivedVal", elm.getValue().isDerivedValue() );
-
-                                                               l_array.add( l_jsonobject );
-                                                           } );
-
-                       // fetch relationship information
-                       l_details.addProperty( "id", node.id() );
-                       l_details.addProperty( "description", ( (IRelationship<IAttribute>) node ).getDescription() );
-                       l_details.addProperty( "recursive", ( (IRelationship<IAttribute>) node ).isRecursive() );
-                       l_details.addProperty( "identifying", ( (IRelationship<IAttribute>) node ).isIdentifying() );
-                       l_details.add( "attributes", l_array );
-
-                       // add relationship to list of all relationships
-                       l_relations.add( l_details );
-                   } );
-
-            p_model.edges()
-                   .forEach( edge ->
-                   {
-                       final Map.Entry<IErdNode, IErdNode> l_points = p_model.endpoints( edge );
-
-                       // json object for connections between the relationships and the entities
-                       final JsonObject l_jsonobject = new JsonObject();
-                       l_jsonobject.addProperty( "id", edge.id() );
-                       l_jsonobject.addProperty( "from", l_points.getKey().id() );
-                       l_jsonobject.addProperty( "to", l_points.getValue().id() );
-
-                       final IErdEdge l_edge = p_model.edge( edge.id() );
-                       l_jsonobject.addProperty( "cardinality", l_edge.getCardinality() );
-
-                       l_connections.add( l_jsonobject );
-                   } );
-
-            // build json output
-            m_jsonobj.add( "entities", l_entities );
-            m_jsonobj.add( "relationships", l_relations );
-            m_jsonobj.add( "connections", l_connections );
-
+            m_relationships = p_model.nodes()
+                                     .filter( i -> i instanceof IRelationship )
+                                     .map( INode::<IRelationship>raw )
+                                     .collect( Collectors.toMap( INode::id, i -> i ) );
         }
 
-        @Override
-        public String toString()
-        {
-            return m_jsonobj.toString();
-        }
-    }*/
+    }
 
 }
