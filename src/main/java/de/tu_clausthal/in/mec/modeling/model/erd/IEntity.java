@@ -26,7 +26,6 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.Map;
-import java.util.stream.Stream;
 
 
 /**
@@ -66,6 +65,5 @@ public interface IEntity<A extends IAttribute> extends IErdNode
      * @return map with all attributes
      */
     Map<String, A> getConnectedAttributes();
-
 
 }
