@@ -24,6 +24,7 @@
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
 import de.tu_clausthal.in.mec.modeling.model.IModel;
+import de.tu_clausthal.in.mec.modeling.model.graph.IGraph;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 
@@ -37,54 +38,51 @@ public interface IErd extends IModel<IErd>
 {
 
     /**
-     * add new attribute to an entity
-     *
-     * @param p_id name
-     * @param p_keyattrinute key flag
-     * @param p_weakkeyattribute weak key flag
-     * @param p_multivalue multi value flag
-     * @param p_derivedvalue derived value flag
-     * @param p_entityid name of the entity
-     * @return self-reference
-     */
-    IErd addAttributeToEntity( @NonNull final String p_id, @NonNull final boolean p_keyattrinute, @NonNull final boolean p_weakkeyattribute,
-                               @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue, @NonNull final String p_entityid
-    );
-
-    /**
      * add new entity
      *
      * @param p_id name
      * @param p_weakentity flag for weak entity
      * @return self-reference
      */
-    IErd addEntity( @NonNull final String p_id, @NonNull final boolean p_weakentity );
+    IErd addEntity( @NonNull final String p_id, final boolean p_weakentity );
+
+    /**
+     * add new attribute to an entity
+     *
+     * @param p_id name
+     * @param p_keyattribute key flag
+     * @param p_weakkeyattribute weak key flag
+     * @param p_multivalue multi value flag
+     * @param p_derivedvalue derived value flag
+     * @param p_entityid name of the entity
+     * @return self-reference
+     */
+    IErd addAttributeToEntity( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                               final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
+    );
 
     /**
      * add new relationship
      *
      * @param p_id name
-     * @param p_recursive recursive relationship
-     * @param p_identifying identifying relationship
+     * @param p_description description of the relationship
      * @return self-reference
      */
-    IErd addRelationship( @NonNull final String p_id, @NonNull final String p_description, @NonNull final boolean p_recursive,
-                          @NonNull final boolean p_identifying
-    );
+    IErd addRelationship( @NonNull final String p_id, @NonNull final String p_description );
 
     /**
      * add new attribute to a relationship
      *
      * @param p_id name
-     * @param p_keyattrinute key flag
+     * @param p_keyattribute key flag
      * @param p_weakkeyattribute weak key flag
      * @param p_multivalue multi value flag
      * @param p_derivedvalue derived value flag
      * @param p_relationshipid name of the relationship
      * @return self-referenced
      */
-    IErd addAttributeToRelationship( @NonNull final String p_id, @NonNull final boolean p_keyattrinute, @NonNull final boolean p_weakkeyattribute,
-                                     @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue, @NonNull final String p_relationshipid
+    IErd addAttributeToRelationship( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                                     final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_relationshipid
     );
 
     /**
@@ -100,5 +98,6 @@ public interface IErd extends IModel<IErd>
                                         @NonNull String p_cardinality
     );
 
+    IGraph<IErdNode, IErdEdge> getNetwork();
 
 }

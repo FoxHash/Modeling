@@ -23,15 +23,12 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import de.tu_clausthal.in.mec.modeling.model.IModel;
 import de.tu_clausthal.in.mec.modeling.model.graph.IGraph;
 import de.tu_clausthal.in.mec.modeling.model.graph.jung.CUndirectedGraph;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.text.MessageFormat;
-import java.util.Map;
 
 
 /**
@@ -85,9 +82,11 @@ public class CErd implements IErd
 
     @NonNull
     @Override
+    // TODO
     public Object serialize()
     {
-        return new CSerializer( m_network ).toString();
+        return null;
+        //return new CSerializer( m_network ).toString();
     }
 
     @Override
@@ -96,37 +95,32 @@ public class CErd implements IErd
         return this;
     }
 
-
     @Override
-    public IErd addAttributeToEntity( @NonNull final String p_id, @NonNull final boolean p_keyattrinute, @NonNull final boolean p_weakkeyattribute,
-                                      @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue, @NonNull final String p_entityid
-    )
-    {
-
-        final IErdNode l_entity = m_network.node( p_entityid );
-
-        if ( !( l_entity instanceof IEntity ) )
-        {
-            throw new RuntimeException(
-                MessageFormat.format( "entity[{0}] must be an entity", l_entity )
-            );
-        }
-
-        ( (IEntity) l_entity ).createAttribute( p_id, p_keyattrinute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
-        return this;
-    }
-
-    @Override
-    public IErd addEntity( @NonNull final String p_id, @NonNull final boolean p_weakentity )
+    public IErd addEntity( @NonNull final String p_id, final boolean p_weakentity )
     {
         m_network.addnode( new CEntity( p_id, p_weakentity ) );
         return this;
     }
 
     @Override
-    public IErd addRelationship( @NonNull final String p_id, @NonNull final String p_description, @NonNull final boolean p_recursive,
-                                 @NonNull final boolean p_identifying
+    public IErd addAttributeToEntity( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                                      final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
     )
+    {
+        final IErdNode l_entity = m_network.node( p_entityid );
+
+        if ( !( l_entity instanceof IEntity ) )
+        {
+            throw new RuntimeException( MessageFormat.format( "entity[{0}] must be an entity", l_entity ) );
+        }
+
+        ( (IEntity) l_entity ).createAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        return this;
+    }
+
+
+    @Override
+    public IErd addRelationship( @NonNull final String p_id, @NonNull final String p_description )
     {
         if ( m_network.node( p_id ) != null )
         {
@@ -134,13 +128,14 @@ public class CErd implements IErd
                 MessageFormat.format( "There also exists an relationship with this id[{0}]", p_id )
             );
         }
-        m_network.addnode( new CRelationship( p_id, p_description, p_recursive, p_identifying ) );
+
+        m_network.addnode( new CRelationship( p_id, p_description ) );
         return this;
     }
 
     @Override
-    public IErd addAttributeToRelationship( @NonNull final String p_id, @NonNull final boolean p_keyattrinute, @NonNull final boolean p_weakkeyattribute,
-                                            @NonNull final boolean p_multivalue, @NonNull final boolean p_derivedvalue, @NonNull final String p_relationshipid
+    public IErd addAttributeToRelationship( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+                                            final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_relationshipid
     )
     {
         final IErdNode l_relationship = m_network.node( p_relationshipid );
@@ -152,12 +147,12 @@ public class CErd implements IErd
             );
         }
 
-        ( (IRelationship) l_relationship ).createAttribute( p_id, p_keyattrinute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
-
+        ( (IRelationship) l_relationship ).createAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
         return this;
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public IErd connectEntityWithRelationship( @NonNull final String p_id, @NonNull final String p_entity, @NonNull final String p_relationship,
                                                @NonNull final String p_cardinality
     )
@@ -173,10 +168,16 @@ public class CErd implements IErd
             );
         }
 
-        m_network.addedge( l_entity, l_relationship, new CErdEdge( p_id, p_cardinality ) );
+        ( (IRelationship) l_relationship ).connectEntity( (IEntity<IAttribute>) l_entity, p_cardinality );
+
+        m_network.addedge( l_entity, l_relationship, new CErdEdge( p_id ) );
         return this;
     }
 
+    public IGraph<IErdNode, IErdEdge> getNetwork()
+    {
+        return m_network;
+    }
 
     /**
      * calculate the hash code for the graph
@@ -203,7 +204,7 @@ public class CErd implements IErd
 
 
 
-    private static final class CSerializer
+    /*private static final class CSerializer
     {
 
         private final JsonObject m_jsonobj = new JsonObject();
@@ -315,6 +316,6 @@ public class CErd implements IErd
         {
             return m_jsonobj.toString();
         }
-    }
+    }*/
 
 }
