@@ -24,13 +24,29 @@
 package de.tu_clausthal.in.mec.modeling.controller;
 
 import de.tu_clausthal.in.mec.modeling.model.erd.CErd;
-import de.tu_clausthal.in.mec.modeling.model.erd.CErdLoader;
 import de.tu_clausthal.in.mec.modeling.model.erd.IErd;
 import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -44,6 +60,7 @@ public final class CErdController
     /**
      * create new erd
      *
+     * @param p_model name of the model
      * @return model
      */
     @RequestMapping( value = "/create/{model}", produces = "application/json" )
@@ -53,131 +70,188 @@ public final class CErdController
     }
 
     /**
-     * create new entity
+     * create a new entity
      *
-     * @param p_model
-     * @param p_name
-     * @param p_weak
-     * @return model
+     * @param p_model name of the model
+     * @param p_input json input
+     * @return model|error
      */
-    @RequestMapping( value = "/entity/{model}/{name}/{weak}", produces = "application/json" )
-    public Object createEntity( @PathVariable( "model" ) final String p_model, @PathVariable( "name" ) final String p_name,
-                                @PathVariable( "weak" ) final String p_weak
-    )
+    @RequestMapping( value = "/create/{model}/entity", produces = "application/json" )
+    public Object createEntity( @PathVariable( "model" ) final String p_model, @RequestBody final Map<String, Object> p_input )
     {
+        // convert map to json object for validation process
+        final JSONObject l_json = new JSONObject( p_input );
 
-        final boolean l_weak = Boolean.parseBoolean( p_weak );
-        return EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addEntity( p_name, l_weak ).serialize();
+        // json schema - validation
+        try ( final InputStream l_input = getClass().getResourceAsStream( "/json_schema/entity.schema.json" ) )
+        {
+            final JSONObject l_jsonraw = new JSONObject( new JSONTokener( l_input ) );
+            final Schema l_schema = SchemaLoader.load( l_jsonraw );
+            l_schema.validate( l_json );
+        }
+        catch ( final IOException l_e2 )
+        {
+            l_e2.printStackTrace();
+        }
+        catch ( final ValidationException l_e1 )
+        {
+            return CErdController.generateErrorMessage( l_e1, "You have an error in you entity section!" );
+        }
 
+        if ( !l_json.has( "attributes" ) )
+        {
+            return CErdController.generateGeneralErrorMessage( "Your syntax has an error: no array for attributes was defined!" );
+        }
+
+        // create new entity
+        final String l_entityid = l_json.get( "id" ).toString();
+        final Boolean l_weakentity = Boolean.parseBoolean( l_json.get( "weak_entity" ).toString() );
+
+        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addEntity( l_entityid, l_weakentity );
+
+        // add attributes
+        l_json.getJSONArray( "attributes" ).forEach( elm ->
+        {
+
+            final String l_attributname = ( (JSONObject) elm ).get( "name" ).toString();
+            final Boolean l_attributekey = Boolean.parseBoolean( ( (JSONObject) elm ).get( "key" ).toString() );
+            final Boolean l_attributeweakkey = Boolean.parseBoolean( ( (JSONObject) elm ).get( "weak_key" ).toString() );
+            final Boolean l_multivalue = Boolean.parseBoolean( ( (JSONObject) elm ).get( "multi_value" ).toString() );
+            final Boolean l_derivedvalue = Boolean.parseBoolean( ( (JSONObject) elm ).get( "derived_value" ).toString() );
+
+            EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToEntity(
+                l_attributname, l_attributekey, l_attributeweakkey, l_multivalue, l_derivedvalue, l_entityid );
+
+        } );
+
+        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
     }
 
     /**
-     * create new attribute and connect it to an entity
+     * create a new relationship
      *
-     * @param p_model
-     * @param p_entity
-     * @param p_name
-     * @param p_key
-     * @param p_weakkey
-     * @param p_multivalue
-     * @param p_derived
-     * @return model
+     * @param p_model nme of the model
+     * @param p_input json input
+     * @return model|error
      */
-    @RequestMapping( value = "/connect/attribute/entity/{model}/{entity_id}/{name}/{key}/{weakkey}/{multivalue}/{derived}", produces = "application/json" )
-    public Object connectAttributeToEntity( @PathVariable( "model" ) final String p_model, @PathVariable( "entity_id" ) final String p_entity,
-                                            @PathVariable( "name" ) final String p_name, @PathVariable( "key" ) final String p_key,
-                                            @PathVariable( "weakkey" ) final String p_weakkey, @PathVariable( "multivalue" ) final String p_multivalue,
-                                            @PathVariable( "derived" ) final String p_derived
-    )
+    @RequestMapping( value = "/create/{model}/relationship", produces = "application/json" )
+    public Object createRelationship( @PathVariable( "model" ) final String p_model, @RequestBody final Map<String, Object> p_input )
     {
-        final boolean l_key = Boolean.parseBoolean( p_key );
-        final boolean l_weakkey = Boolean.parseBoolean( p_weakkey );
-        final boolean l_multivalue = Boolean.parseBoolean( p_multivalue );
-        final boolean l_derived = Boolean.parseBoolean( p_derived );
+        // convert mao to json object for validation process
+        final JSONObject l_json = new JSONObject( p_input );
 
-        return EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToEntity( p_name, l_key, l_weakkey, l_multivalue, l_derived, p_entity )
-                                                                  .serialize();
+        // json schema - validation
+        try ( final InputStream l_input = getClass().getResourceAsStream( "/json_schema/relationship.schema.json" ) )
+        {
+            final JSONObject l_jsonraw = new JSONObject( new JSONTokener( l_input ) );
+            final Schema l_schema = SchemaLoader.load( l_jsonraw );
+            l_schema.validate( l_json );
+        }
+        catch ( final IOException l_e2 )
+        {
+            l_e2.printStackTrace();
+        }
+        catch ( final ValidationException l_e1 )
+        {
+            CErdController.generateErrorMessage( l_e1, "You have an error in you relationship section!" );
+        }
+
+        // create new relationship
+        final String l_relationshipid = l_json.get( "id" ).toString();
+        final String l_relationshipdescription = l_json.get( "description" ).toString();
+
+        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addRelationship( l_relationshipid, l_relationshipdescription );
+
+        // add attributes
+        if ( l_json.has( "attributes" ) )
+        {
+            l_json.getJSONArray( "attributes" ).forEach( elm ->
+            {
+
+                final String l_attributname = ( (JSONObject) elm ).get( "name" ).toString();
+                final Boolean l_attributekey = Boolean.parseBoolean(
+                    ( (JSONObject) elm ).get( "key" ).toString() );
+                final Boolean l_attributeweakkey = Boolean.parseBoolean(
+                    ( (JSONObject) elm ).get( "weak_key" ).toString() );
+                final Boolean l_multivalue = Boolean.parseBoolean(
+                    ( (JSONObject) elm ).get( "multi_value" ).toString() );
+                final Boolean l_derivedvalue = Boolean.parseBoolean(
+                    ( (JSONObject) elm ).get( "derived_value" ).toString() );
+
+                EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToRelationship(
+                    l_attributname, l_attributekey, l_attributeweakkey, l_multivalue, l_derivedvalue,
+                    l_relationshipid
+                );
+
+            } );
+        }
+
+        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
     }
 
     /**
-     * create new relationship
+     * connect entity with relationship via uri
      *
-     * @param p_model
-     * @param p_name
-     * @param p_description
-     * @param p_recursive
-     * @param p_identifying
-     * @return model
+     * @param p_model name of the model
+     * @param p_connection name of the connection
+     * @param p_relationship name of the relationship
+     * @param p_entity name of the entity
+     * @param p_cardinality cardinality
+     * @return model|error
      */
-    @RequestMapping( value = "/relationship/{model}/{name}/{description}/{recursive}/{identifying}", produces = "application/json" )
-    public Object createRelationship( @PathVariable( "model" ) final String p_model, @PathVariable( "name" ) final String p_name,
-                                      @PathVariable( "description" ) final String p_description, @PathVariable( "recursive" ) final String p_recursive,
-                                      @PathVariable( "identifying" ) final String p_identifying
+    @RequestMapping( value = "/connect/{model}/{connection}/{relationship}/{entity}/{cardinality}", produces = "application/json" )
+    public Object connectEntityRelationship( @PathVariable( "model" ) final String p_model, @PathVariable( "connection" ) final String p_connection,
+                                             @PathVariable( "relationship" ) final String p_relationship, @PathVariable( "entity" ) final String p_entity,
+                                             @PathVariable( "cardinality" ) final String p_cardinality
     )
     {
-        final boolean l_recursive = Boolean.parseBoolean( p_recursive );
-        final boolean l_identifying = Boolean.parseBoolean( p_identifying );
-
-        return EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addRelationship( p_name, p_description, l_recursive, l_identifying ).serialize();
+        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().connectEntityWithRelationship( p_connection, p_entity, p_relationship, p_cardinality );
+        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
     }
 
     /**
-     * create new attribute and connect it to a relationship
+     * create error message incl. error stack
      *
-     * @param p_model
-     * @param p_relationship
-     * @param p_name
-     * @param p_key
-     * @param p_weakkey
-     * @param p_multivalue
-     * @param p_derived
-     * @return model
+     * @param p_exception exception stack
+     * @param p_errordescription description of the error
+     * @return response and http status code
      */
-    @RequestMapping( value = "/connect/attribute/relationship/{model}/{relationship_id}/{name}/{key}/{weakkey}/{multival}/{derived}",
-                     produces = "application/json" )
-    public Object connectAttributeToRelationship( @PathVariable( "model" ) final String p_model, @PathVariable( "relationship_id" ) final String p_relationship,
-                                                  @PathVariable( "name" ) final String p_name, @PathVariable( "key" ) final String p_key,
-                                                  @PathVariable( "weakkey" ) final String p_weakkey, @PathVariable( "multival" ) final String p_multivalue,
-                                                  @PathVariable( "derived" ) final String p_derived
-    )
+    private static ResponseEntity<Object> generateErrorMessage( final ValidationException p_exception, final String p_errordescription )
     {
-        final boolean l_key = Boolean.parseBoolean( p_key );
-        final boolean l_weakkey = Boolean.parseBoolean( p_weakkey );
-        final boolean l_multivalue = Boolean.parseBoolean( p_multivalue );
-        final boolean l_derived = Boolean.parseBoolean( p_derived );
+        // get current date and time
+        final DateFormat l_dateformat = new SimpleDateFormat( "dd.MM.yyy HH:mm:ss" );
+        final Date l_date = new Date();
 
-        return EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToRelationship(
-            p_name, l_key, l_weakkey, l_multivalue, l_derived, p_relationship ).serialize();
+        final Map<Object, Object> l_responsemap = new HashMap<>();
+        final List<Object> l_errorstack = new ArrayList<>();
+
+        l_responsemap.put( "date/time", l_dateformat.format( l_date ) );
+        l_responsemap.put( "description", p_errordescription );
+        l_responsemap.put( "error", p_exception.getMessage() );
+
+        p_exception.getCausingExceptions().stream().map( ValidationException::getMessage ).forEach( l_errorstack::add );
+        l_responsemap.put( "error_stack", l_errorstack );
+
+        return new ResponseEntity<>( l_responsemap, HttpStatus.BAD_REQUEST );
     }
 
     /**
-     * make connection between entity and relationship incl. cardinality
+     * create general error message
      *
-     * @param p_model
-     * @param p_name
-     * @param p_entity
-     * @param p_relationship
-     * @param p_cardinality
-     * @return model
+     * @param p_errordescription description of the error
+     * @return response and http status code
      */
-    @RequestMapping( value = "/connection/{model}/{name}/{entity}/{relationship}/{cardinality}", produces = "application/json" )
-    public Object connection( @PathVariable( "model" ) final String p_model, @PathVariable( "name" ) final String p_name,
-                              @PathVariable( "entity" ) final String p_entity, @PathVariable( "relationship" ) final String p_relationship,
-                              @PathVariable( "cardinality" ) final String p_cardinality
-    )
+    private static ResponseEntity<Object> generateGeneralErrorMessage( final String p_errordescription )
     {
-        return EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().connectEntityWithRelationship( p_name, p_entity, p_relationship, p_cardinality ).serialize();
-    }
+        // get current date and time
+        final DateFormat l_dateformat = new SimpleDateFormat( "dd.MM.yyy HH:mm:ss" );
+        final Date l_date = new Date();
 
-    /**
-     * read graphical model from post body and parse it
-     *
-     * @param p_body
-     * @return model
-     */
-    @RequestMapping( value = "/read", produces = "application/json" )
-    public Object createFromPostRequest( @RequestBody final String p_body )
-    {
-        return EModelStorage.INSTANCE.apply( new CErdLoader().loadJson( p_body ) ).serialize();
+        final Map<Object, Object> l_responsemap = new HashMap<>();
+
+        l_responsemap.put( "date/time", l_dateformat.format( l_date ) );
+        l_responsemap.put( "description", p_errordescription );
+
+        return new ResponseEntity<>( l_responsemap, HttpStatus.BAD_REQUEST );
     }
 }
