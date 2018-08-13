@@ -67,11 +67,5 @@ public interface IEntity<A extends IAttribute> extends IErdNode
      */
     Map<String, A> getConnectedAttributes();
 
-    /**
-     * get all connected attributes from the entity in a stream
-     *
-     * @return stream with all attributes
-     */
-    Stream<A> getConnectedAttributesStream();
 
 }

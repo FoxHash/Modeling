@@ -79,9 +79,4 @@ public class CEntity extends IBaseNode implements IEntity<IAttribute>
         return Collections.unmodifiableMap( m_attributes );
     }
 
-    @Override
-    public Stream<IAttribute> getConnectedAttributesStream()
-    {
-        return m_attributes.values().stream();
-    }
 }
