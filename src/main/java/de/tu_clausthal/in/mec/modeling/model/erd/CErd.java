@@ -31,6 +31,7 @@ import de.tu_clausthal.in.mec.modeling.model.graph.jung.CUndirectedGraph;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -216,6 +217,9 @@ public class CErd implements IErd
         @JsonProperty( "relationships" )
         private final Map<String, IRelationship<IAttribute>> m_relationships;
 
+        @JsonProperty( "stats" )
+        private final Map<String, Integer> m_stats = new HashMap<>();
+
         CSerializer( @NonNull final IGraph<IErdNode, IErdEdge> p_model )
         {
             m_entities = p_model.nodes()
@@ -227,6 +231,9 @@ public class CErd implements IErd
                                      .filter( i -> i instanceof IRelationship )
                                      .map( INode::<IRelationship>raw )
                                      .collect( Collectors.toMap( INode::id, i -> i ) );
+
+            m_stats.put( "entities", m_entities.size() );
+            m_stats.put( "relationships", m_relationships.size() );
         }
 
     }
