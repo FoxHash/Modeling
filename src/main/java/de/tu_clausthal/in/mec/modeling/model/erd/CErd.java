@@ -294,6 +294,7 @@ public class CErd implements IErd
 
             m_stats.put( "entities", m_entities.size() );
             m_stats.put( "relationships", m_relationships.size() );
+            m_stats.put( "inherit_relationships", m_inheritrelationships.size() );
         }
 
     }

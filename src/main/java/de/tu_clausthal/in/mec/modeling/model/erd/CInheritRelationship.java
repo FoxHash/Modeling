@@ -26,6 +26,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +51,7 @@ public class CInheritRelationship extends IBaseNode implements IInheritRelations
     @Override
     public IEntity<IAttribute> setParentEntity( @NonNull final IEntity<IAttribute> p_entity )
     {
-        if ( m_parententity.get() == null )
+        if ( m_parententity.get() != null )
         {
             throw new RuntimeException( "You set already a parent entity for this relationship" );
         }
@@ -62,9 +63,13 @@ public class CInheritRelationship extends IBaseNode implements IInheritRelations
     }
 
     @Override
-    public IEntity<IAttribute> getParentEntity()
+    public String getParentEntity()
     {
-        return m_parententity.get();
+        if ( m_parententity.get() == null )
+        {
+            return "";
+        }
+        return m_parententity.get().id();
     }
 
     @Override
@@ -78,6 +83,10 @@ public class CInheritRelationship extends IBaseNode implements IInheritRelations
     @Override
     public IEntity<IAttribute> connectChildEntity( @NonNull final IEntity<IAttribute> p_entity )
     {
+        if ( m_childentities.contains( p_entity ) )
+        {
+            throw new RuntimeException( MessageFormat.format( "You already set this entity[{0}] to the child entities", p_entity.id() ) );
+        }
         m_childentities.add( p_entity );
         return p_entity;
     }

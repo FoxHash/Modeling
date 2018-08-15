@@ -46,9 +46,9 @@ public interface IInheritRelationship<A extends IAttribute> extends IErdNode
     /**
      * method to get the parent entity
      *
-     * @return parent entity
+     * @return parent entity name
      */
-    IEntity<A> getParentEntity();
+    String getParentEntity();
 
     /**
      * connect new child entity
