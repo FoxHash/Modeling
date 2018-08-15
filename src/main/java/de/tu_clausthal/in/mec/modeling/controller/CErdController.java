@@ -50,11 +50,34 @@ import java.util.Map;
 /**
  * erd model rest controller
  */
-//Checkstyle:OFF:MultipleStringLiterals
 @RestController
 @RequestMapping( "/erd" )
 public final class CErdController
 {
+
+    /*
+     * Json constants - keys
+     */
+    private static final String JSON_ATTRIBUTES = "attributes";
+    private static final String JSON_CARDINALITY = "cardinality";
+    private static final String JSON_CONNECTIONS = "connections";
+    private static final String JSON_CONNECTIONTYPE = "connection_type";
+    private static final String JSON_DERIVEDVALUE = "derived_value";
+    private static final String JSON_DESCRIPTION = "description";
+    private static final String JSON_ENTITY = "entity";
+    private static final String JSON_ENTITIES = "entities";
+    private static final String JSON_ID = "id";
+    private static final String JSON_ISACONNECTIONS = "isa-connections";
+    private static final String JSON_ISARELATIONSHIP = "isarelationship";
+    private static final String JSON_ISARELATIONSHIPS = "isa-relationships";
+    private static final String JSON_KEY = "key";
+    private static final String JSON_MODELID = "model_id";
+    private static final String JSON_MULTIVALUE = "multi_value";
+    private static final String JSON_NAME = "name";
+    private static final String JSON_RELATIONSHIP = "relationship";
+    private static final String JSON_RELARIONSHIPS = "relationships";
+    private static final String JSON_WEAKENTITY = "weak_entity";
+    private static final String JSON_WEAKKEY = "weak_key";
 
     /**
      * create new erd
@@ -94,13 +117,13 @@ public final class CErdController
         }
 
         // create new entity
-        final String l_entityid = l_json.get( "id" ).toString();
-        final Boolean l_weakentity = Boolean.parseBoolean( l_json.get( "weak_entity" ).toString() );
+        final String l_entityid = l_json.get( JSON_ID ).toString();
+        final Boolean l_weakentity = Boolean.parseBoolean( l_json.get( JSON_WEAKENTITY ).toString() );
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addEntity( l_entityid, l_weakentity );
 
         // add attributes
-        l_json.getJSONArray( "attributes" ).forEach( elm -> CErdController.createAttributeToEntity( (JSONObject) elm, p_model, l_entityid ) );
+        l_json.getJSONArray( JSON_ATTRIBUTES ).forEach( elm -> CErdController.createAttributeToEntity( (JSONObject) elm, p_model, l_entityid ) );
 
         return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
     }
@@ -126,15 +149,15 @@ public final class CErdController
         }
 
         // create new relationship
-        final String l_relationshipid = l_json.get( "id" ).toString();
-        final String l_relationshipdescription = l_json.get( "description" ).toString();
+        final String l_relationshipid = l_json.get( JSON_ID ).toString();
+        final String l_relationshipdescription = l_json.get( JSON_DESCRIPTION ).toString();
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addRelationship( l_relationshipid, l_relationshipdescription );
 
         // add attributes
-        if ( l_json.has( "attributes" ) )
+        if ( l_json.has( JSON_ATTRIBUTES ) )
         {
-            l_json.getJSONArray( "attributes" ).forEach( elm -> CErdController.createAttributeToRelationship( (JSONObject) elm, p_model, l_relationshipid ) );
+            l_json.getJSONArray( JSON_ATTRIBUTES ).forEach( elm -> CErdController.createAttributeToRelationship( (JSONObject) elm, p_model, l_relationshipid ) );
         }
 
         return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
@@ -161,7 +184,7 @@ public final class CErdController
         }
 
         // create new is-a relationship
-        final String l_isarelationshipid = l_json.get( "id" ).toString();
+        final String l_isarelationshipid = l_json.get( JSON_ID ).toString();
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addISARelationship( l_isarelationshipid );
 
@@ -189,10 +212,10 @@ public final class CErdController
         }
 
         // create new connection
-        final String l_connectionid = l_json.get( "id" ).toString();
-        final String l_relationshipname = l_json.get( "relationship" ).toString();
-        final String l_entityname = l_json.get( "entity" ).toString();
-        final String l_cardinality = l_json.get( "cardinality" ).toString();
+        final String l_connectionid = l_json.get( JSON_ID ).toString();
+        final String l_relationshipname = l_json.get( JSON_RELATIONSHIP ).toString();
+        final String l_entityname = l_json.get( JSON_ENTITY ).toString();
+        final String l_cardinality = l_json.get( JSON_CARDINALITY ).toString();
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().connectEntityWithRelationship( l_connectionid, l_entityname, l_relationshipname, l_cardinality );
 
@@ -220,10 +243,10 @@ public final class CErdController
         }
 
         // create new is-a connection
-        final String l_isconnectionid = l_json.get( "id" ).toString();
-        final String l_connectiontype = l_json.get( "connection_type" ).toString();
-        final String l_isrelationship = l_json.get( "isrelationship" ).toString();
-        final String l_entity = l_json.get( "entity" ).toString();
+        final String l_isconnectionid = l_json.get( JSON_ID ).toString();
+        final String l_connectiontype = l_json.get( JSON_CONNECTIONTYPE ).toString();
+        final String l_isrelationship = l_json.get( JSON_ISARELATIONSHIP ).toString();
+        final String l_entity = l_json.get( JSON_ENTITY ).toString();
 
         if ( "parent".equalsIgnoreCase( l_connectiontype ) )
         {
@@ -259,39 +282,39 @@ public final class CErdController
         }
 
         // base informations
-        final String l_model = l_json.get( "model_id" ).toString();
+        final String l_model = l_json.get( JSON_MODELID ).toString();
 
         // create model
         EModelStorage.INSTANCE.add( new CErd( l_model ) );
 
         // entities
-        if ( l_json.has( "entities" ) )
+        if ( l_json.has( JSON_ENTITIES ) )
         {
-            l_json.getJSONArray( "entities" ).forEach( entity ->
+            l_json.getJSONArray( JSON_ENTITIES ).forEach( entity ->
             {
-                final String l_entityid = ( (JSONObject) entity ).get( "id" ).toString();
-                final Boolean l_weakentity = Boolean.parseBoolean( ( (JSONObject) entity ).get( "weak_entity" ).toString() );
+                final String l_entityid = ( (JSONObject) entity ).get( JSON_ID ).toString();
+                final Boolean l_weakentity = Boolean.parseBoolean( ( (JSONObject) entity ).get( JSON_WEAKENTITY ).toString() );
 
                 EModelStorage.INSTANCE.apply( l_model ).<IErd>raw().addEntity( l_entityid, l_weakentity );
 
-                ( (JSONObject) entity ).getJSONArray( "attributes" )
+                ( (JSONObject) entity ).getJSONArray( JSON_ATTRIBUTES )
                                        .forEach( attribute -> CErdController.createAttributeToEntity( (JSONObject) attribute, l_model, l_entityid ) );
             } );
         }
 
         // relationships
-        if ( l_json.has( "relationships" ) )
+        if ( l_json.has( JSON_RELARIONSHIPS ) )
         {
-            l_json.getJSONArray( "relationships" ).forEach( relationship ->
+            l_json.getJSONArray( JSON_RELARIONSHIPS ).forEach( relationship ->
             {
-                final String l_relationshipid = ( (JSONObject) relationship ).get( "id" ).toString();
-                final String l_relationshipdescription = ( (JSONObject) relationship ).get( "description" ).toString();
+                final String l_relationshipid = ( (JSONObject) relationship ).get( JSON_ID ).toString();
+                final String l_relationshipdescription = ( (JSONObject) relationship ).get( JSON_DESCRIPTION ).toString();
 
                 EModelStorage.INSTANCE.apply( l_model ).<IErd>raw().addRelationship( l_relationshipid, l_relationshipdescription );
 
-                if ( ( (JSONObject) relationship ).has( "attributes" ) )
+                if ( ( (JSONObject) relationship ).has( JSON_ATTRIBUTES ) )
                 {
-                    ( (JSONObject) relationship ).getJSONArray( "attributes" )
+                    ( (JSONObject) relationship ).getJSONArray( JSON_ATTRIBUTES )
                                                  .forEach( attribute -> CErdController
                                                      .createAttributeToRelationship( (JSONObject) attribute, l_model, l_relationshipid ) );
                 }
@@ -300,16 +323,50 @@ public final class CErdController
         }
 
         // connections
-        if ( l_json.has( "connections" ) )
+        if ( l_json.has( JSON_CONNECTIONS ) )
         {
-            l_json.getJSONArray( "connections" ).forEach( connection ->
+            l_json.getJSONArray( JSON_CONNECTIONS ).forEach( connection ->
             {
-                final String l_connectionid = ( (JSONObject) connection ).get( "id" ).toString();
-                final String l_relationship = ( (JSONObject) connection ).get( "relationship" ).toString();
-                final String l_entity = ( (JSONObject) connection ).get( "entity" ).toString();
-                final String l_cardinality = ( (JSONObject) connection ).get( "cardinality" ).toString();
+                final String l_connectionid = ( (JSONObject) connection ).get( JSON_ID ).toString();
+                final String l_relationship = ( (JSONObject) connection ).get( JSON_RELATIONSHIP ).toString();
+                final String l_entity = ( (JSONObject) connection ).get( JSON_ENTITY ).toString();
+                final String l_cardinality = ( (JSONObject) connection ).get( JSON_CARDINALITY ).toString();
 
                 EModelStorage.INSTANCE.apply( l_model ).<IErd>raw().connectEntityWithRelationship( l_connectionid, l_entity, l_relationship, l_cardinality );
+            } );
+        }
+
+        // is-a relationships
+        if ( l_json.has( JSON_ISARELATIONSHIPS ) )
+        {
+            l_json.getJSONArray( JSON_ISARELATIONSHIPS ).forEach( isarelationship ->
+            {
+                final String l_isarelationshipid = ( (JSONObject) isarelationship ).get( JSON_ID ).toString();
+                EModelStorage.INSTANCE.apply( l_model ).<IErd>raw().addISARelationship( l_isarelationshipid );
+            } );
+        }
+
+        // is-a connections
+        if ( l_json.has( JSON_ISACONNECTIONS ) )
+        {
+            l_json.getJSONArray( JSON_ISACONNECTIONS ).forEach( isaconnection ->
+            {
+                final String l_isaconnectionid = ( (JSONObject) isaconnection ).get( JSON_ID ).toString();
+                final String l_isaconnectiontype = ( (JSONObject) isaconnection ).get( JSON_CONNECTIONTYPE ).toString();
+                final String l_isaconnectionrelationship = ( (JSONObject) isaconnection ).get( JSON_ISARELATIONSHIP ).toString();
+                final String l_isaconnectionentity = ( (JSONObject) isaconnection ).get( JSON_ENTITY ).toString();
+
+                if ( "child".equalsIgnoreCase( l_isaconnectiontype ) )
+                {
+                    EModelStorage.INSTANCE.apply( l_model ).<IErd>raw().connectChildEntityWithISARelationship(
+                        l_isaconnectionid, l_isaconnectionentity, l_isaconnectionrelationship );
+                }
+
+                if ( "parent".equalsIgnoreCase( l_isaconnectiontype ) )
+                {
+                    EModelStorage.INSTANCE.apply( l_model ).<IErd>raw().connectParentEntityWithISARelationship(
+                        l_isaconnectionid, l_isaconnectionentity, l_isaconnectionrelationship );
+                }
             } );
         }
 
@@ -350,11 +407,11 @@ public final class CErdController
      */
     private static void createAttributeToEntity( @NonNull final JSONObject p_obj, @NonNull final String p_model, @NonNull final String p_entity )
     {
-        final String l_attributname = p_obj.get( "name" ).toString();
-        final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( "key" ).toString() );
-        final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( "weak_key" ).toString() );
-        final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( "multi_value" ).toString() );
-        final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( "derived_value" ).toString() );
+        final String l_attributname = p_obj.get( JSON_NAME ).toString();
+        final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( JSON_KEY ).toString() );
+        final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( JSON_WEAKKEY ).toString() );
+        final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( JSON_MULTIVALUE ).toString() );
+        final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( JSON_DERIVEDVALUE ).toString() );
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToEntity(
             l_attributname, l_attributekey, l_attributeweakkey, l_multivalue, l_derivedvalue, p_entity );
@@ -369,11 +426,11 @@ public final class CErdController
      */
     private static void createAttributeToRelationship( @NonNull final JSONObject p_obj, @NonNull final String p_model, @NonNull final String p_relationship )
     {
-        final String l_attributname = p_obj.get( "name" ).toString();
-        final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( "key" ).toString() );
-        final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( "weak_key" ).toString() );
-        final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( "multi_value" ).toString() );
-        final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( "derived_value" ).toString() );
+        final String l_attributname = p_obj.get( JSON_NAME ).toString();
+        final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( JSON_KEY ).toString() );
+        final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( JSON_WEAKKEY ).toString() );
+        final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( JSON_MULTIVALUE ).toString() );
+        final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( JSON_DERIVEDVALUE ).toString() );
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToRelationship( l_attributname, l_attributekey, l_attributeweakkey,
                                                                                         l_multivalue, l_derivedvalue, p_relationship
@@ -426,4 +483,3 @@ public final class CErdController
         return new ResponseEntity<>( l_responsemap, HttpStatus.BAD_REQUEST );
     }
 }
-//Checkstyle:ON:MultipleStringLiterals
