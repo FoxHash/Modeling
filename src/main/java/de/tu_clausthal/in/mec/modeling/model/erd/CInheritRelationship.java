@@ -94,6 +94,6 @@ public class CInheritRelationship extends IBaseNode implements IInheritRelations
     @Override
     public boolean isValidISARelationship()
     {
-        return ( m_parententity.get() != null ) && m_childentities.size() >= 2;
+        return ( m_parententity.get() != null ) && m_childentities.size() >= 1;
     }
 }
