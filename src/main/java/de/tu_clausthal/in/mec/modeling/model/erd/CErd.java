@@ -161,7 +161,6 @@ public class CErd implements IErd
                                                @NonNull final String p_cardinality
     )
     {
-
         final IErdNode l_entity = m_network.node( p_entity );
         final IErdNode l_relationship = m_network.node( p_relationship );
 
@@ -178,9 +177,62 @@ public class CErd implements IErd
         return this;
     }
 
-    public IGraph<IErdNode, IErdEdge> getNetwork()
+    @Override
+    public IErd addISARelationship( @NonNull final String p_name )
     {
-        return m_network;
+        if ( m_network.node( p_name ) != null )
+        {
+            throw new RuntimeException(
+                MessageFormat.format( "There also exists an is-a relationship with this id[0]", p_name )
+            );
+        }
+
+        m_network.addnode( new CInheritRelationship( p_name ) );
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public IErd connectParentEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_parententity,
+                                                        @NonNull final String p_isarelationship
+    )
+    {
+        final IErdNode l_entity = m_network.node( p_parententity );
+        final IErdNode l_isarelationship = m_network.node( p_isarelationship );
+
+        if ( !( l_entity instanceof IEntity && l_isarelationship instanceof IInheritRelationship ) )
+        {
+            throw new RuntimeException(
+                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", l_entity, l_isarelationship )
+            );
+        }
+
+        ( (IInheritRelationship) l_isarelationship ).setParentEntity( (IEntity) l_entity );
+
+        m_network.addedge( l_entity, l_isarelationship, new CErdEdge( p_name ) );
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public IErd connectChildEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_childentity,
+                                                       @NonNull final String p_isarelationship
+    )
+    {
+        final IErdNode l_entity = m_network.node( p_childentity );
+        final IErdNode l_isarelationship = m_network.node( p_isarelationship );
+
+        if ( !( l_entity instanceof IEntity && l_isarelationship instanceof IInheritRelationship ) )
+        {
+            throw new RuntimeException(
+                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", l_entity, l_isarelationship )
+            );
+        }
+
+        ( (IInheritRelationship) l_isarelationship ).connectChildEntity( (IEntity) l_entity );
+
+        m_network.addedge( l_entity, l_isarelationship, new CErdEdge( p_name ) );
+        return this;
     }
 
     /**
@@ -217,6 +269,9 @@ public class CErd implements IErd
         @JsonProperty( "relationships" )
         private final Map<String, IRelationship<IAttribute>> m_relationships;
 
+        @JsonProperty( "inherit_relationships" )
+        private final Map<String, IInheritRelationship<IAttribute>> m_inheritrelationships;
+
         @JsonProperty( "stats" )
         private final Map<String, Integer> m_stats = new HashMap<>();
 
@@ -231,6 +286,11 @@ public class CErd implements IErd
                                      .filter( i -> i instanceof IRelationship )
                                      .map( INode::<IRelationship>raw )
                                      .collect( Collectors.toMap( INode::id, i -> i ) );
+
+            m_inheritrelationships = p_model.nodes()
+                                            .filter( i -> i instanceof IInheritRelationship )
+                                            .map( INode::<IInheritRelationship>raw )
+                                            .collect( Collectors.toMap( INode::id, i -> i ) );
 
             m_stats.put( "entities", m_entities.size() );
             m_stats.put( "relationships", m_relationships.size() );

@@ -24,7 +24,6 @@
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
 import de.tu_clausthal.in.mec.modeling.model.IModel;
-import de.tu_clausthal.in.mec.modeling.model.graph.IGraph;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 
@@ -88,7 +87,7 @@ public interface IErd extends IModel<IErd>
     /**
      * connect relationship with entity
      *
-     * @param p_name relationship name
+     * @param p_name connection name
      * @param p_entity id of the entity
      * @param p_relationship id of the relationship
      * @param p_cardinality cardinality between the relationship and the cardinality
@@ -98,6 +97,31 @@ public interface IErd extends IModel<IErd>
                                         @NonNull String p_cardinality
     );
 
-    IGraph<IErdNode, IErdEdge> getNetwork();
+    /**
+     * add new is-a relationship
+     *
+     * @param p_name name
+     * @return self-reference
+     */
+    IErd addISARelationship( @NonNull final String p_name );
 
+    /**
+     * connect parent entity with is-a relationship
+     *
+     * @param p_name connection name
+     * @param p_parententity name of the parent entity
+     * @param p_isarelationship name of the is-a relationship
+     * @return self-reference
+     */
+    IErd connectParentEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_parententity, @NonNull final String p_isarelationship );
+
+    /**
+     * connect child entity with is-a relationship
+     *
+     * @param p_name connection name
+     * @param p_childentity name of the child entity
+     * @param p_isarelationship name of the is-a relationship
+     * @return self-reference
+     */
+    IErd connectChildEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_childentity, @NonNull final String p_isarelationship );
 }

@@ -108,7 +108,7 @@ public final class CErdController
     /**
      * create a new relationship
      *
-     * @param p_model nme of the model
+     * @param p_model name of the model
      * @param p_input json input
      * @return model|error
      */
@@ -141,13 +141,41 @@ public final class CErdController
     }
 
     /**
+     * create new is-a relationship
+     *
+     * @param p_model name of the model
+     * @param p_input json input
+     * @return model|error
+     */
+    @RequestMapping( value = "/create/{model}/isa-relationship", produces = "application/json" )
+    public Object createISARelationship( @PathVariable( "model" ) final String p_model, @RequestBody final Map<String, Object> p_input )
+    {
+        // convert map to json object for validation process
+        final JSONObject l_json = new JSONObject( p_input );
+
+        // json schema validation
+        final IJsonSchema l_jsonschema = new CJsonSchema( "/json_schema/isarelationship.schema.json" );
+        if ( !l_jsonschema.validateJson( l_json ) )
+        {
+            return CErdController.generateErrorMessage( l_jsonschema.getException(), "You have an error in your is-a relationship section!" );
+        }
+
+        // create new is-a relationship
+        final String l_isarelationshipid = l_json.get( "id" ).toString();
+
+        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addISARelationship( l_isarelationshipid );
+
+        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
+    }
+
+    /**
      * connect entity with relationship
      *
      * @param p_model name of the model
      * @param p_input json input
      * @return model|error
      */
-    @RequestMapping( value = "/connect/{model}", produces = "application/json" )
+    @RequestMapping( value = "/connect/relationship/{model}", produces = "application/json" )
     public Object connectEntityRelationship( @PathVariable( "model" ) final String p_model, @RequestBody final Map<String, Object> p_input )
     {
         // convert map to json object for validation
@@ -167,6 +195,45 @@ public final class CErdController
         final String l_cardinality = l_json.get( "cardinality" ).toString();
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().connectEntityWithRelationship( l_connectionid, l_entityname, l_relationshipname, l_cardinality );
+
+        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
+    }
+
+    /**
+     * connect an entity with a is-a relationship
+     *
+     * @param p_model name of the model
+     * @param p_input json input
+     * @return model|error
+     */
+    @RequestMapping( value = "/connect/isa-relationship/{model}", produces = "application/json" )
+    public Object connectEntityISARelationship( @PathVariable( "model" ) final String p_model, @RequestBody final Map<String, Object> p_input )
+    {
+        // convert map to json object for validation
+        final JSONObject l_json = new JSONObject( p_input );
+
+        // json schema validation
+        final IJsonSchema l_jsonschema = new CJsonSchema( "/json_schema/isaconnection.schema.json" );
+        if ( !l_jsonschema.validateJson( l_json ) )
+        {
+            return CErdController.generateErrorMessage( l_jsonschema.getException(), "You have an error in your is-a connection section" );
+        }
+
+        // create new is-a connection
+        final String l_isconnectionid = l_json.get( "id" ).toString();
+        final String l_connectiontype = l_json.get( "connection_type" ).toString();
+        final String l_isrelationship = l_json.get( "isrelationship" ).toString();
+        final String l_entity = l_json.get( "entity" ).toString();
+
+        if ( "parent".equalsIgnoreCase( l_connectiontype ) )
+        {
+            EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().connectParentEntityWithISARelationship( l_isconnectionid, l_entity, l_isrelationship );
+        }
+
+        if ( "child".equalsIgnoreCase( l_connectiontype ) )
+        {
+            EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().connectChildEntityWithISARelationship( l_isconnectionid, l_entity, l_isrelationship );
+        }
 
         return new ResponseEntity<>( EModelStorage.INSTANCE.apply( p_model ).serialize(), HttpStatus.OK );
     }
