@@ -8,6 +8,9 @@
 !*.java
 !*.g4
 
+!src/main/resources/json_schema/*.json
+!src/main/resources/json_schema_test/*.json
+
 !src/main/resources/static/*.html
 !src/main/resources/static/*.css
 !src/main/resources/static/*.svg
