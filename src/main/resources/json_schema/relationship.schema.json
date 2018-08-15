@@ -1,0 +1,53 @@
+{
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "Relationship",
+  "description" : "A relationship of an erd.",
+  "type" : "object",
+  "properties": {
+    "id": {
+      "description": "Name of the relationship.",
+      "type": "string"
+    },
+    "description": {
+      "description": "Description of the relationship.",
+      "type": "string"
+    },
+    "attributes" : {
+      "description" : "Connected attributes to this entity",
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "Name of the attribute",
+            "type" : "string"
+          },
+          "key" : {
+            "description" : "Is the attribute a key attribute",
+            "type" : "boolean"
+          },
+          "weak_key" : {
+            "description" : "Is the attribute a weak key attribute",
+            "type" : "boolean"
+          },
+          "multi_value" : {
+            "description" : "Is the attribute a multi value attribute",
+            "type" : "boolean"
+          },
+          "derived_value" : {
+            "description" : "Is the attribute a derived value attribute",
+            "type" : "boolean"
+          }
+        },
+        "required" : [
+          "name",
+          "key",
+          "weak_key",
+          "multi_value",
+          "derived_value"
+        ]
+      }
+    }
+  },
+  "required": ["id", "description"]
+}

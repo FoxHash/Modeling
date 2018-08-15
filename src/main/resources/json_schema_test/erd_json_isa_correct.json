@@ -1,0 +1,116 @@
+{
+  "model_id" : "testmodel",
+  "entities" : [
+    {
+      "id" : "Customer",
+      "weak_entity" : false,
+      "attributes" : [
+        {
+          "name" : "Name",
+          "key" : true,
+          "weak_key" : false,
+          "multi_value" : false,
+          "derived_value" : false
+        },
+        {
+          "name" : "Customer-No",
+          "key" : false,
+          "weak_key" : false,
+          "multi_value" : false,
+          "derived_value" : false
+        }
+      ]
+    },
+    {
+      "id" : "Private customer",
+      "weak_entity" : false,
+      "attributes" : [
+        {
+          "name" : "First name",
+          "key" : true,
+          "weak_key" : false,
+          "multi_value" : false,
+          "derived_value" : false
+        }
+      ]
+    },
+    {
+      "id" : "Business customer",
+      "weak_entity" : false,
+      "attributes" : [
+        {
+          "name" : "Business name",
+          "key" : true,
+          "weak_key" : false,
+          "multi_value" : false,
+          "derived_value" : false
+        }
+      ]
+    },
+    {
+      "id" : "Product",
+      "weak_entity" : false,
+      "attributes" : [
+        {
+          "name" : "Date",
+          "key" : false,
+          "weak_key" : false,
+          "multi_value" : false,
+          "derived_value" : true
+        },
+        {
+          "name" : "Product-No",
+          "key" : true,
+          "weak_key" : false,
+          "multi_value" : false,
+          "derived_value" : false
+        }
+      ]
+    }
+  ],
+  "relationships" : [
+    {
+      "id" : "rel01",
+      "description" : "purchase"
+    }
+  ],
+  "connections" : [
+    {
+      "id" : "con01",
+      "relationship" : "rel01",
+      "entity" : "Customer",
+      "cardinality" : "1:1"
+    },
+    {
+      "id" : "con02",
+      "relationship" : "rel01",
+      "entity" : "Product",
+      "cardinality" : "1:n"
+    }
+  ],
+  "isa-relationships" : [
+    {
+      "id" : "isa01"
+    }
+  ],
+  "isa-connections" : [
+    {
+      "id" : "isacon01",
+      "connection_type" : "parent",
+      "isarelationship" : "isa01",
+      "entity" : "Customer"
+    },
+    {
+      "id" : "isacon02",
+      "connection_type" : "child",
+      "isarelationship" : "isa01",
+      "entity" : "Private customer"
+    },
+    {
+      "id" : "isacon03",
+      "connection_type" : "child",
+      "isarelationship" : "isa01",
+      "entity" : "Business customer"
+    }
+  ]
+}

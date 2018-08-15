@@ -1,0 +1,13 @@
+{
+  "id" : "Customer",
+  "weak_entity" : false,
+  "attributes" : [
+    {
+      "name" : "Name",
+      "key" : true,
+      "weak_key" : false,
+      "multi_value" : false,
+      "derived_value" : false
+    }
+  ]
+}

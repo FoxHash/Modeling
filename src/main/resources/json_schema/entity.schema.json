@@ -1,0 +1,57 @@
+{
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "Entity",
+  "description" : "An entity of an erd.",
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "description" : "Name of the entity",
+      "type" : "string"
+    },
+    "weak_entity" : {
+      "description" : "Flag to mark the entity as a weak entity",
+      "type" : "boolean"
+    },
+    "attributes" : {
+      "description" : "Connected attributes to this entity",
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "Name of the attribute",
+            "type" : "string"
+          },
+          "key" : {
+            "description" : "Is the attribute a key attribute",
+            "type" : "boolean"
+          },
+          "weak_key" : {
+            "description" : "Is the attribute a weak key attribute",
+            "type" : "boolean"
+          },
+          "multi_value" : {
+            "description" : "Is the attribute a multi value attribute",
+            "type" : "boolean"
+          },
+          "derived_value" : {
+            "description" : "Is the attribute a derived value attribute",
+            "type" : "boolean"
+          }
+        },
+        "required" : [
+          "name",
+          "key",
+          "weak_key",
+          "multi_value",
+          "derived_value"
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "required" : [
+    "id",
+    "weak_entity"
+  ]
+}

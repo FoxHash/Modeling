@@ -1,0 +1,31 @@
+{
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "IS-A Connection",
+  "description" : "A is-a relationship connection between an entity (parent or child) and the is-a relationship of an erd.",
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "description" : "Name of the connection",
+      "type" : "string"
+    },
+    "connection_type": {
+      "description": "Connection type, if the connection should establish to the parent entity or to a child entity.",
+      "type": "string",
+      "enum": ["child", "parent"]
+    },
+    "isarelationship" : {
+      "description" : "Name of the is-a relationship which will be connected",
+      "type" : "string"
+    },
+    "entity" : {
+      "description" : "Name of the entity which will be connected",
+      "type" : "string"
+    }
+  },
+  "required" : [
+    "id",
+    "isarelationship",
+    "entity",
+    "connection_type"
+  ]
+}
