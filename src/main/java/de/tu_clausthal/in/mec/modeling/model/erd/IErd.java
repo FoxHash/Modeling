@@ -26,6 +26,8 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import de.tu_clausthal.in.mec.modeling.model.IModel;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import java.util.List;
+
 
 /**
  * The main modeling of the graphical model for an entity relationship diagram (ERD) is implemented
@@ -124,4 +126,18 @@ public interface IErd extends IModel<IErd>
      * @return self-reference
      */
     IErd connectChildEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_childentity, @NonNull final String p_isarelationship );
+
+    /**
+     * general method to check a graphical model onto general things
+     *
+     * @return test result
+     */
+    boolean check();
+
+    /**
+     * general method to check a graphical model onto general things and return a list with errors
+     *
+     * @return list with errors
+     */
+    List<String> checkResult();
 }

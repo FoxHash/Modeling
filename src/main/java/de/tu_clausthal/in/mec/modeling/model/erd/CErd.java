@@ -32,6 +32,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -87,7 +88,6 @@ public class CErd implements IErd
 
     @NonNull
     @Override
-    // TODO
     public Object serialize()
     {
         return new CSerializer( m_network );
@@ -233,6 +233,18 @@ public class CErd implements IErd
 
         m_network.addedge( l_entity, l_isarelationship, new CErdEdge( p_name ) );
         return this;
+    }
+
+    @Override
+    public boolean check()
+    {
+        return new CErdChecker( m_network ).runAllTests();
+    }
+
+    @Override
+    public List<String> checkResult()
+    {
+        return new CErdChecker( m_network ).fetchErrors();
     }
 
     /**

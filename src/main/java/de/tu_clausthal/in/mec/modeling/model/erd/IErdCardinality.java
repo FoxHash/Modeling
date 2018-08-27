@@ -24,8 +24,8 @@
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
 /**
- * EMPTY
- * //TODO
+ * Interface to define the methods which will be needed to read the
+ * values from the enum class of the cardinality description.
  */
 public interface IErdCardinality
 {

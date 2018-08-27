@@ -34,8 +34,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
- * EMPTY
- * //TODO
+ * Is-a relationship implementation of the model.
+ * This type of relationship make it possible to specify an entity more in detail.
  */
 public class CInheritRelationship extends IBaseNode implements IInheritRelationship<IAttribute>
 {

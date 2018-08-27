@@ -23,56 +23,53 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 import java.util.List;
 
 
 /**
- * An is-a relationship is also a fundamental part of an ERD. This relationship
- * describes the inherit relation between one, two or more child entities and
- * one parent entity. With this relationship it is possible to specify a root
- * entity and describe this in detail with inherit entities.
- *
- * @param <A> Type of the attributes connected to entities which are connected to this special relationship.
+ * Interface to validate a given erd model. The validation can be only one
+ * specific test or test the complete list.
  */
-public interface IInheritRelationship<A extends IAttribute> extends IErdNode
+public interface IErdChecker
 {
     /**
-     * method to set the parent entity
+     * method to run all test below
      *
-     * @param p_entity entity
-     * @return self-reference
+     * @return test result
      */
-    IEntity<A> setParentEntity( @NonNull final IEntity<A> p_entity );
+    boolean runAllTests();
 
     /**
-     * method to get the parent entity
+     * method to validate the relationships
+     * all relationships contain exactly 2 entities or be recursive
      *
-     * @return parent entity name
+     * @return test result
      */
-    String getParentEntity();
+    boolean validateRelationships();
 
     /**
-     * connect new child entity
+     * entities should contain at least one attribute
+     * without attributes an entity make no sense
      *
-     * @param p_entity entity which will be a child
-     * @return self-reference
+     * @return test result
      */
-    IEntity<A> connectChildEntity( @NonNull final IEntity<A> p_entity );
+    boolean validateEntities();
 
     /**
-     * get all connected child entities from this relationship
+     * validate is-a relationships
+     * child entities are not connected to other relationships,
+     * this is not allowed, because child entities are the most
+     * abstract elements in a graphical model and has no connections
      *
-     * @return list with all child's
+     * @return test result
      */
-    List<String> getChildEntities();
+    boolean validateISARelationships();
 
     /**
-     * check if this is-a relationship is valid (syntactical correct)
+     * method to fetch all errors for output generating
      *
-     * @return syntactical check
+     * @return list with all errors
      */
-    boolean isValidISARelationship();
+    List<String> fetchErrors();
 
 }

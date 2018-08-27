@@ -1,0 +1,6 @@
+{
+  "id": "isacon01",
+  "connection_type": "child",
+  "isarelationship": "isa01",
+  "entity": "Customer"
+}

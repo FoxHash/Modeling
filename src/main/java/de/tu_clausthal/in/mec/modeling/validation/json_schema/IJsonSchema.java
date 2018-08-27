@@ -29,8 +29,8 @@ import org.json.JSONObject;
 
 
 /**
- * EMPTY
- * //TODO
+ * Interface to implement a json validation with json schema. The main task is to check a given input
+ * with a given schema and fetch exceptions.
  */
 public interface IJsonSchema
 {

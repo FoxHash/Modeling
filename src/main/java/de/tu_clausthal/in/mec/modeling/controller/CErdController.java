@@ -392,6 +392,25 @@ public final class CErdController
         }
     }
 
+    /**
+     * check existing model
+     *
+     * @param p_model model id
+     * @return check result | error
+     */
+    @RequestMapping( value = "/validate/{model}", produces = "application/json" )
+    public Object validateModel( @PathVariable( "model" ) final String p_model )
+    {
+        try
+        {
+            return CErdController.generateValidationResport( EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().checkResult() );
+        }
+        catch ( final RuntimeException l_e1 )
+        {
+            return CErdController.generateGeneralErrorMessage( "The model you requested was not found on this server!" );
+        }
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //
     // USEFUL STATIC METHODS
@@ -444,7 +463,7 @@ public final class CErdController
      * @param p_errordescription description of the error
      * @return response and http status code
      */
-    private static ResponseEntity<Object> generateErrorMessage( final ValidationException p_exception, final String p_errordescription )
+    private static ResponseEntity<Object> generateErrorMessage( @NonNull final ValidationException p_exception, @NonNull final String p_errordescription )
     {
         // get current date and time
         final DateFormat l_dateformat = new SimpleDateFormat( "dd.MM.yyy HH:mm:ss" );
@@ -469,7 +488,7 @@ public final class CErdController
      * @param p_errordescription description of the error
      * @return response and http status code
      */
-    private static ResponseEntity<Object> generateGeneralErrorMessage( final String p_errordescription )
+    private static ResponseEntity<Object> generateGeneralErrorMessage( @NonNull final String p_errordescription )
     {
         // get current date and time
         final DateFormat l_dateformat = new SimpleDateFormat( "dd.MM.yyy HH:mm:ss" );
@@ -481,5 +500,25 @@ public final class CErdController
         l_responsemap.put( "description", p_errordescription );
 
         return new ResponseEntity<>( l_responsemap, HttpStatus.BAD_REQUEST );
+    }
+
+    /**
+     * generate validation report for the model
+     *
+     * @param p_resultlist list with errors and semantically errors
+     * @return response and http status code
+     */
+    private static ResponseEntity<Object> generateValidationResport( @NonNull final List<String> p_resultlist )
+    {
+        final DateFormat l_dateformat = new SimpleDateFormat( "dd.MM.yyyy HH:mm:ss" );
+        final Date l_date = new Date();
+
+        final Map<Object, Object> l_responsemap = new HashMap<>();
+
+        l_responsemap.put( "date/time", l_dateformat.format( l_date ) );
+        l_responsemap.put( "error counter", p_resultlist.size() );
+        l_responsemap.put( "error list", p_resultlist );
+
+        return new ResponseEntity<>( l_responsemap, HttpStatus.OK );
     }
 }

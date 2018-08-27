@@ -35,8 +35,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
- * EMPTY
- * //TODO
+ * This class implements the json schema validator to validate a given json object with
+ * a predefined json schema.
  */
 public class CJsonSchema implements IJsonSchema
 {
@@ -46,8 +46,8 @@ public class CJsonSchema implements IJsonSchema
     private final AtomicReference<ValidationException> m_exception = new AtomicReference<>();
 
     /**
-     * constructor //TODO
-     * @param p_schema
+     * construct new json validator based on json schema
+     * @param p_schema json schema
      */
     public CJsonSchema( @NonNull final String p_schema )
     {

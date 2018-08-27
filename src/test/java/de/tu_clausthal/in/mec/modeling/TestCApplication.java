@@ -23,10 +23,25 @@
 
 package de.tu_clausthal.in.mec.modeling;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+
 /**
  * Applikations Unit-Test
  */
 public final class TestCApplication
 {
+
+    /**
+     * foo test
+     *
+     * @throws Exception exception
+     */
+    @Test
+    public void foo() throws Exception
+    {
+        Assert.assertTrue( true );
+    }
 
 }
