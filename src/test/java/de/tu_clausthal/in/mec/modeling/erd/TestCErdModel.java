@@ -32,7 +32,7 @@ import org.junit.Test;
 /**
  * Test cases for reading ERD models
  */
-public class TestCErdModel
+public final class TestCErdModel
 {
 
     private static final String T_MODEL = "model";

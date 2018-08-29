@@ -28,7 +28,7 @@ import org.junit.Test;
 
 
 /**
- * Applikations Unit-Test
+ * Applications Unit-Test
  */
 public final class TestCApplication
 {
