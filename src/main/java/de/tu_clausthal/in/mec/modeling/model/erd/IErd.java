@@ -53,12 +53,13 @@ public interface IErd extends IModel<IErd>
      * @param p_name name
      * @param p_keyattribute key flag
      * @param p_weakkeyattribute weak key flag
+     * @param p_compoundedvalue compounded value flag
      * @param p_multivalue multi value flag
      * @param p_derivedvalue derived value flag
      * @param p_entityid name of the entity
      * @return self-reference
      */
-    IErd addAttributeToEntity( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
+    IErd addAttributeToEntity( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute, final boolean p_compoundedvalue,
                                final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
     );
 
@@ -77,13 +78,15 @@ public interface IErd extends IModel<IErd>
      * @param p_name name
      * @param p_keyattribute key flag
      * @param p_weakkeyattribute weak key flag
+     * @param p_compoundedvalue compounded value flag
      * @param p_multivalue multi value flag
      * @param p_derivedvalue derived value flag
      * @param p_relationshipid name of the relationship
      * @return self-referenced
      */
     IErd addAttributeToRelationship( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                     final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_relationshipid
+                                     final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue,
+                                     @NonNull final String p_relationshipid
     );
 
     /**

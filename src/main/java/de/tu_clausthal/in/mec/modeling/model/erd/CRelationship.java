@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * identifying relationships are possible. At the same time, the relationship
  * assumes the role of a relationship and an entity.
  */
-public class CRelationship extends IBaseNode implements IRelationship<IAttribute>
+public final class CRelationship extends IBaseNode implements IRelationship<IAttribute>
 {
 
     private final String m_description;
@@ -74,10 +74,10 @@ public class CRelationship extends IBaseNode implements IRelationship<IAttribute
 
     @Override
     public IAttribute createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                       final boolean p_multivalue, final boolean p_derivedvalue
+                                       final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue
     )
     {
-        final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_compoundedvalue, p_multivalue, p_derivedvalue );
         m_attributes.put( l_attr.attributeName(), l_attr );
 
         return l_attr;

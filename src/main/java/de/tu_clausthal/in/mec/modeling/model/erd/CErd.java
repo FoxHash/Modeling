@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  *
  * The low coupling is achieved through the factory design pattern, so here's the management.
  */
-public class CErd implements IErd
+public final class CErd implements IErd
 {
 
     /**
@@ -108,7 +108,7 @@ public class CErd implements IErd
 
     @Override
     public IErd addAttributeToEntity( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                      final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
+                                      final boolean p_compundedvalue, final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
     )
     {
         final IErdNode l_entity = m_network.node( p_entityid );
@@ -118,7 +118,7 @@ public class CErd implements IErd
             throw new RuntimeException( MessageFormat.format( "entity[{0}] must be an entity", l_entity ) );
         }
 
-        ( (IEntity) l_entity ).createAttribute( p_name, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        ( (IEntity) l_entity ).createAttribute( p_name, p_keyattribute, p_weakkeyattribute, p_compundedvalue, p_multivalue, p_derivedvalue );
         return this;
     }
 
@@ -139,7 +139,8 @@ public class CErd implements IErd
 
     @Override
     public IErd addAttributeToRelationship( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                            final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_relationshipid
+                                            final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue,
+                                            @NonNull final String p_relationshipid
     )
     {
         final IErdNode l_relationship = m_network.node( p_relationshipid );
@@ -151,7 +152,7 @@ public class CErd implements IErd
             );
         }
 
-        ( (IRelationship) l_relationship ).createAttribute( p_name, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        ( (IRelationship) l_relationship ).createAttribute( p_name, p_keyattribute, p_weakkeyattribute, p_compoundedvalue, p_multivalue, p_derivedvalue );
         return this;
     }
 

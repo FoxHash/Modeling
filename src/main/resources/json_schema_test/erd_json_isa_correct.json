@@ -9,6 +9,7 @@
           "name" : "Name",
           "key" : true,
           "weak_key" : false,
+          "compounded_value" : false,
           "multi_value" : false,
           "derived_value" : false
         },
@@ -16,6 +17,7 @@
           "name" : "Customer-No",
           "key" : false,
           "weak_key" : false,
+          "compounded_value" : false,
           "multi_value" : false,
           "derived_value" : false
         }
@@ -29,6 +31,7 @@
           "name" : "First name",
           "key" : true,
           "weak_key" : false,
+          "compounded_value" : false,
           "multi_value" : false,
           "derived_value" : false
         }
@@ -42,6 +45,7 @@
           "name" : "Business name",
           "key" : true,
           "weak_key" : false,
+          "compounded_value" : false,
           "multi_value" : false,
           "derived_value" : false
         }
@@ -55,6 +59,7 @@
           "name" : "Date",
           "key" : false,
           "weak_key" : false,
+          "compounded_value" : false,
           "multi_value" : false,
           "derived_value" : true
         },
@@ -62,6 +67,7 @@
           "name" : "Product-No",
           "key" : true,
           "weak_key" : false,
+          "compounded_value" : false,
           "multi_value" : false,
           "derived_value" : false
         }

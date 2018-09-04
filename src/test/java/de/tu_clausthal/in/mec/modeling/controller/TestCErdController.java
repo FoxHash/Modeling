@@ -51,8 +51,8 @@ public final class TestCErdController
 {
     private static final String TEST_MODEL_NAME = "foo";
     private static final String TEST_ENTITY = "{ \"id\" : \"Customer\", \"weak_entity\" : false, \"attributes\" : "
-                                              +
-                                              "[ { \"name\" : \"Name\", \"key\" : true, \"weak_key\" : false, \"multi_value\" : false, \"derived_value\" : false } ] }";
+                                              + "[ { \"name\" : \"Name\", \"key\" : true, \"weak_key\" : false, \"compounded_value\" : false, "
+                                              + "\"multi_value\" : false, \"derived_value\" : false } ] }";
     private static final String TEST_RELATIONSHIP = "{ \"id\" : \"rel01\", \"description\" : \"verfassen\" }";
     private static final String TEST_ISARELATIONSHIP = "{ \"id\": \"isa01\" }";
     private static final String TEST_CONNECTION = "{ \"id\" : \"con01\", \"relationship\" : \"rel01\", \"entity\" : \"Customer\", \"cardinality\" : \"1:1\" }";
@@ -60,16 +60,21 @@ public final class TestCErdController
                                                             + "\"entity\": \"Customer\" }";
     private static final String TEST_ISACONNECTION_CHILD = "{ \"id\": \"isacon02\", \"connection_type\": \"child\", \"isarelationship\": \"isa01\", "
                                                            + "\"entity\": \"Customer\" }";
-    private static final String TEST_COMPLETE_JSON_MODEL = "{ \"model_id\" : \"testmodel\", \"entities\" : [ { \"id\" : \"Customer\", \"weak_entity\" : false, "
-                                                           + "\"attributes\" : [ { \"name\" : \"Name\", \"key\" : true, \"weak_key\" : false, \"multi_value\" : false, "
-                                                           + "\"derived_value\" : false }, { \"name\" : \"Customer-No\", \"key\" : false, \"weak_key\" : false, "
-                                                           + "\"multi_value\" : false, \"derived_value\" : false } ] }, { \"id\" : \"Product\", \"weak_entity\" : "
-                                                           + "false, \"attributes\" : [ { \"name\" : \"Date\", \"key\" : false, \"weak_key\" : false, \"multi_value\" "
-                                                           + ": false, \"derived_value\" : true }, { \"name\" : \"Product-No\", \"key\" : true, \"weak_key\" : false, "
-                                                           + "\"multi_value\" : false, \"derived_value\" : false } ] } ], \"relationships\" : [ { \"id\" : \"rel01\", "
-                                                           + "\"description\" : \"purchase\" } ], \"connections\" : [ { \"id\" : \"con01\", \"relationship\" : \"rel01\", "
-                                                           + "\"entity\" : \"Customer\", \"cardinality\" : \"1:1\" }, { \"id\" : \"con02\", \"relationship\" : \"rel01\", "
-                                                           + "\"entity\" : \"Product\", \"cardinality\" : \"1:n\" } ] }";
+    private static final String TEST_COMPLETE_JSON_MODEL = "{ \"model_id\" : \"testmodel\", \"entities\" : [ { \"id\" : \"Customer\", "
+                                                           + "\"weak_entity\" : false, \"attributes\" : [ { \"name\" : \"Name\", \"key\" : true, "
+                                                           + "\"weak_key\" : false, \"compounded_value\" : false, \"multi_value\" : false, "
+                                                           + "\"derived_value\" : false }, { \"name\" : \"Customer-No\", \"key\" : false, "
+                                                           + "\"weak_key\" : false, \"compounded_value\" : false, \"multi_value\" : false, "
+                                                           + "\"derived_value\" : false } ] }, { \"id\" : \"Product\", \"weak_entity\" : false, "
+                                                           + "\"attributes\" : [ { \"name\" : \"Date\", \"key\" : false, \"weak_key\" : false, "
+                                                           + "\"compounded_value\" : false, \"multi_value\" : false, \"derived_value\" : true }, "
+                                                           + "{ \"name\" : \"Product-No\", \"key\" : true, \"weak_key\" : false, \"compounded_value\" : false, "
+                                                           + "\"multi_value\" : false, \"derived_value\" : false } ] } ], \"relationships\" : [ { "
+                                                           + "\"id\" : \"rel01\", \"description\" : \"purchase\" } ], \"connections\" : [ { "
+                                                           + "\"id\" : \"con01\", \"relationship\" : \"rel01\", \"entity\" : \"Customer\", "
+                                                           + "\"cardinality\" : \"1:1\" }, { \"id\" : \"con02\", \"relationship\" : \"rel01\", "
+                                                           + "\"entity\" : \"Product\", \"cardinality\" : \"1:n\" } ], \"isa-relationships\": [], "
+                                                           + "\"isa-connections\" : [] }";
 
     private MockMvc m_mockmvc;
 

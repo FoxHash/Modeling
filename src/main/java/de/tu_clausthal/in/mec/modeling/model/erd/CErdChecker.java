@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 /**
  * implement model checker
  */
-public class CErdChecker implements IErdChecker
+public final class CErdChecker implements IErdChecker
 {
 
     private static final String ERROR_RELATIONSHIP = ": You have an error in your relationship. One of the two entities is not set.";

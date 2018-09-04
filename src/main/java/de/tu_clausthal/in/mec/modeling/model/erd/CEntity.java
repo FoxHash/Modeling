@@ -36,7 +36,7 @@ import java.util.Map;
  * taken on attributes. Likewise, a distinction is made between a weak entity and a normal entity. This
  * specification can also be done in this object.
  */
-public class CEntity extends IBaseNode implements IEntity<IAttribute>
+public final class CEntity extends IBaseNode implements IEntity<IAttribute>
 {
 
     private final boolean m_weakentity;
@@ -56,11 +56,11 @@ public class CEntity extends IBaseNode implements IEntity<IAttribute>
 
     @Override
     public IAttribute createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                       final boolean p_multivalue, final boolean p_derivedvalue
+                                       final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue
     )
     {
 
-        final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_multivalue, p_derivedvalue );
+        final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_compoundedvalue, p_multivalue, p_derivedvalue );
         m_attributes.put( l_attr.attributeName(), l_attr );
 
         return l_attr;

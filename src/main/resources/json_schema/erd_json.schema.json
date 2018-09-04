@@ -40,6 +40,10 @@
                   "description" : "Is the attribute a weak key attribute",
                   "type" : "boolean"
                 },
+                "compounded_value" : {
+                  "description" : "Is the attribute a compounded value attribute",
+                  "type" : "boolean"
+                },
                 "multi_value" : {
                   "description" : "Is the attribute a multi value attribute",
                   "type" : "boolean"
@@ -53,6 +57,7 @@
                 "name",
                 "key",
                 "weak_key",
+                "compounded_value",
                 "multi_value",
                 "derived_value"
               ]
@@ -98,6 +103,10 @@
                   "description" : "Is the attribute a weak key attribute",
                   "type" : "boolean"
                 },
+                "compounded_value" : {
+                  "description" : "Is the attribute a compounded value attribute",
+                  "type" : "boolean"
+                },
                 "multi_value" : {
                   "description" : "Is the attribute a multi value attribute",
                   "type" : "boolean"
@@ -111,6 +120,7 @@
                 "name",
                 "key",
                 "weak_key",
+                "compounded_value",
                 "multi_value",
                 "derived_value"
               ]

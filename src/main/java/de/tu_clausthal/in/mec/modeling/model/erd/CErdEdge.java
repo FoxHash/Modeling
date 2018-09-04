@@ -31,7 +31,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * This class represents the edges between the relationships and the entities.
  * The edge also contains the cardinality, based on the enum class EErdCardinality.
  */
-public class CErdEdge extends IBaseEdge implements IErdEdge
+public final class CErdEdge extends IBaseEdge implements IErdEdge
 {
 
     /**

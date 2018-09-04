@@ -59,8 +59,8 @@ public final class TestCErdModel
         final IErd l_erd = new CErd( T_MODEL );
 
         l_erd.addEntity( T_ENTITYCUSTOMER, false );
-        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, T_ENTITYCUSTOMER );
-        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, false, T_ENTITYCUSTOMER );
 
         l_erd.addRelationship( T_RELATIONSHIP, "testing" );
         l_erd.connectEntityWithRelationship( "con01", T_ENTITYCUSTOMER, T_RELATIONSHIP, T_CARDINALITY11 );
@@ -82,12 +82,12 @@ public final class TestCErdModel
         final IErd l_erd = new CErd( T_MODEL );
 
         l_erd.addEntity( T_ENTITYCUSTOMER, false );
-        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, T_ENTITYCUSTOMER );
-        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, false, T_ENTITYCUSTOMER );
 
         l_erd.addEntity( T_ENTITYITEMS, false );
-        l_erd.addAttributeToEntity( "Item-Name", true, false, false, false, T_ENTITYITEMS );
-        l_erd.addAttributeToEntity( "Item-Price", false, false, false, false, T_ENTITYITEMS );
+        l_erd.addAttributeToEntity( "Item-Name", true, false, false, false, false, T_ENTITYITEMS );
+        l_erd.addAttributeToEntity( "Item-Price", false, false, false, false, false, T_ENTITYITEMS );
 
         l_erd.addRelationship( T_RELATIONSHIP, "purchase" );
         l_erd.connectEntityWithRelationship( "con01", T_ENTITYCUSTOMER, T_RELATIONSHIP, T_CARDINALITY11 );
@@ -110,8 +110,8 @@ public final class TestCErdModel
         final IErd l_erd = new CErd( T_MODEL );
 
         l_erd.addEntity( T_ENTITYCUSTOMER, false );
-        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, T_ENTITYCUSTOMER );
-        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, false, T_ENTITYCUSTOMER );
 
         Assert.assertTrue( l_erd.check() );
 
@@ -129,20 +129,20 @@ public final class TestCErdModel
         final IErd l_erd = new CErd( T_MODEL );
 
         l_erd.addEntity( T_ENTITYPRIVATECUSTOMER, false );
-        l_erd.addAttributeToEntity( "Private-Address", false, false, false, false, T_ENTITYPRIVATECUSTOMER );
-        l_erd.addAttributeToEntity( "Day of Birth", false, false, false, false, T_ENTITYPRIVATECUSTOMER );
+        l_erd.addAttributeToEntity( "Private-Address", false, false, false, false, false, T_ENTITYPRIVATECUSTOMER );
+        l_erd.addAttributeToEntity( "Day of Birth", false, false, false, false, false, T_ENTITYPRIVATECUSTOMER );
 
         l_erd.addEntity( T_ENTITYBUSINESSCUSTOMER, false );
-        l_erd.addAttributeToEntity( "Discount", false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
-        l_erd.addAttributeToEntity( "Company", false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
+        l_erd.addAttributeToEntity( "Discount", false, false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
+        l_erd.addAttributeToEntity( "Company", false, false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
 
         l_erd.addEntity( T_ENTITYCUSTOMER, false );
-        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, T_ENTITYCUSTOMER );
-        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, false, T_ENTITYCUSTOMER );
 
         l_erd.addEntity( T_ENTITYITEMS, false );
-        l_erd.addAttributeToEntity( "Item-Name", true, false, false, false, T_ENTITYITEMS );
-        l_erd.addAttributeToEntity( "Item-Price", false, false, false, false, T_ENTITYITEMS );
+        l_erd.addAttributeToEntity( "Item-Name", true, false, false, false, false, T_ENTITYITEMS );
+        l_erd.addAttributeToEntity( "Item-Price", false, false, false, false, false, T_ENTITYITEMS );
 
         l_erd.addRelationship( T_RELATIONSHIP, "purchase" );
         l_erd.connectEntityWithRelationship( "con01", T_ENTITYCUSTOMER, T_RELATIONSHIP, T_CARDINALITY11 );
@@ -171,8 +171,8 @@ public final class TestCErdModel
         final IErd l_erd = new CErd( T_MODEL );
 
         l_erd.addEntity( T_ENTITYCUSTOMER, false );
-        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, T_ENTITYCUSTOMER );
-        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTENAME, false, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( T_ATTRIBUTEID, false, false, false, false, false, T_ENTITYCUSTOMER );
 
         l_erd.addRelationship( T_RELATIONSHIP, "testing" );
         l_erd.connectEntityWithRelationship( "con02", T_ENTITYCUSTOMER, T_RELATIONSHIP, T_CARDINALITY11 );
@@ -199,20 +199,20 @@ public final class TestCErdModel
         final IErd l_erd = new CErd( T_MODEL );
 
         l_erd.addEntity( T_ENTITYPRIVATECUSTOMER, false );
-        l_erd.addAttributeToEntity( "Private-Address", false, false, false, false, T_ENTITYPRIVATECUSTOMER );
-        l_erd.addAttributeToEntity( "Day of Birth", false, false, false, false, T_ENTITYPRIVATECUSTOMER );
+        l_erd.addAttributeToEntity( "Private-Address", false, false, false, false, false, T_ENTITYPRIVATECUSTOMER );
+        l_erd.addAttributeToEntity( "Day of Birth", false, false, false, false, false, T_ENTITYPRIVATECUSTOMER );
 
         l_erd.addEntity( T_ENTITYBUSINESSCUSTOMER, false );
-        l_erd.addAttributeToEntity( "Discount", false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
-        l_erd.addAttributeToEntity( "Company", false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
+        l_erd.addAttributeToEntity( "Discount", false, false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
+        l_erd.addAttributeToEntity( "Company", false, false, false, false, false, T_ENTITYBUSINESSCUSTOMER );
 
         l_erd.addEntity( T_ENTITYCUSTOMER, false );
-        l_erd.addAttributeToEntity( "Name", false, false, false, false, T_ENTITYCUSTOMER );
-        l_erd.addAttributeToEntity( "ID-No", false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( "Name", false, false, false, false, false, T_ENTITYCUSTOMER );
+        l_erd.addAttributeToEntity( "ID-No", false, false, false, false, false, T_ENTITYCUSTOMER );
 
         l_erd.addEntity( T_ENTITYITEMS, false );
-        l_erd.addAttributeToEntity( "Item-Name", true, false, false, false, T_ENTITYITEMS );
-        l_erd.addAttributeToEntity( "Item-Price", false, false, false, false, T_ENTITYITEMS );
+        l_erd.addAttributeToEntity( "Item-Name", true, false, false, false, false, T_ENTITYITEMS );
+        l_erd.addAttributeToEntity( "Item-Price", false, false, false, false, false, T_ENTITYITEMS );
 
         l_erd.addRelationship( T_RELATIONSHIP, "purchase" );
         l_erd.connectEntityWithRelationship( "con01", T_ENTITYCUSTOMER, T_RELATIONSHIP, T_CARDINALITY11 );

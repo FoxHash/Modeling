@@ -33,22 +33,24 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  *
  * Attributes can assume various properties.
  */
-public class CAttribute implements IAttribute
+public final class CAttribute implements IAttribute
 {
 
     private final String m_name;
     private final boolean m_keyattribute;
     private final boolean m_weakkeyattribute;
+    private final boolean m_compoundedvalue;
     private final boolean m_multivalue;
     private final boolean m_derivedvalue;
 
     CAttribute( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                          final boolean p_multivalue, final boolean p_derivedvalue
+                final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue
     )
     {
         m_name = p_name;
         m_keyattribute = p_keyattribute;
         m_weakkeyattribute = p_weakkeyattribute;
+        m_compoundedvalue = p_compoundedvalue;
         m_multivalue = p_multivalue;
         m_derivedvalue = p_derivedvalue;
     }
@@ -69,6 +71,12 @@ public class CAttribute implements IAttribute
     public boolean isWeakKeyAttribute()
     {
         return m_weakkeyattribute;
+    }
+
+    @Override
+    public boolean isCompoundedValue()
+    {
+        return m_compoundedvalue;
     }
 
     @Override

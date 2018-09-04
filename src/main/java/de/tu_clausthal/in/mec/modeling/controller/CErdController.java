@@ -60,6 +60,7 @@ public final class CErdController
      */
     private static final String JSON_ATTRIBUTES = "attributes";
     private static final String JSON_CARDINALITY = "cardinality";
+    private static final String JSON_COMPOUNDEDVALUE = "compounded_value";
     private static final String JSON_CONNECTIONS = "connections";
     private static final String JSON_CONNECTIONTYPE = "connection_type";
     private static final String JSON_DERIVEDVALUE = "derived_value";
@@ -429,11 +430,12 @@ public final class CErdController
         final String l_attributname = p_obj.get( JSON_NAME ).toString();
         final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( JSON_KEY ).toString() );
         final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( JSON_WEAKKEY ).toString() );
+        final Boolean l_compoundedvalue = Boolean.parseBoolean( p_obj.get( JSON_COMPOUNDEDVALUE ).toString() );
         final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( JSON_MULTIVALUE ).toString() );
         final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( JSON_DERIVEDVALUE ).toString() );
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToEntity(
-            l_attributname, l_attributekey, l_attributeweakkey, l_multivalue, l_derivedvalue, p_entity );
+            l_attributname, l_attributekey, l_attributeweakkey, l_compoundedvalue, l_multivalue, l_derivedvalue, p_entity );
     }
 
     /**
@@ -448,11 +450,12 @@ public final class CErdController
         final String l_attributname = p_obj.get( JSON_NAME ).toString();
         final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( JSON_KEY ).toString() );
         final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( JSON_WEAKKEY ).toString() );
+        final Boolean l_compoundedvalue = Boolean.parseBoolean( p_obj.get( JSON_COMPOUNDEDVALUE ).toString() );
         final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( JSON_MULTIVALUE ).toString() );
         final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( JSON_DERIVEDVALUE ).toString() );
 
         EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToRelationship( l_attributname, l_attributekey, l_attributeweakkey,
-                                                                                        l_multivalue, l_derivedvalue, p_relationship
+                                                                                        l_compoundedvalue, l_multivalue, l_derivedvalue, p_relationship
         );
     }
 

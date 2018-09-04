@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Is-a relationship implementation of the model.
  * This type of relationship make it possible to specify an entity more in detail.
  */
-public class CInheritRelationship extends IBaseNode implements IInheritRelationship<IAttribute>
+public final class CInheritRelationship extends IBaseNode implements IInheritRelationship<IAttribute>
 {
 
     private final AtomicReference<IEntity<IAttribute>> m_parententity = new AtomicReference<>();

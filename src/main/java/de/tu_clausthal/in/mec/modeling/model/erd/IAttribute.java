@@ -52,6 +52,13 @@ public interface IAttribute
     boolean isWeakKeyAttribute();
 
     /**
+     * is compounded value attribute
+     *
+     * @return compounded value flag
+     */
+    boolean isCompoundedValue();
+
+    /**
      * is multi value attribute
      *
      * @return multi value flag
