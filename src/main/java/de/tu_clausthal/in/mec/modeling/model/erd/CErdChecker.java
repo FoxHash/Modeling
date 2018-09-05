@@ -98,7 +98,7 @@ public final class CErdChecker implements IErdChecker
 
         m_model.nodes()
                .filter( i -> i instanceof IEntity )
-               .filter( i -> ( (IEntity) i ).getConnectedAttributes().size() <= 1 )
+               .filter( i -> ( (IEntity) i ).getConnectedAttributes().size() < 1 )
                .forEach( i -> m_errors.add( i.id() + ERROR_ENTITYATTRIBUT ) );
 
         return l_allentities == l_validentities;
