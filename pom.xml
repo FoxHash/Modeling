@@ -102,14 +102,6 @@
             </exclusions>
         </dependency>
 
-        <!-- TODO: Check dependency for usage -> delete if not using -->
-        <!-- gson -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.5</version>
-        </dependency>
-
         <!-- json schema -->
         <dependency>
             <groupId>org.everit.json</groupId>
@@ -130,6 +122,13 @@
             <groupId>org.apache.directory.studio</groupId>
             <artifactId>org.apache.commons.io</artifactId>
             <version>2.4</version>
+        </dependency>
+
+        <!-- multimap -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>26.0-jre</version>
         </dependency>
 
     </dependencies>
