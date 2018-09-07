@@ -23,10 +23,13 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +66,7 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
     @Override
     public boolean isRecursive()
     {
-        return ( m_entityone.get() != null ) && ( m_entitytwo.get() != null ) && m_entityone.get().equals( m_entitytwo.get() );
+        return ( m_entityone.get() != null ) && ( m_entitytwo.get() != null ) && m_entityone.get().getKey().id().equals( m_entitytwo.get().getKey().id() );
     }
 
     @Override
@@ -112,9 +115,9 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
     }
 
     @Override
-    public Map<String, String> getConnectedEntities()
+    public Map<String, Collection<String>> getConnectedEntities()
     {
-        final Map<String, String> l_entities = new HashMap<>();
+        final Multimap<String, String> l_entities = ArrayListMultimap.create();
 
         if ( m_entityone.get() != null )
         {
@@ -125,7 +128,6 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
         {
             l_entities.put( m_entitytwo.get().getKey().id(), m_entitytwo.get().getValue().getCardinality() );
         }
-
-        return Collections.unmodifiableMap( l_entities );
+        return Collections.unmodifiableMap( l_entities.asMap() );
     }
 }

@@ -25,6 +25,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import java.util.Collection;
 import java.util.Map;
 
 
@@ -87,6 +88,6 @@ public interface IRelationship<A extends IAttribute> extends IErdNode
      *
      * @return connected entities
      */
-    Map<String, String> getConnectedEntities();
+    Map<String, Collection<String>> getConnectedEntities();
 
 }
