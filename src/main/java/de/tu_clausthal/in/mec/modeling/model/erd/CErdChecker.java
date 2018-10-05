@@ -40,7 +40,7 @@ public final class CErdChecker implements IErdChecker
 
     private static final String ERROR_RELATIONSHIP = ": You have an error in your relationship. One of the two entities is not set.";
     private static final String ERROR_ENTITYATTRIBUT = ": The entity has less than 1 attribute. This is semantically not valid.";
-    private static final String ERROR_ISARELATIONSHIP = ": This child entities is connected to a is-a relationship and a normal relationship. This is not allowed!";
+    private static final String ERROR_ISARELATIONSHIP = ": This child entity is connected to a is-a relationship and a normal relationship. This is not allowed!";
 
     private final IGraph<IErdNode, IErdEdge> m_model;
     private final List<String> m_errors = new ArrayList<>();
