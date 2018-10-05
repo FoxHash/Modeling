@@ -153,7 +153,6 @@ public final class CErd implements IErd
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public IErd connectEntityWithRelationship( @NonNull final String p_name, @NonNull final String p_entity, @NonNull final String p_relationship,
                                                @NonNull final String p_cardinality
     )
@@ -168,7 +167,7 @@ public final class CErd implements IErd
             );
         }
 
-        ( (IRelationship) l_relationship ).connectEntity( (IEntity<IAttribute>) l_entity, p_cardinality );
+        l_relationship.<IRelationship<IAttribute>>raw().connectEntity( l_entity.raw(), p_cardinality );
 
         m_network.addedge( l_entity, l_relationship, new CErdEdge( p_name ) );
         return this;
@@ -189,7 +188,6 @@ public final class CErd implements IErd
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public IErd connectParentEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_parententity,
                                                         @NonNull final String p_isarelationship
     )
@@ -204,14 +202,13 @@ public final class CErd implements IErd
             );
         }
 
-        ( (IInheritRelationship) l_isarelationship ).setParentEntity( (IEntity) l_entity );
+        l_isarelationship.<IInheritRelationship<IAttribute>>raw().setParentEntity( l_entity.raw() );
 
         m_network.addedge( l_entity, l_isarelationship, new CErdEdge( p_name ) );
         return this;
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public IErd connectChildEntityWithISARelationship( @NonNull final String p_name, @NonNull final String p_childentity,
                                                        @NonNull final String p_isarelationship
     )
@@ -226,7 +223,7 @@ public final class CErd implements IErd
             );
         }
 
-        ( (IInheritRelationship) l_isarelationship ).connectChildEntity( (IEntity) l_entity );
+        l_isarelationship.<IInheritRelationship<IAttribute>>raw().connectChildEntity( l_entity.raw() );
 
         m_network.addedge( l_entity, l_isarelationship, new CErdEdge( p_name ) );
         return this;

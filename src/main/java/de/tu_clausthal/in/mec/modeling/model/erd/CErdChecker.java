@@ -62,7 +62,6 @@ public final class CErdChecker implements IErdChecker
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public boolean validateRelationships()
     {
         final long l_allrelationships = m_model.nodes()
@@ -72,12 +71,13 @@ public final class CErdChecker implements IErdChecker
         // relationship is valid if the two entities are set
         final long l_validrelationship = m_model.nodes()
                                                 .filter( i -> i instanceof IRelationship )
-                                                .filter( i -> ( (IRelationship) i ).getConnectedEntities().size() == 2 || ( (IRelationship) i ).isRecursive() )
+                                                .filter(
+                                                    i -> i.<IRelationship>raw().getConnectedEntities().size() == 2 || i.<IRelationship>raw().isRecursive() )
                                                 .count();
 
         m_model.nodes()
                .filter( i -> i instanceof IRelationship )
-               .filter( i -> ( (IRelationship) i ).getConnectedEntities().size() <= 1 )
+               .filter( i -> i.<IRelationship>raw().getConnectedEntities().size() <= 1 )
                .forEach( i -> m_errors.add( i.id() + ERROR_RELATIONSHIP ) );
 
         return l_allrelationships == l_validrelationship;
@@ -93,19 +93,18 @@ public final class CErdChecker implements IErdChecker
         // entity is valid if it has more than one attribute
         final long l_validentities = m_model.nodes()
                                             .filter( i -> i instanceof IEntity )
-                                            .filter( i -> ( (IEntity) i ).getConnectedAttributes().size() >= 1 )
+                                            .filter( i -> i.<IEntity>raw().getConnectedAttributes().size() >= 1 )
                                             .count();
 
         m_model.nodes()
                .filter( i -> i instanceof IEntity )
-               .filter( i -> ( (IEntity) i ).getConnectedAttributes().size() < 1 )
+               .filter( i -> i.<IEntity>raw().getConnectedAttributes().size() < 1 )
                .forEach( i -> m_errors.add( i.id() + ERROR_ENTITYATTRIBUT ) );
 
         return l_allentities == l_validentities;
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public boolean validateISARelationships()
     {
         final List<String> l_childnames = new ArrayList<>();
@@ -114,12 +113,12 @@ public final class CErdChecker implements IErdChecker
 
         m_model.nodes()
                .filter( i -> i instanceof IRelationship )
-               .forEach( i -> l_relationshipconnections.addAll( ( (IRelationship) i ).getConnectedEntities().keySet() ) );
+               .forEach( i -> l_relationshipconnections.addAll( i.<IRelationship<IAttribute>>raw().getConnectedEntities().keySet() ) );
 
 
         m_model.nodes()
                .filter( i -> i instanceof IInheritRelationship )
-               .forEach( i -> l_childnames.addAll( ( (IInheritRelationship) i ).getChildEntities() ) );
+               .forEach( i -> l_childnames.addAll( i.<IInheritRelationship<IAttribute>>raw().getChildEntities() ) );
 
 
         final long l_invalidisarelationships = l_childnames.stream().filter( l_relationshipconnections::contains ).count();
