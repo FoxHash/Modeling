@@ -23,66 +23,58 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Map;
+import java.util.Arrays;
 
 
 /**
- * A relationship is a fundamental part of an ERD. A relationship describes the
- * relation between one, two or more entities in detail. Relationships can also
- * contains attributes for a better specification.
- * This allows facts to be modeled.
+ * This enum class describes the possible attribute properties for an attribute.
  */
-public interface IRelationship<A extends IAttribute> extends IErdNode
+public enum EAttributeProperty implements IAttributeProperty
 {
 
     /**
-     * check the relationship, if the two connected entities are the same
-     *
-     * @return recursive
+     * possible properties
      */
-    boolean isRecursive();
+    ATTRIBUTE( "attribute" ),
+    KEY( "key attribute" ),
+    WEAKKEY( "weak key attribute" ),
+    COMPOUNDEDVALUE( "compounded value attribute" ),
+    MULTIVALUE( "multi value attribute" ),
+    DERIVEDVALUE( "derived value attribute" );
 
     /**
-     * return the description of the relationship
-     *
-     * @return description
+     * member to store property
      */
-    String getDescription();
+    private String m_property;
 
     /**
-     * create new attribute to relationship
+     * constructor to create a new property for an attribute
      *
-     * @param p_id name of the attribute
-     * @param p_property of the attribute
-     * @return self-reference
+     * @param p_property property
      */
-    A createAttribute( @NonNull final String p_id, @Nonnull final String p_property );
+    EAttributeProperty( final String p_property )
+    {
+        m_property = p_property;
+    }
+
+    @Override
+    public String getProperty()
+    {
+        return m_property;
+    }
 
     /**
-     * get all connected attributes from the relationship in a map
+     * static method to return enum to given string value
      *
-     * @return map with all attributes
+     * @param p_value string represented value of the property
+     * @return enum property
      */
-    Map<String, IAttribute> getConnectedAttributes();
-
-    /**
-     * connect entity incl. cardinality to the relationship
-     *
-     * @param p_entity name of the entity
-     * @param p_cardinality cardinality
-     * @return self-reference
-     */
-    IEntity<A> connectEntity( @NonNull final IEntity<IAttribute> p_entity, @NonNull final String p_cardinality );
-
-    /**
-     * return the connected entities in a map
-     *
-     * @return connected entities
-     */
-    Map<String, Collection<String>> getConnectedEntities();
-
+    public static EAttributeProperty of( @Nonnull final String p_value )
+    {
+        return Arrays.stream( EAttributeProperty.values() )
+                     .filter( e -> e.getProperty().equalsIgnoreCase( p_value ) )
+                     .findFirst()
+                     .orElseThrow( () -> new EnumConstantNotPresentException( EAttributeProperty.class, p_value ) );
+    }
 }

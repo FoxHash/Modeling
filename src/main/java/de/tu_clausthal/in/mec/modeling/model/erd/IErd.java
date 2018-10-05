@@ -26,6 +26,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import de.tu_clausthal.in.mec.modeling.model.IModel;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 
@@ -51,17 +52,11 @@ public interface IErd extends IModel<IErd>
      * add new attribute to an entity
      *
      * @param p_name name
-     * @param p_keyattribute key flag
-     * @param p_weakkeyattribute weak key flag
-     * @param p_compoundedvalue compounded value flag
-     * @param p_multivalue multi value flag
-     * @param p_derivedvalue derived value flag
+     * @param p_property property of the attribute
      * @param p_entityid name of the entity
      * @return self-reference
      */
-    IErd addAttributeToEntity( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute, final boolean p_compoundedvalue,
-                               final boolean p_multivalue, final boolean p_derivedvalue, @NonNull final String p_entityid
-    );
+    IErd addAttributeToEntity( @NonNull final String p_name, @Nonnull final String p_property, @NonNull final String p_entityid );
 
     /**
      * add new relationship
@@ -76,18 +71,11 @@ public interface IErd extends IModel<IErd>
      * add new attribute to a relationship
      *
      * @param p_name name
-     * @param p_keyattribute key flag
-     * @param p_weakkeyattribute weak key flag
-     * @param p_compoundedvalue compounded value flag
-     * @param p_multivalue multi value flag
-     * @param p_derivedvalue derived value flag
+     * @param p_property property of the attribute
      * @param p_relationshipid name of the relationship
      * @return self-referenced
      */
-    IErd addAttributeToRelationship( @NonNull final String p_name, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                     final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue,
-                                     @NonNull final String p_relationshipid
-    );
+    IErd addAttributeToRelationship( @NonNull final String p_name, @Nonnull final String p_property, @NonNull final String p_relationshipid );
 
     /**
      * connect relationship with entity

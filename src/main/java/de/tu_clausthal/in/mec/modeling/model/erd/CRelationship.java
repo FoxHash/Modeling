@@ -28,6 +28,7 @@ import com.google.common.collect.Multimap;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import javax.annotation.Nonnull;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Collections;
@@ -76,11 +77,9 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
     }
 
     @Override
-    public IAttribute createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                       final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue
-    )
+    public IAttribute createAttribute( @NonNull final String p_id, @Nonnull final String p_property )
     {
-        final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_compoundedvalue, p_multivalue, p_derivedvalue );
+        final IAttribute l_attr = new CAttribute( p_id, p_property );
         m_attributes.put( l_attr.attributeName(), l_attr );
 
         return l_attr;

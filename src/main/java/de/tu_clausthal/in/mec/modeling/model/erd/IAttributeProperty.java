@@ -23,66 +23,18 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Map;
-
-
 /**
- * A relationship is a fundamental part of an ERD. A relationship describes the
- * relation between one, two or more entities in detail. Relationships can also
- * contains attributes for a better specification.
- * This allows facts to be modeled.
+ * Interface to define the methods which will be needed to read the
+ * values from the enum class of the properties for attributes.
  */
-public interface IRelationship<A extends IAttribute> extends IErdNode
+public interface IAttributeProperty
 {
 
     /**
-     * check the relationship, if the two connected entities are the same
+     * return the property value
      *
-     * @return recursive
+     * @return property
      */
-    boolean isRecursive();
-
-    /**
-     * return the description of the relationship
-     *
-     * @return description
-     */
-    String getDescription();
-
-    /**
-     * create new attribute to relationship
-     *
-     * @param p_id name of the attribute
-     * @param p_property of the attribute
-     * @return self-reference
-     */
-    A createAttribute( @NonNull final String p_id, @Nonnull final String p_property );
-
-    /**
-     * get all connected attributes from the relationship in a map
-     *
-     * @return map with all attributes
-     */
-    Map<String, IAttribute> getConnectedAttributes();
-
-    /**
-     * connect entity incl. cardinality to the relationship
-     *
-     * @param p_entity name of the entity
-     * @param p_cardinality cardinality
-     * @return self-reference
-     */
-    IEntity<A> connectEntity( @NonNull final IEntity<IAttribute> p_entity, @NonNull final String p_cardinality );
-
-    /**
-     * return the connected entities in a map
-     *
-     * @return connected entities
-     */
-    Map<String, Collection<String>> getConnectedEntities();
+    String getProperty();
 
 }

@@ -26,6 +26,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +56,10 @@ public final class CEntity extends IBaseNode implements IEntity<IAttribute>
     }
 
     @Override
-    public IAttribute createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                                       final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue
-    )
+    public IAttribute createAttribute( @NonNull final String p_id, @Nonnull final String p_property )
     {
 
-        final IAttribute l_attr = new CAttribute( p_id, p_keyattribute, p_weakkeyattribute, p_compoundedvalue, p_multivalue, p_derivedvalue );
+        final IAttribute l_attr = new CAttribute( p_id, p_property );
         m_attributes.put( l_attr.attributeName(), l_attr );
 
         return l_attr;

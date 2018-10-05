@@ -25,6 +25,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 
@@ -42,16 +43,10 @@ public interface IEntity<A extends IAttribute> extends IErdNode
      * create new attribute to entity
      *
      * @param p_id name of the attribute
-     * @param p_keyattribute key attribute flag
-     * @param p_weakkeyattribute weak key attribute flag
-     * @param p_compoundedvalue compounded value flag
-     * @param p_multivalue multi value flag
-     * @param p_derivedvalue derived value flag
+     * @param p_property property of the attribute
      * @return self-reference
      */
-    A createAttribute( @NonNull final String p_id, final boolean p_keyattribute, final boolean p_weakkeyattribute,
-                       final boolean p_compoundedvalue, final boolean p_multivalue, final boolean p_derivedvalue
-    );
+    A createAttribute( @NonNull final String p_id, @Nonnull final String p_property );
 
     /**
      * return weak entity flag

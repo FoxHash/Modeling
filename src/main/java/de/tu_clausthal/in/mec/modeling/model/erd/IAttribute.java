@@ -38,38 +38,10 @@ public interface IAttribute
     String attributeName();
 
     /**
-     * is key attribute
+     * return the property of the attribute
      *
-     * @return key flag
+     * @return property
      */
-    boolean isKeyAttribute();
-
-    /**
-     * is weak key attribute
-     *
-     * @return weak key flag
-     */
-    boolean isWeakKeyAttribute();
-
-    /**
-     * is compounded value attribute
-     *
-     * @return compounded value flag
-     */
-    boolean isCompoundedValue();
-
-    /**
-     * is multi value attribute
-     *
-     * @return multi value flag
-     */
-    boolean isMultiValue();
-
-    /**
-     * is derived value attribute
-     *
-     * @return derived value flag
-     */
-    boolean isDerivedValue();
+    String getProperty();
 
 }
