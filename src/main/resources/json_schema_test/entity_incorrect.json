@@ -4,8 +4,7 @@
   "attributes" : [
     {
       "name" : "Name",
-      "key" : true,
-      "weak_key" : false
+      "key" : true
     }
   ]
 }

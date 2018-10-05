@@ -60,10 +60,8 @@ public final class CErdController
      */
     private static final String JSON_ATTRIBUTES = "attributes";
     private static final String JSON_CARDINALITY = "cardinality";
-    private static final String JSON_COMPOUNDEDVALUE = "compounded_value";
     private static final String JSON_CONNECTIONS = "connections";
     private static final String JSON_CONNECTIONTYPE = "connection_type";
-    private static final String JSON_DERIVEDVALUE = "derived_value";
     private static final String JSON_DESCRIPTION = "description";
     private static final String JSON_ENTITY = "entity";
     private static final String JSON_ENTITIES = "entities";
@@ -71,14 +69,12 @@ public final class CErdController
     private static final String JSON_ISACONNECTIONS = "isa-connections";
     private static final String JSON_ISARELATIONSHIP = "isarelationship";
     private static final String JSON_ISARELATIONSHIPS = "isa-relationships";
-    private static final String JSON_KEY = "key";
     private static final String JSON_MODELID = "model_id";
-    private static final String JSON_MULTIVALUE = "multi_value";
     private static final String JSON_NAME = "name";
+    private static final String JSON_PROPERTY = "property";
     private static final String JSON_RELATIONSHIP = "relationship";
     private static final String JSON_RELARIONSHIPS = "relationships";
     private static final String JSON_WEAKENTITY = "weak_entity";
-    private static final String JSON_WEAKKEY = "weak_key";
 
     /**
      * create new erd
@@ -428,14 +424,9 @@ public final class CErdController
     private static void createAttributeToEntity( @NonNull final JSONObject p_obj, @NonNull final String p_model, @NonNull final String p_entity )
     {
         final String l_attributname = p_obj.get( JSON_NAME ).toString();
-        final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( JSON_KEY ).toString() );
-        final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( JSON_WEAKKEY ).toString() );
-        final Boolean l_compoundedvalue = Boolean.parseBoolean( p_obj.get( JSON_COMPOUNDEDVALUE ).toString() );
-        final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( JSON_MULTIVALUE ).toString() );
-        final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( JSON_DERIVEDVALUE ).toString() );
+        final String l_attributeproperty = p_obj.get( JSON_PROPERTY ).toString();
 
-        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToEntity(
-            l_attributname, l_attributekey, l_attributeweakkey, l_compoundedvalue, l_multivalue, l_derivedvalue, p_entity );
+        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToEntity( l_attributname, l_attributeproperty, p_entity );
     }
 
     /**
@@ -448,15 +439,9 @@ public final class CErdController
     private static void createAttributeToRelationship( @NonNull final JSONObject p_obj, @NonNull final String p_model, @NonNull final String p_relationship )
     {
         final String l_attributname = p_obj.get( JSON_NAME ).toString();
-        final Boolean l_attributekey = Boolean.parseBoolean( p_obj.get( JSON_KEY ).toString() );
-        final Boolean l_attributeweakkey = Boolean.parseBoolean( p_obj.get( JSON_WEAKKEY ).toString() );
-        final Boolean l_compoundedvalue = Boolean.parseBoolean( p_obj.get( JSON_COMPOUNDEDVALUE ).toString() );
-        final Boolean l_multivalue = Boolean.parseBoolean( p_obj.get( JSON_MULTIVALUE ).toString() );
-        final Boolean l_derivedvalue = Boolean.parseBoolean( p_obj.get( JSON_DERIVEDVALUE ).toString() );
+        final String l_attributeproperty = p_obj.get( JSON_PROPERTY ).toString();
 
-        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToRelationship( l_attributname, l_attributekey, l_attributeweakkey,
-                                                                                        l_compoundedvalue, l_multivalue, l_derivedvalue, p_relationship
-        );
+        EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().addAttributeToRelationship( l_attributname, l_attributeproperty, p_relationship );
     }
 
     /**

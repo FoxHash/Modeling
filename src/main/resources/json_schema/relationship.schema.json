@@ -22,34 +22,22 @@
             "description" : "Name of the attribute",
             "type" : "string"
           },
-          "key" : {
-            "description" : "Is the attribute a key attribute",
-            "type" : "boolean"
-          },
-          "weak_key" : {
-            "description" : "Is the attribute a weak key attribute",
-            "type" : "boolean"
-          },
-          "compounded_value" : {
-            "description" : "Is the attribute a compounded value attribute",
-            "type" : "boolean"
-          },
-          "multi_value" : {
-            "description" : "Is the attribute a multi value attribute",
-            "type" : "boolean"
-          },
-          "derived_value" : {
-            "description" : "Is the attribute a derived value attribute",
-            "type" : "boolean"
+          "property" : {
+            "description" : "Property of the attribute",
+            "type" : "string",
+            "enum" : [
+              "attribute",
+              "key attribute",
+              "weak key attribute",
+              "compounded value attribute",
+              "multi value attribute",
+              "derived value attribute"
+            ]
           }
         },
         "required" : [
           "name",
-          "key",
-          "weak_key",
-          "compounded_value",
-          "multi_value",
-          "derived_value"
+          "property"
         ]
       }
     }

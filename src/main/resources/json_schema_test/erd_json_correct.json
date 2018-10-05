@@ -7,19 +7,11 @@
       "attributes" : [
         {
           "name" : "Name",
-          "key" : true,
-          "weak_key" : false,
-          "compounded_value" : false,
-          "multi_value" : false,
-          "derived_value" : false
+          "property" : "key attribute"
         },
         {
           "name" : "Customer-No",
-          "key" : false,
-          "weak_key" : false,
-          "compounded_value" : false,
-          "multi_value" : false,
-          "derived_value" : false
+          "property" : "attribute"
         }
       ]
     },
@@ -29,19 +21,11 @@
       "attributes" : [
         {
           "name" : "Date",
-          "key" : false,
-          "weak_key" : false,
-          "compounded_value" : false,
-          "multi_value" : false,
-          "derived_value" : true
+          "property" : "attribute"
         },
         {
           "name" : "Product-No",
-          "key" : true,
-          "weak_key" : false,
-          "compounded_value" : false,
-          "multi_value" : false,
-          "derived_value" : false
+          "property" : "key attribute"
         }
       ]
     }
