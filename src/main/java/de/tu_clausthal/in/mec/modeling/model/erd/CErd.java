@@ -35,6 +35,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -114,10 +115,10 @@ public final class CErd implements IErd
 
         if ( !( l_entity instanceof IEntity ) )
         {
-            throw new RuntimeException( MessageFormat.format( "entity[{0}] must be an entity", l_entity ) );
+            throw new RuntimeException( MessageFormat.format( "entity[{0}] must be an entity", p_entityid ) );
         }
 
-        ( (IEntity) l_entity ).createAttribute( p_name, p_property );
+        l_entity.<IEntity<IAttribute>>raw().createAttribute( p_name, p_property );
         return this;
     }
 
@@ -125,7 +126,7 @@ public final class CErd implements IErd
     @Override
     public IErd addRelationship( @NonNull final String p_name, @NonNull final String p_description )
     {
-        if ( m_network.node( p_name ) != null )
+        if ( Objects.nonNull( m_network.node( p_name ) ) )
         {
             throw new RuntimeException(
                 MessageFormat.format( "There also exists an relationship with this id[{0}]", p_name )
@@ -144,11 +145,11 @@ public final class CErd implements IErd
         if ( !( l_relationship instanceof IRelationship ) )
         {
             throw new RuntimeException(
-                MessageFormat.format( "relationship[{0}] must be an relationship", l_relationship )
+                MessageFormat.format( "relationship[{0}] must be an relationship", p_relationshipid )
             );
         }
 
-        ( (IRelationship) l_relationship ).createAttribute( p_name, p_property );
+        l_relationship.<IRelationship<IAttribute>>raw().createAttribute( p_name, p_property );
         return this;
     }
 
@@ -163,7 +164,7 @@ public final class CErd implements IErd
         if ( !( l_entity instanceof IEntity && l_relationship instanceof IRelationship ) )
         {
             throw new RuntimeException(
-                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", l_entity, l_relationship )
+                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", p_entity, p_relationship )
             );
         }
 
@@ -176,10 +177,10 @@ public final class CErd implements IErd
     @Override
     public IErd addISARelationship( @NonNull final String p_name )
     {
-        if ( m_network.node( p_name ) != null )
+        if ( Objects.nonNull( m_network.node( p_name ) ) )
         {
             throw new RuntimeException(
-                MessageFormat.format( "There also exists an is-a relationship with this id[0]", p_name )
+                MessageFormat.format( "There also exists an is-a relationship with this id[{0}]", p_name )
             );
         }
 
@@ -198,7 +199,7 @@ public final class CErd implements IErd
         if ( !( l_entity instanceof IEntity && l_isarelationship instanceof IInheritRelationship ) )
         {
             throw new RuntimeException(
-                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", l_entity, l_isarelationship )
+                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", p_parententity, p_isarelationship )
             );
         }
 
@@ -219,7 +220,7 @@ public final class CErd implements IErd
         if ( !( l_entity instanceof IEntity && l_isarelationship instanceof IInheritRelationship ) )
         {
             throw new RuntimeException(
-                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", l_entity, l_isarelationship )
+                MessageFormat.format( "one of the following assignments has an error: entity[{0}] or relationship[{1}]", p_childentity, p_isarelationship )
             );
         }
 

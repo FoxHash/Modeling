@@ -72,12 +72,13 @@ public final class CErdChecker implements IErdChecker
         final long l_validrelationship = m_model.nodes()
                                                 .filter( i -> i instanceof IRelationship )
                                                 .filter(
-                                                    i -> i.<IRelationship>raw().getConnectedEntities().size() == 2 || i.<IRelationship>raw().isRecursive() )
+                                                    i -> i.<IRelationship<IAttribute>>raw().getConnectedEntities().size() == 2
+                                                         || i.<IRelationship<IAttribute>>raw().isRecursive() )
                                                 .count();
 
         m_model.nodes()
                .filter( i -> i instanceof IRelationship )
-               .filter( i -> i.<IRelationship>raw().getConnectedEntities().size() <= 1 )
+               .filter( i -> i.<IRelationship<IAttribute>>raw().getConnectedEntities().size() <= 1 )
                .forEach( i -> m_errors.add( i.id() + ERROR_RELATIONSHIP ) );
 
         return l_allrelationships == l_validrelationship;
@@ -93,12 +94,12 @@ public final class CErdChecker implements IErdChecker
         // entity is valid if it has more than one attribute
         final long l_validentities = m_model.nodes()
                                             .filter( i -> i instanceof IEntity )
-                                            .filter( i -> i.<IEntity>raw().getConnectedAttributes().size() >= 1 )
+                                            .filter( i -> i.<IEntity<IAttribute>>raw().getConnectedAttributes().size() >= 1 )
                                             .count();
 
         m_model.nodes()
                .filter( i -> i instanceof IEntity )
-               .filter( i -> i.<IEntity>raw().getConnectedAttributes().size() < 1 )
+               .filter( i -> i.<IEntity<IAttribute>>raw().getConnectedAttributes().size() < 1 )
                .forEach( i -> m_errors.add( i.id() + ERROR_ENTITYATTRIBUT ) );
 
         return l_allentities == l_validentities;

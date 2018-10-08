@@ -30,6 +30,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -51,21 +52,20 @@ public final class CInheritRelationship extends IBaseNode implements IInheritRel
     @Override
     public IEntity<IAttribute> setParentEntity( @NonNull final IEntity<IAttribute> p_entity )
     {
-        if ( m_parententity.get() != null )
+        if ( m_parententity.compareAndSet( null, p_entity ) )
         {
-            throw new RuntimeException( "You set already a parent entity for this relationship" );
+            return p_entity;
         }
         else
         {
-            m_parententity.compareAndSet( null, p_entity );
+            throw new RuntimeException( "You set already a parent entity for this relationship" );
         }
-        return p_entity;
     }
 
     @Override
     public String getParentEntity()
     {
-        if ( m_parententity.get() == null )
+        if ( Objects.isNull( m_parententity.get() ) )
         {
             return "";
         }
@@ -94,6 +94,6 @@ public final class CInheritRelationship extends IBaseNode implements IInheritRel
     @Override
     public boolean isValidISARelationship()
     {
-        return ( m_parententity.get() != null ) && m_childentities.size() >= 1;
+        return ( Objects.nonNull( m_parententity.get() ) ) && m_childentities.size() >= 1;
     }
 }

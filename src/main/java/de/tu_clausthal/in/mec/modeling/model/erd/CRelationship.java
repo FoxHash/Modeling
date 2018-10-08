@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -94,17 +95,14 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
     @Override
     public IEntity<IAttribute> connectEntity( @NonNull final IEntity<IAttribute> p_entity, @NonNull final String p_cardinality )
     {
-        final IEntity<IAttribute> l_entity = p_entity;
-        if ( m_entityone.get() == null )
+        if ( m_entityone.compareAndSet( null, new AbstractMap.SimpleEntry<>( p_entity, EErdCardinality.of( p_cardinality ) ) ) )
         {
-            m_entityone.compareAndSet( null, new AbstractMap.SimpleEntry<>( l_entity, EErdCardinality.of( p_cardinality ) ) );
-            return l_entity;
+            return p_entity;
         }
 
-        if ( m_entitytwo.get() == null )
+        if ( m_entitytwo.compareAndSet( null, new AbstractMap.SimpleEntry<>( p_entity, EErdCardinality.of( p_cardinality ) ) ) )
         {
-            m_entitytwo.compareAndSet( null, new AbstractMap.SimpleEntry<>( l_entity, EErdCardinality.of( p_cardinality ) ) );
-            return l_entity;
+            return p_entity;
         }
         else
         {
@@ -118,12 +116,12 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
     {
         final Multimap<String, String> l_entities = ArrayListMultimap.create();
 
-        if ( m_entityone.get() != null )
+        if ( Objects.nonNull( m_entityone.get() ) )
         {
             l_entities.put( m_entityone.get().getKey().id(), m_entityone.get().getValue().getCardinality() );
         }
 
-        if ( m_entitytwo.get() != null )
+        if ( Objects.nonNull( m_entitytwo.get() ) )
         {
             l_entities.put( m_entitytwo.get().getKey().id(), m_entitytwo.get().getValue().getCardinality() );
         }
