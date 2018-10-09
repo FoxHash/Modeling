@@ -23,8 +23,10 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import de.tu_clausthal.in.mec.modeling.deserializer.CRelationshipDeserializer;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -45,6 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * identifying relationships are possible. At the same time, the relationship
  * assumes the role of a relationship and an entity.
  */
+@JsonDeserialize( using = CRelationshipDeserializer.class )
 public final class CRelationship extends IBaseNode implements IRelationship<IAttribute>
 {
 

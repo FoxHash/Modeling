@@ -21,63 +21,48 @@
  * @endcond
  */
 
-package de.tu_clausthal.in.mec.modeling.model.erd;
+package de.tu_clausthal.in.mec.modeling.deserializer;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import de.tu_clausthal.in.mec.modeling.deserializer.CEntityDeserializer;
-import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import de.tu_clausthal.in.mec.modeling.model.erd.IErd;
+import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 
 /**
- * An entity is the description of an object, which is specified more precisely by attributes. Entities can
- * taken on attributes. Likewise, a distinction is made between a weak entity and a normal entity. This
- * specification can also be done in this object.
+ * FOO //TODO
  */
-@JsonDeserialize( using = CEntityDeserializer.class )
-public final class CEntity extends IBaseNode implements IEntity<IAttribute>
+public final class CEntityDeserializer extends JsonDeserializer<Object> implements IEntityDeserializer
 {
 
-    private final boolean m_weakentity;
-    private Map<String, IAttribute> m_attributes = new HashMap<>();
+    private final String m_model;
 
-    /**
-     * constructor to create new entity
-     *
-     * @param p_id name
-     * @param p_weakentity weak entity flag
-     */
-    CEntity( @NonNull final String p_id, final boolean p_weakentity )
+    public CEntityDeserializer( @NonNull final String p_model )
     {
-        super( p_id );
-        m_weakentity = p_weakentity;
+        m_model = p_model;
     }
 
     @Override
-    public IAttribute createAttribute( @NonNull final String p_id, @Nonnull final String p_property )
+    public Object deserialize( final JsonParser p_parser, final DeserializationContext p_ctxt ) throws IOException, JsonProcessingException
     {
+        final ObjectCodec l_objectcodec = p_parser.getCodec();
+        final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final IAttribute l_attr = new CAttribute( p_id, p_property );
-        m_attributes.put( l_attr.attributeName(), l_attr );
+        final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
+        final boolean l_weakentity = Boolean.parseBoolean( l_jsonnode.get( "weak_entity" ).asText() );
 
-        return l_attr;
+        final Object l_entity = EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addEntity( l_id, l_weakentity );
+
+        l_jsonnode.get( "attributes" ).elements().forEachRemaining( i -> EModelStorage.INSTANCE.apply( m_model ).<IErd>raw()
+            .addAttributeToEntity( i.get( "name" ).asText(), i.get( "property" ).asText(), l_id ) );
+
+        return l_entity;
     }
-
-    @Override
-    public boolean isWeakEntity()
-    {
-        return m_weakentity;
-    }
-
-    @Override
-    public Map<String, IAttribute> getConnectedAttributes()
-    {
-        return Collections.unmodifiableMap( m_attributes );
-    }
-
 }

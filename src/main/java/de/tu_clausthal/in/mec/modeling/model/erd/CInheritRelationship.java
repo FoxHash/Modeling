@@ -23,6 +23,8 @@
 
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import de.tu_clausthal.in.mec.modeling.deserializer.CInheritRelationshipDeserializer;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -38,6 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Is-a relationship implementation of the model.
  * This type of relationship make it possible to specify an entity more in detail.
  */
+@JsonDeserialize( using = CInheritRelationshipDeserializer.class )
 public final class CInheritRelationship extends IBaseNode implements IInheritRelationship<IAttribute>
 {
 
