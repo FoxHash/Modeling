@@ -44,14 +44,6 @@
 
     <dependencies>
 
-        <!-- AntLR -->
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>4.7.1</version>
-        </dependency>
-
-
         <!-- graph -->
         <dependency>
             <groupId>net.sf.jung</groupId>
@@ -94,41 +86,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.vaadin.external.google</groupId>
-                    <artifactId>android-json</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- json schema -->
-        <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.5.1</version>
-        </dependency>
-
-        <!-- json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20180813</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.directory.studio/org.apache.commons.io -->
-        <dependency>
-            <groupId>org.apache.directory.studio</groupId>
-            <artifactId>org.apache.commons.io</artifactId>
-            <version>2.4</version>
-        </dependency>
-
-        <!-- multimap -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>26.0-jre</version>
         </dependency>
 
     </dependencies>
@@ -190,13 +147,6 @@
                 </reportSets>
             </plugin>
 
-            <!--
-            <plugin>
-                <groupId>de.flashpixx</groupId>
-                <artifactId>rrd-antlr4</artifactId>
-                <version>0.0.1</version>
-            </plugin>
-            -->
         </plugins>
 
     </reporting>
@@ -359,27 +309,6 @@
                         <asl>javadoc_style</asl>
                     </mapping>
                 </configuration>
-            </plugin>
-
-            <!-- AntLR grammar build -->
-            <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.7.1</version>
-                <configuration>
-                    <visitor>true</visitor>
-                    <listener>true</listener>
-                    <treatWarningsAsErrors>true</treatWarningsAsErrors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>antlr</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>antlr4</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- Doxygen -->
