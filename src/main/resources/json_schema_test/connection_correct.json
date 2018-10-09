@@ -1,6 +1,0 @@
-{
-  "id" : "con01",
-  "relationship" : "rel01",
-  "entity" : "Customer",
-  "cardinality" : "1:1"
-}
