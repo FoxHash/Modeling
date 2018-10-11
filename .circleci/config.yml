@@ -35,7 +35,7 @@ jobs:
       # push documentation online
       - add_ssh_keys:
           fingerprints:
-              - "05:ce:52:8b:dc:13:c9:84:22:a0:30:a5:0a:21:30:b0"
+              - "33:a7:a4:da:a6:8b:dc:25:2f:8b:ad:5d:1d:f0:03:91"
       - run:
           name: Deploy Documentation
           command: |
