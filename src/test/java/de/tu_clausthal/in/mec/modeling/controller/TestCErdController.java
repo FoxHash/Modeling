@@ -46,7 +46,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
  */
 @RunWith( SpringRunner.class )
 @SpringBootTest
-@FixMethodOrder( MethodSorters.JVM )
+@FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public final class TestCErdController
 {
     private static final String TEST_MODEL_NAME = "foo";
@@ -92,12 +92,12 @@ public final class TestCErdController
     }
 
     /**
-     * create new empty model
+     * create new complete model step by step
      *
      * @throws Exception excnull
      */
     @Test
-    public void createNewModel() throws Exception
+    public void createNewModelStepByStep() throws Exception
     {
         final MockHttpServletResponse l_response = m_mockmvc.perform(
             MockMvcRequestBuilders.get( "/erd/create/{model}", TEST_MODEL_NAME ).accept( MediaType.APPLICATION_JSON ) )
@@ -105,76 +105,23 @@ public final class TestCErdController
                                                             .getResponse();
 
         Assertions.assertThat( l_response.getStatus() ).isEqualTo( HttpStatus.OK.value() );
-    }
 
-    /**
-     * create new entity and connect to model
-     *
-     * @throws Exception excnull
-     */
-    @Test
-    public void createEntity() throws Exception
-    {
+
         Assertions.assertThat( preparePostRequest( "/erd/create/{model}/entity", TEST_MODEL_NAME, TEST_ENTITY ).getStatus() ).isEqualTo(
             HttpStatus.OK.value() );
-    }
 
-    /**
-     * create new entity and connect to model
-     *
-     * @throws Exception excnull
-     */
-    @Test
-    public void createRelationship() throws Exception
-    {
         Assertions.assertThat( preparePostRequest( "/erd/create/{model}/relationship", TEST_MODEL_NAME, TEST_RELATIONSHIP ).getStatus() ).isEqualTo(
             HttpStatus.OK.value() );
-    }
 
-    /**
-     * create new entity and connect to model
-     *
-     * @throws Exception excnull
-     */
-    @Test
-    public void createISARelationship() throws Exception
-    {
         Assertions.assertThat( preparePostRequest( "/erd/create/{model}/isa-relationship", TEST_MODEL_NAME, TEST_ISARELATIONSHIP ).getStatus() ).isEqualTo(
             HttpStatus.OK.value() );
-    }
 
-    /**
-     * create new entity and connect to model
-     *
-     * @throws Exception excnull
-     */
-    @Test
-    public void createConnection() throws Exception
-    {
         Assertions.assertThat( preparePostRequest( "/erd/connect/relationship/{model}", TEST_MODEL_NAME, TEST_CONNECTION ).getStatus() ).isEqualTo(
             HttpStatus.OK.value() );
-    }
 
-    /**
-     * create new entity and connect to model
-     *
-     * @throws Exception excnull
-     */
-    @Test
-    public void createISAConnectionParent() throws Exception
-    {
         Assertions.assertThat( preparePostRequest( "/erd/connect/isa-relationship/{model}", TEST_MODEL_NAME, TEST_ISACONNECTION_PARENT ).getStatus() )
                   .isEqualTo( HttpStatus.OK.value() );
-    }
 
-    /**
-     * create new entity and connect to model
-     *
-     * @throws Exception excnull
-     */
-    @Test
-    public void createISAConnectionChild() throws Exception
-    {
         Assertions.assertThat( preparePostRequest( "/erd/connect/isa-relationship/{model}", TEST_MODEL_NAME, TEST_ISACONNECTION_CHILD ).getStatus() ).isEqualTo(
             HttpStatus.OK.value() );
     }
