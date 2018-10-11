@@ -44,6 +44,7 @@ jobs:
               git branch -D gh-pages || true
               git checkout --orphan gh-pages
               mv -f /tmp/site/* .
+              mkdir .circleci
               echo -e 'general:\n    branches:\n        ignore:\n            - /.*/\n' > .circleci/config.yml
               echo -e '*.*\n!*/\n!.circleci/config.yml\n!.gitignore\n!circle.yml\n!*.htm*\n!*.css\n!*.js\n!*.png\n!*.gif\n!*.svg\n!*.json\n!*.g4\n' > .gitignore
               git add --all .
