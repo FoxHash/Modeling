@@ -26,6 +26,7 @@ jobs: # a collection of steps
     branches:
         only:
             - master
+            - dev-oop
 
     environment:
       GIT_AUTHOR_NAME: CircleCI
@@ -50,7 +51,7 @@ jobs: # a collection of steps
       # push documentation online
       - add_ssh_keys:
           fingerprints:
-              - "ca:dc:dc:67:34:9d:87:4d:25:14:0d:72:03:67:78:2f"
+              - "05:ce:52:8b:dc:13:c9:84:22:a0:30:a5:0a:21:30:b0"
       - run:
           name: Deploy Documentation
           command: |
