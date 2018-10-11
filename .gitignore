@@ -1,6 +1,8 @@
 *.*
+!*/
 !*.md
 !.gitignore
+!.circleci/config.yml
 !circle.yml
 !application.yml
 !system.properties
