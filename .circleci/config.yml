@@ -10,7 +10,6 @@ jobs:
     branches:
         only:
             - master
-            - dev-oop
 
     environment:
       GIT_AUTHOR_NAME: CircleCI
