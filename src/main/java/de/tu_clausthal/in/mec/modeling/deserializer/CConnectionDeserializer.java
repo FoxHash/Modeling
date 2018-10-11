@@ -35,7 +35,8 @@ import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
 import java.io.IOException;
 
 /**
- * FOO //TODO
+ * Implementation of deserialization to create concrete objects considering the JSON schema settings.
+ * Deserializer: connection
  */
 public final class CConnectionDeserializer extends JsonDeserializer<Object> implements IConnectionDeserializer
 {
@@ -53,10 +54,10 @@ public final class CConnectionDeserializer extends JsonDeserializer<Object> impl
         final ObjectCodec l_objectcodec = p_parser.getCodec();
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
-        final String l_relationship = ( l_jsonnode.get( "relationship" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "relationship" ).asText();
-        final String l_entity = ( l_jsonnode.get( "entity" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "entity" ).asText();
-        final String l_cardinality = ( l_jsonnode.get( "cardinality" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "cardinality" ).asText();
+        final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
+        final String l_relationship = ( l_jsonnode.get( "relationship" ).isNull() ) ? null : l_jsonnode.get( "relationship" ).asText();
+        final String l_entity = ( l_jsonnode.get( "entity" ).isNull() ) ? null : l_jsonnode.get( "entity" ).asText();
+        final String l_cardinality = ( l_jsonnode.get( "cardinality" ).isNull() ) ? null : l_jsonnode.get( "cardinality" ).asText();
 
         return EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().connectEntityWithRelationship( l_id, l_entity, l_relationship, l_cardinality );
     }

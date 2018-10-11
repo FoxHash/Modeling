@@ -37,7 +37,8 @@ import java.io.IOException;
 
 
 /**
- * FOO //TODO
+ * Implementation of deserialization to create concrete objects considering the JSON schema settings.
+ * Deserializer: entity
  */
 public final class CEntityDeserializer extends JsonDeserializer<Object> implements IEntityDeserializer
 {
@@ -55,13 +56,18 @@ public final class CEntityDeserializer extends JsonDeserializer<Object> implemen
         final ObjectCodec l_objectcodec = p_parser.getCodec();
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
-        final boolean l_weakentity = Boolean.parseBoolean( l_jsonnode.get( "weak_entity" ).asText() );
+        final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
+        final boolean l_weakentity = l_jsonnode.get( "weak_entity" ).asBoolean();
 
         final Object l_entity = EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addEntity( l_id, l_weakentity );
 
-        l_jsonnode.get( "attributes" ).elements().forEachRemaining( i -> EModelStorage.INSTANCE.apply( m_model ).<IErd>raw()
-            .addAttributeToEntity( i.get( "name" ).asText(), i.get( "property" ).asText(), l_id ) );
+        l_jsonnode.get( "attributes" ).elements().forEachRemaining( attributes ->
+        {
+            final String l_name = ( attributes.get( "name" ).isNull() ) ? null : attributes.get( "name" ).asText();
+            final String l_property = ( attributes.get( "property" ).isNull() ) ? null : attributes.get( "property" ).asText();
+
+            EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addAttributeToEntity( l_name, l_property, l_id );
+        } );
 
         return l_entity;
     }

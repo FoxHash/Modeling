@@ -36,7 +36,8 @@ import java.io.IOException;
 
 
 /**
- * FOO //TODO
+ * Implementation of deserialization to create concrete objects considering the JSON schema settings.
+ * Deserializer: inherit connection
  */
 public final class CInheritConnectionDeserializer extends JsonDeserializer<Object> implements IInheritConnectionDeserializer
 {
@@ -54,11 +55,9 @@ public final class CInheritConnectionDeserializer extends JsonDeserializer<Objec
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
         final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
-        final String l_connectiontype = ( l_jsonnode.get( "connection_type" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "connection_type" )
-                                                                                                                                       .asText();
-        final String l_relationship = ( l_jsonnode.get( "isarelationship" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "isarelationship" )
-                                                                                                                                     .asText();
-        final String l_entity = ( l_jsonnode.get( "entity" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "entity" ).asText();
+        final String l_connectiontype = ( l_jsonnode.get( "connection_type" ).isNull() ) ? null : l_jsonnode.get( "connection_type" ).asText();
+        final String l_relationship = ( l_jsonnode.get( "isarelationship" ).isNull() ) ? null : l_jsonnode.get( "isarelationship" ).asText();
+        final String l_entity = ( l_jsonnode.get( "entity" ).isNull() ) ? null : l_jsonnode.get( "entity" ).asText();
 
         if ( "child".equalsIgnoreCase( l_connectiontype ) )
         {

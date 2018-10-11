@@ -38,12 +38,12 @@ import java.io.IOException;
 
 
 /**
- * FOO //TODO
+ * Implementation of deserialization to create concrete objects considering the JSON schema settings.
+ * Deserializer: complete model
  */
 public final class CModelDeserializer extends JsonDeserializer<Object> implements IModelDeserializer
 {
 
-    private static final String NULL = "NULL";
     private static final String ID = "id";
 
     @Override
@@ -52,7 +52,7 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
         final ObjectCodec l_objectcodec = p_parser.getCodec();
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final String l_modelid = ( l_jsonnode.get( "model_id" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : l_jsonnode.get( "model_id" ).asText();
+        final String l_modelid = ( l_jsonnode.get( "model_id" ).isNull() ) ? null : l_jsonnode.get( "model_id" ).asText();
         final Object l_model = EModelStorage.INSTANCE.add( new CErd( l_modelid ) );
 
         if ( l_jsonnode.has( "entities" ) )
@@ -89,8 +89,8 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
 
         p_jsonnode.get( "entities" ).elements().forEachRemaining( entity ->
         {
-            final String l_id = ( entity.get( ID ).asText().equalsIgnoreCase( NULL ) ) ? NULL : entity.get( ID ).asText();
-            final boolean l_weakentity = Boolean.parseBoolean( entity.get( "weak_entity" ).asText() );
+            final String l_id = ( entity.get( ID ).isNull() ) ? null : entity.get( ID ).asText();
+            final boolean l_weakentity = entity.get( "weak_entity" ).asBoolean();
 
             EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().addEntity( l_id, l_weakentity );
 
@@ -99,8 +99,8 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
                 entity.get( "attributes" ).elements().forEachRemaining( attribute ->
                 {
 
-                    final String l_name = ( attribute.get( "name" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : attribute.get( "name" ).asText();
-                    final String l_property = attribute.get( "property" ).asText().equalsIgnoreCase( NULL ) ? NULL : attribute.get( "property" ).asText();
+                    final String l_name = ( attribute.get( "name" ).isNull() ) ? null : attribute.get( "name" ).asText();
+                    final String l_property = attribute.get( "property" ).isNull() ? null : attribute.get( "property" ).asText();
 
                     EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().addAttributeToEntity( l_name, l_property, l_id );
 
@@ -115,9 +115,8 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
         p_jsonnode.get( "relationships" ).elements().forEachRemaining( relationships ->
         {
 
-            final String l_id = ( relationships.get( ID ).asText().equalsIgnoreCase( NULL ) ) ? NULL : relationships.get( ID ).asText();
-            final String l_description = ( relationships.get( "description" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : relationships.get( "description" )
-                                                                                                                                        .asText();
+            final String l_id = ( relationships.get( ID ).isNull() ) ? null : relationships.get( ID ).asText();
+            final String l_description = ( relationships.get( "description" ).isNull() ) ? null : relationships.get( "description" ).asText();
 
             EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().addRelationship( l_id, l_description );
 
@@ -129,7 +128,7 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
         p_jsonnode.get( "isa-relationships" ).elements().forEachRemaining( isarelationships ->
         {
 
-            final String l_id = ( isarelationships.get( ID ).asText().equalsIgnoreCase( NULL ) ) ? NULL : isarelationships.get( ID ).asText();
+            final String l_id = ( isarelationships.get( ID ).isNull() ) ? null : isarelationships.get( ID ).asText();
             EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().addISARelationship( l_id );
 
         } );
@@ -140,10 +139,10 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
         p_jsonnode.get( "connections" ).elements().forEachRemaining( connections ->
         {
 
-            final String l_id = ( connections.get( ID ).asText().equalsIgnoreCase( NULL ) ) ? NULL : connections.get( ID ).asText();
-            final String l_relationship = ( connections.get( "relationship" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : connections.get( "relationship" ).asText();
-            final String l_entity = ( connections.get( "entity" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : connections.get( "entity" ).asText();
-            final String l_cardinality = ( connections.get( "cardinality" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : connections.get( "cardinality" ).asText();
+            final String l_id = ( connections.get( ID ).isNull() ) ? null : connections.get( ID ).asText();
+            final String l_relationship = ( connections.get( "relationship" ).isNull() ) ? null : connections.get( "relationship" ).asText();
+            final String l_entity = ( connections.get( "entity" ).isNull() ) ? null : connections.get( "entity" ).asText();
+            final String l_cardinality = ( connections.get( "cardinality" ).isNull() ) ? null : connections.get( "cardinality" ).asText();
 
             EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().connectEntityWithRelationship( l_id, l_entity, l_relationship, l_cardinality );
 
@@ -155,12 +154,10 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
         p_jsonnode.get( "isa-connections" ).elements().forEachRemaining( isaconnections ->
         {
 
-            final String l_id = ( isaconnections.get( ID ).asText().equalsIgnoreCase( NULL ) ) ? NULL : isaconnections.get( ID ).asText();
-            final String l_connectiontype = ( isaconnections.get( "connection_type" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : isaconnections.get(
-                "connection_type" ).asText();
-            final String l_relationship = ( isaconnections.get( "isarelationship" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : isaconnections.get(
-                "isarelationship" ).asText();
-            final String l_entity = ( isaconnections.get( "entity" ).asText().equalsIgnoreCase( NULL ) ) ? NULL : isaconnections.get( "entity" ).asText();
+            final String l_id = ( isaconnections.get( ID ).isNull() ) ? null : isaconnections.get( ID ).asText();
+            final String l_connectiontype = ( isaconnections.get( "connection_type" ).isNull() ) ? null : isaconnections.get( "connection_type" ).asText();
+            final String l_relationship = ( isaconnections.get( "isarelationship" ).isNull() ) ? null : isaconnections.get( "isarelationship" ).asText();
+            final String l_entity = ( isaconnections.get( "entity" ).isNull() ) ? null : isaconnections.get( "entity" ).asText();
 
             if ( "child".equalsIgnoreCase( l_connectiontype ) )
             {

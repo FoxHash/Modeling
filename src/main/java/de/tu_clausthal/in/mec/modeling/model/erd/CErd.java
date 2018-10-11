@@ -109,7 +109,7 @@ public final class CErd implements IErd
     }
 
     @Override
-    public IErd addAttributeToEntity( @NonNull final String p_name, @Nonnull final String p_property, @NonNull final String p_entityid )
+    public IErd addAttributeToEntity( @NonNull final String p_name, @NonNull final String p_property, @NonNull final String p_entityid )
     {
         final IErdNode l_entity = m_network.node( p_entityid );
 

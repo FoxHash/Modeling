@@ -37,7 +37,8 @@ import java.io.IOException;
 
 
 /**
- * FOO //TODO
+ * Implementation of deserialization to create concrete objects considering the JSON schema settings.
+ * Deserializer: relationship
  */
 public final class CRelationshipDeserializer extends JsonDeserializer<Object> implements IRelationshipDeserializer
 {
@@ -55,15 +56,20 @@ public final class CRelationshipDeserializer extends JsonDeserializer<Object> im
         final ObjectCodec l_objectcodec = p_parser.getCodec();
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
-        final String l_description = ( l_jsonnode.get( "description" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "description" ).asText();
+        final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
+        final String l_description = ( l_jsonnode.get( "description" ).isNull() ) ? null : l_jsonnode.get( "description" ).asText();
 
         final Object l_relationship = EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addRelationship( l_id, l_description );
 
         if ( l_jsonnode.has( "attributes" ) )
         {
-            l_jsonnode.get( "attributes" ).elements().forEachRemaining( i -> EModelStorage.INSTANCE.apply( m_model ).<IErd>raw()
-                .addAttributeToRelationship( i.get( "name" ).asText(), i.get( "property" ).asText(), l_id ) );
+            l_jsonnode.get( "attributes" ).elements().forEachRemaining( attributes ->
+            {
+                final String l_name = ( attributes.get( "name" ).isNull() ) ? null : attributes.get( "name" ).asText();
+                final String l_property = ( attributes.get( "property" ).isNull() ) ? null : attributes.get( "property" ).asText();
+
+                EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addAttributeToRelationship( l_name, l_property, l_id );
+            } );
         }
 
         return l_relationship;

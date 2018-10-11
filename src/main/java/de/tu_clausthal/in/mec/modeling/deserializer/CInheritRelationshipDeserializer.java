@@ -37,7 +37,8 @@ import java.io.IOException;
 
 
 /**
- * FOO //TODO
+ * Implementation of deserialization to create concrete objects considering the JSON schema settings.
+ * Deserializer: inherit relationship
  */
 public final class CInheritRelationshipDeserializer extends JsonDeserializer<Object> implements IInheritRelationshipDeserializer<IAttribute>
 {
@@ -55,7 +56,7 @@ public final class CInheritRelationshipDeserializer extends JsonDeserializer<Obj
         final ObjectCodec l_objectcodec = p_parser.getCodec();
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
+        final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
 
         return EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addISARelationship( l_id );
     }
