@@ -11,10 +11,7 @@ jobs: # a collection of steps
     branches:
         only:
             - master
-
-    branches:
-        only:
-            - master
+            - dev-oop
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
