@@ -29,6 +29,10 @@
     <name>Modeling</name>
     <description>Modeling framework application for validing graphical models in teaching</description>
 
+    <prerequisites>
+        <maven>3.5.2</maven>
+    </prerequisites>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -342,7 +346,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>[7.8.2,)</version>
+                        <version>[8.1,)</version>
                     </dependency>
                 </dependencies>
                 <executions>
