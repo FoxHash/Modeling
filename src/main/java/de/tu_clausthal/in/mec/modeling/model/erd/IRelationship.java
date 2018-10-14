@@ -47,6 +47,14 @@ public interface IRelationship<A extends IAttribute> extends IErdNode
     boolean isRecursive();
 
     /**
+     * check if this relationship is a weak relationship
+     * -> one of the entities is weak
+     *
+     * @return weak
+     */
+    boolean isWeakRelationship();
+
+    /**
      * return the description of the relationship
      *
      * @return description
