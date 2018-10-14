@@ -25,17 +25,18 @@ package de.tu_clausthal.in.mec.modeling.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import de.tu_clausthal.in.mec.modeling.deserializer.CConnectionDeserializer;
-import de.tu_clausthal.in.mec.modeling.deserializer.CEntityDeserializer;
-import de.tu_clausthal.in.mec.modeling.deserializer.CInheritConnectionDeserializer;
-import de.tu_clausthal.in.mec.modeling.deserializer.CInheritRelationshipDeserializer;
-import de.tu_clausthal.in.mec.modeling.deserializer.CModelDeserializer;
-import de.tu_clausthal.in.mec.modeling.deserializer.CRelationshipDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CConnectionDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CEntityDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CInheritConnectionDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CInheritRelationshipDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CModelDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CRelationshipDeserializer;
 import de.tu_clausthal.in.mec.modeling.model.erd.CErd;
 import de.tu_clausthal.in.mec.modeling.model.erd.IErd;
 import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -67,7 +69,7 @@ public final class CErdController
      * @param p_model name of the model
      * @return model
      */
-    @RequestMapping( value = "/create/{model}", produces = "application/json" )
+    @RequestMapping( value = "/create/{model}", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object createModel( @PathVariable( "model" ) final String p_model )
     {
         return EModelStorage.INSTANCE.add( new CErd( p_model ) ).serialize();
@@ -80,7 +82,7 @@ public final class CErdController
      * @param p_input json input
      * @return model|error
      */
-    @RequestMapping( value = "/create/{model}/entity", produces = "application/json" )
+    @RequestMapping( value = "/create/{model}/entity", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object createEntity( @PathVariable( "model" ) final String p_model, @RequestBody final String p_input )
     {
         try
@@ -106,7 +108,7 @@ public final class CErdController
      * @param p_input json input
      * @return model|error
      */
-    @RequestMapping( value = "/create/{model}/relationship", produces = "application/json" )
+    @RequestMapping( value = "/create/{model}/relationship", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object createRelationship( @PathVariable( "model" ) final String p_model, @RequestBody final String p_input )
     {
         try
@@ -132,7 +134,7 @@ public final class CErdController
      * @param p_input json input
      * @return model|error
      */
-    @RequestMapping( value = "/create/{model}/isa-relationship", produces = "application/json" )
+    @RequestMapping( value = "/create/{model}/isa-relationship", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object createISARelationship( @PathVariable( "model" ) final String p_model, @RequestBody final String p_input )
     {
         try
@@ -158,7 +160,7 @@ public final class CErdController
      * @param p_input json input
      * @return model|error
      */
-    @RequestMapping( value = "/connect/relationship/{model}", produces = "application/json" )
+    @RequestMapping( value = "/connect/relationship/{model}", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object connectEntityRelationship( @PathVariable( "model" ) final String p_model, @RequestBody final String p_input )
     {
         try
@@ -184,7 +186,7 @@ public final class CErdController
      * @param p_input json input
      * @return model|error
      */
-    @RequestMapping( value = "/connect/isa-relationship/{model}", produces = "application/json" )
+    @RequestMapping( value = "/connect/isa-relationship/{model}", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object connectEntityISARelationship( @PathVariable( "model" ) final String p_model, @RequestBody final String p_input )
     {
         try
@@ -209,23 +211,25 @@ public final class CErdController
      * @param p_input erd model in json
      * @return model|error
      */
-    @RequestMapping( value = "/read", produces = "application/json" )
+    @RequestMapping( value = "/read", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object createModelFromJson( @RequestBody final String p_input )
     {
+        final AtomicReference<String> l_modelid = new AtomicReference<>();
+
         try
         {
             final ObjectMapper l_objectmapper = new ObjectMapper();
             final SimpleModule l_simplemodule = new SimpleModule();
             l_simplemodule.addDeserializer( Object.class, new CModelDeserializer() );
             l_objectmapper.registerModule( l_simplemodule );
-            l_objectmapper.readValue( p_input, Object.class );
+            l_modelid.compareAndSet( null, l_objectmapper.readValue( p_input, Object.class ).toString() );
         }
         catch ( final IOException l_e1 )
         {
             generateGeneralErrorMessage( ERROR_MESSAGE );
         }
 
-        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( "testmodel" ).serialize(), HttpStatus.OK );
+        return new ResponseEntity<>( EModelStorage.INSTANCE.apply( l_modelid.get() ).serialize(), HttpStatus.OK );
     }
 
     /**
@@ -234,7 +238,7 @@ public final class CErdController
      * @param p_model model id
      * @return model|error
      */
-    @RequestMapping( value = "/model/{model}", produces = "application/json" )
+    @RequestMapping( value = "/model/{model}", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object getModel( @PathVariable( "model" ) final String p_model )
     {
         try
@@ -253,7 +257,7 @@ public final class CErdController
      * @param p_model model id
      * @return check result | error
      */
-    @RequestMapping( value = "/validate/{model}", produces = "application/json" )
+    @RequestMapping( value = "/validate/{model}", produces = MediaType.APPLICATION_JSON_VALUE )
     public Object validateModel( @PathVariable( "model" ) final String p_model )
     {
         try
