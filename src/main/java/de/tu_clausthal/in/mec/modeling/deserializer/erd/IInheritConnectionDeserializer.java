@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package de.tu_clausthal.in.mec.modeling.deserializer;
+package de.tu_clausthal.in.mec.modeling.deserializer.erd;
 
 /**
  * The interface provides all the methods needed by deserialization. Deserialization is necessary because no direct mapping to objects is possible.

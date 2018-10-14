@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package de.tu_clausthal.in.mec.modeling.deserializer;
+package de.tu_clausthal.in.mec.modeling.deserializer.erd;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,21 +31,19 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.tu_clausthal.in.mec.modeling.model.erd.IErd;
 import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
-import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.io.IOException;
 
 
 /**
  * Implementation of deserialization to create concrete objects considering the JSON schema settings.
- * Deserializer: relationship
+ * Deserializer: inherit connection
  */
-public final class CRelationshipDeserializer extends JsonDeserializer<Object> implements IRelationshipDeserializer
+public final class CInheritConnectionDeserializer extends JsonDeserializer<Object> implements IInheritConnectionDeserializer
 {
-
     private final String m_model;
 
-    public CRelationshipDeserializer( @NonNull final String p_model )
+    public CInheritConnectionDeserializer( final String p_model )
     {
         m_model = p_model;
     }
@@ -56,22 +54,23 @@ public final class CRelationshipDeserializer extends JsonDeserializer<Object> im
         final ObjectCodec l_objectcodec = p_parser.getCodec();
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
-        final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
-        final String l_description = ( l_jsonnode.get( "description" ).isNull() ) ? null : l_jsonnode.get( "description" ).asText();
+        final String l_id = ( l_jsonnode.get( "id" ).asText().equalsIgnoreCase( "null" ) ) ? null : l_jsonnode.get( "id" ).asText();
+        final String l_connectiontype = ( l_jsonnode.get( "connection_type" ).isNull() ) ? null : l_jsonnode.get( "connection_type" ).asText();
+        final String l_relationship = ( l_jsonnode.get( "isarelationship" ).isNull() ) ? null : l_jsonnode.get( "isarelationship" ).asText();
+        final String l_entity = ( l_jsonnode.get( "entity" ).isNull() ) ? null : l_jsonnode.get( "entity" ).asText();
 
-        final Object l_relationship = EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addRelationship( l_id, l_description );
-
-        if ( l_jsonnode.has( "attributes" ) )
+        if ( "child".equalsIgnoreCase( l_connectiontype ) )
         {
-            l_jsonnode.get( "attributes" ).elements().forEachRemaining( attributes ->
-            {
-                final String l_name = ( attributes.get( "name" ).isNull() ) ? null : attributes.get( "name" ).asText();
-                final String l_property = ( attributes.get( "property" ).isNull() ) ? null : attributes.get( "property" ).asText();
-
-                EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addAttributeToRelationship( l_name, l_property, l_id );
-            } );
+            return EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().connectChildEntityWithISARelationship( l_id, l_entity, l_relationship );
         }
 
-        return l_relationship;
+        if ( "parent".equalsIgnoreCase( l_connectiontype ) )
+        {
+            return EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().connectParentEntityWithISARelationship( l_id, l_entity, l_relationship );
+        }
+
+        throw new RuntimeException(
+            "You have an error in your request. It was not possible to connect the entity with a relationship! Your relationship definition was wrong." );
+
     }
 }

@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package de.tu_clausthal.in.mec.modeling.deserializer;
+package de.tu_clausthal.in.mec.modeling.deserializer.erd;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -80,7 +80,7 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
             deserializeISAConnections( l_modelid, l_jsonnode );
         }
 
-        return l_model;
+        return l_modelid;
     }
 
 

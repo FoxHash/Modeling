@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package de.tu_clausthal.in.mec.modeling.deserializer;
+package de.tu_clausthal.in.mec.modeling.deserializer.erd;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,19 +31,21 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.tu_clausthal.in.mec.modeling.model.erd.IErd;
 import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.io.IOException;
 
+
 /**
  * Implementation of deserialization to create concrete objects considering the JSON schema settings.
- * Deserializer: connection
+ * Deserializer: relationship
  */
-public final class CConnectionDeserializer extends JsonDeserializer<Object> implements IConnectionDeserializer
+public final class CRelationshipDeserializer extends JsonDeserializer<Object> implements IRelationshipDeserializer
 {
 
     private final String m_model;
 
-    public CConnectionDeserializer( final String p_model )
+    public CRelationshipDeserializer( @NonNull final String p_model )
     {
         m_model = p_model;
     }
@@ -55,10 +57,21 @@ public final class CConnectionDeserializer extends JsonDeserializer<Object> impl
         final JsonNode l_jsonnode = l_objectcodec.readTree( p_parser );
 
         final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
-        final String l_relationship = ( l_jsonnode.get( "relationship" ).isNull() ) ? null : l_jsonnode.get( "relationship" ).asText();
-        final String l_entity = ( l_jsonnode.get( "entity" ).isNull() ) ? null : l_jsonnode.get( "entity" ).asText();
-        final String l_cardinality = ( l_jsonnode.get( "cardinality" ).isNull() ) ? null : l_jsonnode.get( "cardinality" ).asText();
+        final String l_description = ( l_jsonnode.get( "description" ).isNull() ) ? null : l_jsonnode.get( "description" ).asText();
 
-        return EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().connectEntityWithRelationship( l_id, l_entity, l_relationship, l_cardinality );
+        final Object l_relationship = EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addRelationship( l_id, l_description );
+
+        if ( l_jsonnode.has( "attributes" ) )
+        {
+            l_jsonnode.get( "attributes" ).elements().forEachRemaining( attributes ->
+            {
+                final String l_name = ( attributes.get( "name" ).isNull() ) ? null : attributes.get( "name" ).asText();
+                final String l_property = ( attributes.get( "property" ).isNull() ) ? null : attributes.get( "property" ).asText();
+
+                EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addAttributeToRelationship( l_name, l_property, l_id );
+            } );
+        }
+
+        return l_relationship;
     }
 }
