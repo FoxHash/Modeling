@@ -26,7 +26,7 @@ package de.tu_clausthal.in.mec.modeling.model.erd;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import de.tu_clausthal.in.mec.modeling.deserializer.CRelationshipDeserializer;
+import de.tu_clausthal.in.mec.modeling.deserializer.erd.CRelationshipDeserializer;
 import de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -71,7 +71,15 @@ public final class CRelationship extends IBaseNode implements IRelationship<IAtt
     @Override
     public boolean isRecursive()
     {
-        return ( m_entityone.get() != null ) && ( m_entitytwo.get() != null ) && m_entityone.get().getKey().id().equals( m_entitytwo.get().getKey().id() );
+        return ( Objects.nonNull( m_entityone.get() ) ) && ( Objects.nonNull( m_entitytwo.get() ) ) && m_entityone.get().getKey().id().equals(
+            m_entitytwo.get().getKey().id() );
+    }
+
+    @Override
+    public boolean isWeakRelationship()
+    {
+        return ( Objects.nonNull( m_entityone.get() ) ) && Objects.nonNull( m_entitytwo.get() )
+               && ( ( m_entityone.get().getKey().isWeakEntity() ) || ( m_entitytwo.get().getKey().isWeakEntity() ) );
     }
 
     @Override

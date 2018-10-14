@@ -239,4 +239,30 @@ public final class TestCErdModel
 
     }
 
+    /**
+     * check if the validator accept the weak entity connected to a non weak entity
+     * and validate the relationship as weak relationship
+     *
+     * @throws Exception if test failed
+     */
+    @Test
+    public void weakRelationship() throws Exception
+    {
+
+        final IErd l_erd = new CErd( T_MODEL );
+
+        l_erd.addEntity( "Parent", false );
+        l_erd.addAttributeToEntity( "Name", T_ATTRIBUTE, "Parent" );
+
+        l_erd.addEntity( "Child", true );
+        l_erd.addAttributeToEntity( "Name", T_ATTRIBUTE, "Child" );
+
+        l_erd.addRelationship( T_RELATIONSHIP, "parent/child" );
+        l_erd.connectEntityWithRelationship( "conParent", "Parent", T_RELATIONSHIP, T_CARDINALITY11 );
+        l_erd.connectEntityWithRelationship( "conChild", "Child", T_RELATIONSHIP, T_CARDINALITY1N );
+
+        Assert.assertTrue( l_erd.check() );
+
+    }
+
 }
