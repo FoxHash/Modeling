@@ -143,11 +143,12 @@ public final class CErdChecker implements IErdChecker
         m_model.nodes()
                .filter( i -> i instanceof IEntity )
                .filter( i -> i.<IEntity<IAttribute>>raw().isWeakEntity() )
-               .forEach( p_iErdNode -> p_iErdNode.<IEntity<IAttribute>>raw().getConnectedAttributes().forEach( ( p_s, p_iAttribute ) -> {
-                   if ( p_iAttribute.getProperty().equals( EAttributeProperty.KEY.getProperty() ) )
+               .forEach( p_iErdNode -> p_iErdNode.<IEntity<IAttribute>>raw().getConnectedAttributes().forEach( ( p_str, p_attribute ) ->
+               {
+                   if ( p_attribute.getProperty().equals( EAttributeProperty.KEY.getProperty() ) )
                    {
                        l_counter.set( l_counter.get() );
-                       m_errors.add( p_iAttribute.attributeName() + " (" + p_iErdNode.id() + ")" + ERROR_WEAKATTRIBUTEENTITY );
+                       m_errors.add( p_attribute.attributeName() + " (" + p_iErdNode.id() + ")" + ERROR_WEAKATTRIBUTEENTITY );
                    }
                } ) );
 
