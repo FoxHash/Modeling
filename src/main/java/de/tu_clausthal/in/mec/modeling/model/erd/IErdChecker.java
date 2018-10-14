@@ -66,6 +66,15 @@ public interface IErdChecker
     boolean validateISARelationships();
 
     /**
+     * validate weak key attributes
+     * only a weak entity can contains a weak key attribute property
+     * and not a key attribute
+     *
+     * @return test result
+     */
+    boolean validateWeakEntityKeys();
+
+    /**
      * method to fetch all errors for output generating
      *
      * @return list with all errors

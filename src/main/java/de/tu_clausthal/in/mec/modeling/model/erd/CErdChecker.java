@@ -29,6 +29,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +42,7 @@ public final class CErdChecker implements IErdChecker
     private static final String ERROR_RELATIONSHIP = ": You have an error in your relationship. One of the two entities is not set.";
     private static final String ERROR_ENTITYATTRIBUT = ": The entity has less than 1 attribute. This is semantically not valid.";
     private static final String ERROR_ISARELATIONSHIP = ": This child entity is connected to a is-a relationship and a normal relationship. This is not allowed!";
+    private static final String ERROR_WEAKATTRIBUTEENTITY = ": The attribute from the entity (see name in brackets) has an invalid key property.";
 
     private final IGraph<IErdNode, IErdEdge> m_model;
     private final List<String> m_errors = new ArrayList<>();
@@ -58,7 +60,7 @@ public final class CErdChecker implements IErdChecker
     @Override
     public boolean runAllTests()
     {
-        return validateEntities() && validateRelationships() && validateISARelationships();
+        return validateEntities() && validateRelationships() && validateISARelationships() && validateWeakEntityKeys();
     }
 
     @Override
@@ -131,6 +133,25 @@ public final class CErdChecker implements IErdChecker
         l_invalidchilds.forEach( i -> m_errors.add( i + ERROR_ISARELATIONSHIP ) );
 
         return l_invalidisarelationships == 0;
+    }
+
+    @Override
+    public boolean validateWeakEntityKeys()
+    {
+        final AtomicReference<Integer> l_counter = new AtomicReference<>( 0 );
+
+        m_model.nodes()
+               .filter( i -> i instanceof IEntity )
+               .filter( i -> i.<IEntity<IAttribute>>raw().isWeakEntity() )
+               .forEach( p_iErdNode -> p_iErdNode.<IEntity<IAttribute>>raw().getConnectedAttributes().forEach( ( p_s, p_iAttribute ) -> {
+                   if ( p_iAttribute.getProperty().equals( EAttributeProperty.KEY.getProperty() ) )
+                   {
+                       l_counter.set( l_counter.get() );
+                       m_errors.add( p_iAttribute.attributeName() + " (" + p_iErdNode.id() + ")" + ERROR_WEAKATTRIBUTEENTITY );
+                   }
+               } ) );
+
+        return l_counter.get() == 0;
     }
 
     @Override
