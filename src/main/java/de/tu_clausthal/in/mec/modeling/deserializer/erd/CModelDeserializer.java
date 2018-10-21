@@ -35,6 +35,7 @@ import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 
 /**
@@ -92,9 +93,19 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
             final String l_id = ( entity.get( ID ).isNull() ) ? null : entity.get( ID ).asText();
             final boolean l_weakentity = entity.get( "weak_entity" ).asBoolean();
 
+            if ( !entity.has( "attributes" ) )
+            {
+                throw new RuntimeException( MessageFormat.format( "the entity [{0}] has no attributes connected", l_id ) );
+            }
+
+            if ( !entity.get( "attributes" ).elements().hasNext() )
+            {
+                throw new RuntimeException( MessageFormat.format( "the entity [{0}] has no attributes connected", l_id ) );
+            }
+
             EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().addEntity( l_id, l_weakentity );
 
-            if ( entity.has( "attributes" ) )
+            if ( entity.has( "attributes" ) && entity.get( "attributes" ).elements().hasNext() )
             {
                 entity.get( "attributes" ).elements().forEachRemaining( attribute ->
                 {
@@ -163,14 +174,16 @@ public final class CModelDeserializer extends JsonDeserializer<Object> implement
             {
                 EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().connectChildEntityWithISARelationship( l_id, l_entity, l_relationship );
             }
-
-            if ( "parent".equalsIgnoreCase( l_connectiontype ) )
+            else if ( "parent".equalsIgnoreCase( l_connectiontype ) )
             {
                 EModelStorage.INSTANCE.apply( p_modelid ).<IErd>raw().connectParentEntityWithISARelationship( l_id, l_entity, l_relationship );
             }
+            else
+            {
+                throw new RuntimeException(
+                    "You have an error in your request. It was not possible to connect the entity with a relationship! Your relationship definition was wrong." );
+            }
 
-            throw new RuntimeException(
-                "You have an error in your request. It was not possible to connect the entity with a relationship! Your relationship definition was wrong." );
 
         } );
     }

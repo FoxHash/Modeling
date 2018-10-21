@@ -34,6 +34,7 @@ import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 
 /**
@@ -58,6 +59,16 @@ public final class CEntityDeserializer extends JsonDeserializer<Object> implemen
 
         final String l_id = ( l_jsonnode.get( "id" ).isNull() ) ? null : l_jsonnode.get( "id" ).asText();
         final boolean l_weakentity = l_jsonnode.get( "weak_entity" ).asBoolean();
+
+        if ( !l_jsonnode.has( "attributes" ) )
+        {
+            throw new RuntimeException( MessageFormat.format( "the entity [{0}] has no attributes connected", l_id ) );
+        }
+
+        if ( !l_jsonnode.get( "attributes" ).elements().hasNext() )
+        {
+            throw new RuntimeException( MessageFormat.format( "the entity [{0}] has no attributes connected", l_id ) );
+        }
 
         final Object l_entity = EModelStorage.INSTANCE.apply( m_model ).<IErd>raw().addEntity( l_id, l_weakentity );
 
