@@ -242,6 +242,12 @@ public final class CErd implements IErd
         return new CErdChecker( m_network ).fetchErrors();
     }
 
+    @Override
+    public Map<String, IEntity<IAttribute>> checkNormalization()
+    {
+        return new CErdChecker( m_network ).validateNormalization();
+    }
+
     /**
      * calculate the hash code for the graph
      *

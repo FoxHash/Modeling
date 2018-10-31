@@ -83,7 +83,7 @@ public final class TestCErdController
     /**
      * test if the controller exists
      *
-     * @throws Exception excnull
+     * @throws Exception if test failed
      */
     @Test
     public void initialControllerTest() throws Exception
@@ -94,7 +94,7 @@ public final class TestCErdController
     /**
      * create new complete model step by step
      *
-     * @throws Exception excnull
+     * @throws Exception if test failed
      */
     @Test
     public void createNewModelStepByStep() throws Exception
@@ -127,14 +127,26 @@ public final class TestCErdController
     }
 
     /**
-     * create new entity and connect to model
+     * create new erd
      *
-     * @throws Exception excnull
+     * @throws Exception if test failed
      */
     @Test
     public void createModelFromJSON() throws Exception
     {
         Assertions.assertThat( preparePostRequest( "/erd/read", "", TEST_COMPLETE_JSON_MODEL ).getStatus() ).isEqualTo( HttpStatus.OK.value() );
+    }
+
+    /**
+     * create new erd and check normalization
+     *
+     * @throws Exception if test failed
+     */
+    @Test
+    public void normalizationTest() throws Exception
+    {
+        Assertions.assertThat( preparePostRequest( "/erd/read", "", TEST_COMPLETE_JSON_MODEL ).getStatus() ).isEqualTo( HttpStatus.OK.value() );
+        Assertions.assertThat( preparePostRequest( "/erd/normalization/{model}", "testmodel", "" ).getStatus() ).isEqualTo( HttpStatus.OK.value() );
     }
 
 
@@ -152,7 +164,7 @@ public final class TestCErdController
      * @param p_postbody body
      * @return servlet response
      *
-     * @throws Exception excnull
+     * @throws Exception if test failed
      */
     private MockHttpServletResponse preparePostRequest( @NonNull final String p_uri, @NonNull final String p_modelname, @NonNull final String p_postbody )
         throws Exception

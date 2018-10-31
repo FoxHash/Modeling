@@ -32,6 +32,8 @@ import de.tu_clausthal.in.mec.modeling.deserializer.erd.CInheritRelationshipDese
 import de.tu_clausthal.in.mec.modeling.deserializer.erd.CModelDeserializer;
 import de.tu_clausthal.in.mec.modeling.deserializer.erd.CRelationshipDeserializer;
 import de.tu_clausthal.in.mec.modeling.model.erd.CErd;
+import de.tu_clausthal.in.mec.modeling.model.erd.IAttribute;
+import de.tu_clausthal.in.mec.modeling.model.erd.IEntity;
 import de.tu_clausthal.in.mec.modeling.model.erd.IErd;
 import de.tu_clausthal.in.mec.modeling.model.storage.EModelStorage;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -268,6 +270,39 @@ public final class CErdController
         {
             return CErdController.generateGeneralErrorMessage( "The model you requested was not found on this server!" );
         }
+    }
+
+    /**
+     * check if erd model can be normalized and return entities which can not be normalized
+     *
+     * @param p_model model id
+     * @return check result
+     */
+    @RequestMapping( value = "/normalization/{model}", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Object normaizationCheck( @PathVariable( "model" ) final String p_model )
+    {
+        final Map<String, IEntity<IAttribute>> l_nonnormalizedentities = EModelStorage.INSTANCE.apply( p_model ).<IErd>raw().checkNormalization();
+        final Map<Object, Object> l_responsemap = new HashMap<>();
+        final DateFormat l_dateformat = new SimpleDateFormat( "dd.MM.yyyy HH:mm:ss" );
+        final Date l_date = new Date();
+
+        if ( l_nonnormalizedentities.size() > 0 )
+        {
+            l_responsemap.put( "description", "the following entities can't be normalized, because they have no key attribute connected" );
+            l_responsemap.put( "date/time", l_dateformat.format( l_date ) );
+            l_responsemap.put( "error counter", l_nonnormalizedentities.size() );
+            l_responsemap.put( "non normalized entities", l_nonnormalizedentities );
+
+            return new ResponseEntity<>( l_responsemap, HttpStatus.BAD_REQUEST );
+        }
+        else
+        {
+            l_responsemap.put( "date/time", l_dateformat.format( l_date ) );
+            l_responsemap.put( "description", "all entities contains at least one key attribute" );
+
+            return new ResponseEntity<>( l_responsemap, HttpStatus.OK );
+        }
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

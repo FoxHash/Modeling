@@ -28,6 +28,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -131,4 +132,14 @@ public interface IErd extends IModel<IErd>
      * @return list with errors
      */
     List<String> checkResult();
+
+    /**
+     * function to run the test if the erd can be normalized - all entities must have at least
+     * one attribute with a key flag
+     *
+     * method return all entities, which has no key attribute connected
+     *
+     * @return map with all non normalized entities
+     */
+    Map<String, IEntity<IAttribute>> checkNormalization();
 }

@@ -24,11 +24,13 @@
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
 import de.tu_clausthal.in.mec.modeling.model.graph.IGraph;
+import de.tu_clausthal.in.mec.modeling.model.graph.INode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -147,12 +149,36 @@ public final class CErdChecker implements IErdChecker
                {
                    if ( p_attribute.getProperty().equals( EAttributeProperty.KEY.getProperty() ) )
                    {
-                       l_counter.set( l_counter.get() );
+                       l_counter.set( l_counter.get() + 1 );
                        m_errors.add( p_attribute.attributeName() + " (" + p_iErdNode.id() + ")" + ERROR_WEAKATTRIBUTEENTITY );
                    }
                } ) );
 
         return l_counter.get() == 0;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Map<String, IEntity<IAttribute>> validateNormalization()
+    {
+        final Map<String, IEntity<IAttribute>> l_nonnormalizedentities;
+
+        l_nonnormalizedentities = m_model.nodes()
+                                         .filter( i -> i instanceof IEntity )
+                                         .map( INode::<IEntity>raw )
+                                         .collect( Collectors.toMap( INode::id, i -> i ) );
+
+        m_model.nodes()
+               .filter( i -> i instanceof IEntity )
+               .forEach( p_iErdNode -> p_iErdNode.<IEntity<IAttribute>>raw().getConnectedAttributes().forEach( ( p_str, p_iattribute ) ->
+               {
+                   if ( p_iattribute.getProperty().equals( EAttributeProperty.KEY.getProperty() ) )
+                   {
+                       l_nonnormalizedentities.remove( p_iErdNode.id() );
+                   }
+               } ) );
+
+        return Collections.unmodifiableMap( l_nonnormalizedentities );
     }
 
     @Override

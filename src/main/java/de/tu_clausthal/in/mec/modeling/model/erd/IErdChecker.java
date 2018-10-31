@@ -24,6 +24,7 @@
 package de.tu_clausthal.in.mec.modeling.model.erd;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -73,6 +74,14 @@ public interface IErdChecker
      * @return test result
      */
     boolean validateWeakEntityKeys();
+
+    /**
+     * validate if all entities has an attribute with least than one
+     * key attribute to check if the erd can be normalized
+     *
+     * @return map with all non normalized entities
+     */
+    Map<String, IEntity<IAttribute>> validateNormalization();
 
     /**
      * method to fetch all errors for output generating
