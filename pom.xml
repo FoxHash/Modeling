@@ -205,6 +205,8 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.20</version>
                     <configuration>
+                        <!-- fix issues while building: https://stackoverflow.com/questions/50661648/spring-boot-fails-to-run-maven-surefire-plugin-classnotfoundexception-org-apache/50661649#50661649 -->
+                        <useSystemClassLoader>false</useSystemClassLoader>
                         <includes>
                             <include>**/Test*</include>
                         </includes>
