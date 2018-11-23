@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modeling: IBaseNode.java Quellcode</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../layout.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Modeling
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Suchen');
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('../../',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('d0/da8/IBaseNode_8java_source.htm','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">IBaseNode.java</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d0/da8/IBaseNode_8java.htm">gehe zur Dokumentation dieser Datei</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * @cond LICENSE</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * ######################################################################################</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * # LGPL License                                                                       #</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * #                                                                                    #</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * # This file is part of the TU-Clausthal Mobile and Enterprise Computing Modeling     #</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * # Copyright (c) 2018-19                                                              #</span></div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * # This program is free software: you can redistribute it and/or modify               #</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * # it under the terms of the GNU Lesser General Public License as                     #</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * # published by the Free Software Foundation, either version 3 of the                 #</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * # License, or (at your option) any later version.                                    #</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * #                                                                                    #</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> * # This program is distributed in the hope that it will be useful,                    #</span></div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * # GNU Lesser General Public License for more details.                                #</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * #                                                                                    #</span></div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> * # You should have received a copy of the GNU Lesser General Public License           #</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * # along with this program. If not, see http://www.gnu.org/licenses/                  #</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * ######################################################################################</span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * @endcond</span></div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> */</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">package </span>de.tu_clausthal.in.mec.modeling.model.graph;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonProperty;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">import</span> edu.umd.cs.findbugs.annotations.NonNull;</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div><div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm">   33</a></span>&#160;<span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class </span><a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm">IBaseNode</a> <span class="keyword">implements</span> <a class="code" href="../../d4/db2/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1INode.htm">INode</a></div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    @JsonProperty( <span class="stringliteral">&quot;id&quot;</span> )</div><div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a743b9dd7fc14e46c1b54a745b8b6f7d6">   39</a></span>&#160;    protected final String <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a743b9dd7fc14e46c1b54a745b8b6f7d6">m_id</a>;</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div><div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#af1579ad5119cc3d6d62b5b75a632f618">   46</a></span>&#160;    protected <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm">IBaseNode</a>( @NonNull final String p_id )</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        m_id = p_id;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    @Override</div><div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a023e7231cb1550f752ec11e039337c0f">   52</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keywordtype">int</span> <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a023e7231cb1550f752ec11e039337c0f">hashCode</a>()</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a743b9dd7fc14e46c1b54a745b8b6f7d6">m_id</a>.hashCode();</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    @Override</div><div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a179d183c908ae51feae8d7e852025d3f">   58</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keywordtype">boolean</span> <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a179d183c908ae51feae8d7e852025d3f">equals</a>( <span class="keyword">final</span> Object p_object )</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> p_object instanceof <a class="code" href="../../d4/db2/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1INode.htm">INode</a> &amp;&amp; p_object.hashCode() == this.<a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a023e7231cb1550f752ec11e039337c0f">hashCode</a>();</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    @NonNull</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    @Override</div><div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a151efaefde6e0cde65259fe821ea87cc">   65</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">final</span> String <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a151efaefde6e0cde65259fe821ea87cc">id</a>()</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a743b9dd7fc14e46c1b54a745b8b6f7d6">m_id</a>;</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    @Override</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    @SuppressWarnings( <span class="stringliteral">&quot;unchecked&quot;</span> )</div><div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a6e77a1d2db497096e1a6bf6fb148b89f">   72</a></span>&#160;    public final &lt;T extends <a class="code" href="../../d4/db2/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1INode.htm">INode</a>&gt; T <a class="code" href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a6e77a1d2db497096e1a6bf6fb148b89f">raw</a>()</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> (T) <span class="keyword">this</span>;</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div><div class="ttc" id="classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode_htm"><div class="ttname"><a href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm">de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode</a></div><div class="ttdoc">abstract class of an node </div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da8/IBaseNode_8java_source.htm#l00033">IBaseNode.java:33</a></div></div>
+<div class="ttc" id="classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode_htm_a743b9dd7fc14e46c1b54a745b8b6f7d6"><div class="ttname"><a href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a743b9dd7fc14e46c1b54a745b8b6f7d6">de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode.m_id</a></div><div class="ttdeci">final String m_id</div><div class="ttdoc">id of the node </div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da8/IBaseNode_8java_source.htm#l00039">IBaseNode.java:39</a></div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1INode_htm"><div class="ttname"><a href="../../d4/db2/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1INode.htm">de.tu_clausthal.in.mec.modeling.model.graph.INode</a></div><div class="ttdoc">node interface </div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d3a/INode_8java_source.htm#l00032">INode.java:32</a></div></div>
+<div class="ttc" id="classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode_htm_a023e7231cb1550f752ec11e039337c0f"><div class="ttname"><a href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a023e7231cb1550f752ec11e039337c0f">de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode.hashCode</a></div><div class="ttdeci">final int hashCode()</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da8/IBaseNode_8java_source.htm#l00052">IBaseNode.java:52</a></div></div>
+<div class="ttc" id="classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode_htm_a179d183c908ae51feae8d7e852025d3f"><div class="ttname"><a href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a179d183c908ae51feae8d7e852025d3f">de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode.equals</a></div><div class="ttdeci">final boolean equals(final Object p_object)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da8/IBaseNode_8java_source.htm#l00058">IBaseNode.java:58</a></div></div>
+<div class="ttc" id="classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode_htm_a151efaefde6e0cde65259fe821ea87cc"><div class="ttname"><a href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a151efaefde6e0cde65259fe821ea87cc">de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode.id</a></div><div class="ttdeci">final String id()</div><div class="ttdoc">id of the node </div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da8/IBaseNode_8java_source.htm#l00065">IBaseNode.java:65</a></div></div>
+<div class="ttc" id="classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode_htm_a6e77a1d2db497096e1a6bf6fb148b89f"><div class="ttname"><a href="../../d5/d3e/classde_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1graph_1_1IBaseNode.htm#a6e77a1d2db497096e1a6bf6fb148b89f">de.tu_clausthal.in.mec.modeling.model.graph.IBaseNode.raw</a></div><div class="ttdeci">final&lt; T extends INode &gt; T raw()</div><div class="ttdoc">cast operation </div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da8/IBaseNode_8java_source.htm#l00072">IBaseNode.java:72</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.htm">src</a></li><li class="navelem"><a class="el" href="../../dir_5eb159725f84c66aafd839904a4acdd0.htm">main</a></li><li class="navelem"><a class="el" href="../../dir_fd3f6763802dee1ad875f6c80eac0bda.htm">java</a></li><li class="navelem"><a class="el" href="../../dir_d0b2643dbe59e2c16d00acf3fde99ae0.htm">de</a></li><li class="navelem"><a class="el" href="../../dir_b5735dbb26bbd0edfaeb5dc944d0a236.htm">tu_clausthal</a></li><li class="navelem"><a class="el" href="../../dir_d5020d8050913c88fd7e370a66f1f0da.htm">in</a></li><li class="navelem"><a class="el" href="../../dir_8d8b1d03e3610417aa00e8f74c101c80.htm">mec</a></li><li class="navelem"><a class="el" href="../../dir_127d1a4c86771db27a8ed8d9507746b4.htm">modeling</a></li><li class="navelem"><a class="el" href="../../dir_3df2bf6614b9f573adf940eed3ce7b26.htm">model</a></li><li class="navelem"><a class="el" href="../../dir_ecedbe437f69d249891dc0b50f4e4231.htm">graph</a></li><li class="navelem"><a class="el" href="../../d0/da8/IBaseNode_8java.htm">IBaseNode.java</a></li>
+    <li class="footer">Erzeugt von
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
+</body>
+</html>

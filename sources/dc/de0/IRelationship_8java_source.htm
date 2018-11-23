@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modeling: IRelationship.java Quellcode</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../layout.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Modeling
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Suchen');
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('../../',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('dc/de0/IRelationship_8java_source.htm','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">IRelationship.java</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dc/de0/IRelationship_8java.htm">gehe zur Dokumentation dieser Datei</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * @cond LICENSE</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * ######################################################################################</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * # LGPL License                                                                       #</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * #                                                                                    #</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * # This file is part of the TU-Clausthal Mobile and Enterprise Computing Modeling     #</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * # Copyright (c) 2018-19                                                              #</span></div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * # This program is free software: you can redistribute it and/or modify               #</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * # it under the terms of the GNU Lesser General Public License as                     #</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * # published by the Free Software Foundation, either version 3 of the                 #</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * # License, or (at your option) any later version.                                    #</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * #                                                                                    #</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> * # This program is distributed in the hope that it will be useful,                    #</span></div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * # GNU Lesser General Public License for more details.                                #</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * #                                                                                    #</span></div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> * # You should have received a copy of the GNU Lesser General Public License           #</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * # along with this program. If not, see http://www.gnu.org/licenses/                  #</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * ######################################################################################</span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * @endcond</span></div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> */</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">package </span>de.tu_clausthal.in.mec.modeling.model.erd;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">import</span> edu.umd.cs.findbugs.annotations.NonNull;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">import</span> javax.annotation.Nonnull;</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">import</span> java.util.Collection;</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">import</span> java.util.Map;</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div><div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm">   39</a></span>&#160;<span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm">IRelationship</a>&lt;A <span class="keyword">extends</span> <a class="code" href="../../df/ddc/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IAttribute.htm">IAttribute</a>&gt; extends <a class="code" href="../../d4/d3e/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IErdNode.htm">IErdNode</a></div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">boolean</span> <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#ae426ddb62e0d0ec9721a996b0e0ec6c3">isRecursive</a>();</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">boolean</span> <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#a79488607650007405319b5eea20a2c9a">isWeakRelationship</a>();</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    String <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#af1cf4b6d6f78da27ce9a8c28ebad1366">getDescription</a>();</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    A <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#acc2c437eeb4a862ce0d70239121ebde4">createAttribute</a>( @NonNull <span class="keyword">final</span> String p_id, @Nonnull <span class="keyword">final</span> String p_property );</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    Map&lt;String, IAttribute&gt; <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#af1f3279280d94c2f3c098ef02793823e">getConnectedAttributes</a>();</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="../../d9/deb/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IEntity.htm">IEntity&lt;A&gt;</a> <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#a6a3f2cc78dbc59edf2506cefce2cb3db">connectEntity</a>( @NonNull <span class="keyword">final</span> <a class="code" href="../../d9/deb/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IEntity.htm">IEntity&lt;IAttribute&gt;</a> p_entity, @NonNull <span class="keyword">final</span> String p_cardinality );</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    Map&lt;String, Collection&lt;String&gt;&gt; <a class="code" href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#a4f8d15b0cae8f194f7cc2957190773c5">getConnectedEntities</a>();</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div><div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_a79488607650007405319b5eea20a2c9a"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#a79488607650007405319b5eea20a2c9a">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.isWeakRelationship</a></div><div class="ttdeci">boolean isWeakRelationship()</div><div class="ttdoc">check if this relationship is a weak relationship -&gt; one of the entities is weak </div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IErdNode_htm"><div class="ttname"><a href="../../d4/d3e/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IErdNode.htm">de.tu_clausthal.in.mec.modeling.model.erd.IErdNode</a></div><div class="ttdoc">An node for the graphical ERD model. </div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d76/IErdNode_8java_source.htm#l00032">IErdNode.java:32</a></div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship</a></div><div class="ttdoc">A relationship is a fundamental part of an ERD. </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/de0/IRelationship_8java_source.htm#l00039">IRelationship.java:39</a></div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_a4f8d15b0cae8f194f7cc2957190773c5"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#a4f8d15b0cae8f194f7cc2957190773c5">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.getConnectedEntities</a></div><div class="ttdeci">Map&lt; String, Collection&lt; String &gt; &gt; getConnectedEntities()</div><div class="ttdoc">return the connected entities in a map </div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IEntity_htm"><div class="ttname"><a href="../../d9/deb/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IEntity.htm">de.tu_clausthal.in.mec.modeling.model.erd.IEntity</a></div><div class="ttdoc">An entity is a fundamental part of an ERD. </div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d1f/IEntity_8java_source.htm#l00039">IEntity.java:39</a></div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_af1cf4b6d6f78da27ce9a8c28ebad1366"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#af1cf4b6d6f78da27ce9a8c28ebad1366">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.getDescription</a></div><div class="ttdeci">String getDescription()</div><div class="ttdoc">return the description of the relationship </div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IAttribute_htm"><div class="ttname"><a href="../../df/ddc/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IAttribute.htm">de.tu_clausthal.in.mec.modeling.model.erd.IAttribute</a></div><div class="ttdoc">A simple attribute that can be assigned in an ERD to an entity or relationship. </div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da0/IAttribute_8java_source.htm#l00030">IAttribute.java:30</a></div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_acc2c437eeb4a862ce0d70239121ebde4"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#acc2c437eeb4a862ce0d70239121ebde4">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.createAttribute</a></div><div class="ttdeci">A createAttribute( @NonNull final String p_id, @Nonnull final String p_property)</div><div class="ttdoc">create new attribute to relationship </div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_af1f3279280d94c2f3c098ef02793823e"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#af1f3279280d94c2f3c098ef02793823e">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.getConnectedAttributes</a></div><div class="ttdeci">Map&lt; String, IAttribute &gt; getConnectedAttributes()</div><div class="ttdoc">get all connected attributes from the relationship in a map </div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_a6a3f2cc78dbc59edf2506cefce2cb3db"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#a6a3f2cc78dbc59edf2506cefce2cb3db">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.connectEntity</a></div><div class="ttdeci">IEntity&lt; A &gt; connectEntity( @NonNull final IEntity&lt; IAttribute &gt; p_entity, @NonNull final String p_cardinality)</div><div class="ttdoc">connect entity incl. </div></div>
+<div class="ttc" id="interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship_htm_ae426ddb62e0d0ec9721a996b0e0ec6c3"><div class="ttname"><a href="../../df/d49/interfacede_1_1tu__clausthal_1_1in_1_1mec_1_1modeling_1_1model_1_1erd_1_1IRelationship.htm#ae426ddb62e0d0ec9721a996b0e0ec6c3">de.tu_clausthal.in.mec.modeling.model.erd.IRelationship.isRecursive</a></div><div class="ttdeci">boolean isRecursive()</div><div class="ttdoc">check the relationship, if the two connected entities are the same </div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.htm">src</a></li><li class="navelem"><a class="el" href="../../dir_5eb159725f84c66aafd839904a4acdd0.htm">main</a></li><li class="navelem"><a class="el" href="../../dir_fd3f6763802dee1ad875f6c80eac0bda.htm">java</a></li><li class="navelem"><a class="el" href="../../dir_d0b2643dbe59e2c16d00acf3fde99ae0.htm">de</a></li><li class="navelem"><a class="el" href="../../dir_b5735dbb26bbd0edfaeb5dc944d0a236.htm">tu_clausthal</a></li><li class="navelem"><a class="el" href="../../dir_d5020d8050913c88fd7e370a66f1f0da.htm">in</a></li><li class="navelem"><a class="el" href="../../dir_8d8b1d03e3610417aa00e8f74c101c80.htm">mec</a></li><li class="navelem"><a class="el" href="../../dir_127d1a4c86771db27a8ed8d9507746b4.htm">modeling</a></li><li class="navelem"><a class="el" href="../../dir_3df2bf6614b9f573adf940eed3ce7b26.htm">model</a></li><li class="navelem"><a class="el" href="../../dir_4bb86680a0e48ec59de6f72534354c34.htm">erd</a></li><li class="navelem"><a class="el" href="../../dc/de0/IRelationship_8java.htm">IRelationship.java</a></li>
+    <li class="footer">Erzeugt von
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
+</body>
+</html>
