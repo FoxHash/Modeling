@@ -82,7 +82,7 @@ public final class CErdChecker implements IErdChecker
 
         m_model.nodes()
                .filter( i -> i instanceof IRelationship )
-               .filter( i -> i.<IRelationship<IAttribute>>raw().getConnectedEntities().size() <= 1 )
+               .filter( i -> i.<IRelationship<IAttribute>>raw().getConnectedEntities().size() <= 1 && !i.<IRelationship<IAttribute>>raw().isRecursive() )
                .forEach( i -> m_errors.add( i.id() + ERROR_RELATIONSHIP ) );
 
         return l_allrelationships == l_validrelationship;
